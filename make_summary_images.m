@@ -4,7 +4,7 @@ function make_summary_images(batch, batch_name, T_cells, T_policies)
 % conditional statements to identify which to use
 
 %% Move to image directory
-% cd ['C:/Users//Arbin/Box Sync/Batch images/' batch_name]
+% cd ['C:/Users/Arbin/Box Sync/Batch images/' batch_name]
 
 %% Q vs n
 ncells = size(T_cells); ncells = ncells(1); % number of cells
@@ -31,5 +31,7 @@ elseif batch_name == 'batch2'
 else
     warning('Batch name not recognized. No summary figures generated')
 end
+
+cd 'C:/Users/Arbin/Documents/GitHub/BMS-autoanalysis'
 
 end
