@@ -1,4 +1,4 @@
-function [T1 T2] = make_result_tables( batch, batch_name )
+function T2 = make_result_tables( batch, batchname )
 %make_result_table makes tables of results for OED.
 %   Parses policy parameters (e.g. CC1, CC2, Q1) and
 %   calculates charging time and average degradation rate.
@@ -69,7 +69,7 @@ T1 = table(CC1, Q1, CC2, t80calc, t80meas100, cycles, degrate, ...
 
 %% Saves files
 % cd 'C:/Users/Arbin/Box Sync/Result tables'
-results_table_file = [date '_' batch_name '_results_table_allcells.xlsx'];
+results_table_file = [date '_' batchname '_results_table_allcells.xlsx'];
 writetable(T1,results_table_file) % Save to CSV
 % Re-writes column headers
 col_headers = {'CC1' 'Q1' 'CC2' ...
@@ -131,7 +131,7 @@ T2 = table(CC1_policies, Q1_policies, CC2_policies, numcells, ...
 
 %% Saves files
 % cd 'C:/Users/Arbin/Box Sync/Result tables'
-results_table_file2 = [date '_' batch_name '_results_table_allpolicies.xlsx'];
+results_table_file2 = [date '_' batchname '_results_table_allpolicies.xlsx'];
 writetable(T2,results_table_file2) % Save to CSV
 % Re-writes column headers
 col_headers = {'Number of cells', 'CC1' 'Q1' 'CC2' ...
@@ -142,6 +142,6 @@ col_headers = {'Number of cells', 'CC1' 'Q1' 'CC2' ...
     'Final degradation rate (Ah/cycle)'};
 % xlswrite(results_table_file,col_headers,'A1')
 
-save([date '_' batch_name 'result_tables'],T1, T2)
+save([date '_' batchname 'result'],T1, T2)
 % cd 'C:/Users/Arbin/Documents/GitHub/BMS-autoanalysis'
 end
