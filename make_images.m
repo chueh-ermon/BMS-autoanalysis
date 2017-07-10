@@ -29,9 +29,6 @@ legend_array={'1'; '100'; '200'; '300'; '400'; '500';'600';'700';'800'; ...
         '900';'1000'; '1100'; '1200'; '1300'; '1400'; '1500'; '1600'; ...
         '1700'; '1800'};
 
-% Make figures fullscreen
-set(gcf, 'units','normalized','outerposition',[0 0 1 1])
-
 %% Preinitialization variables
 % number of batteries in batch
 num_cells = length(batch); % get number of batteries
@@ -41,20 +38,22 @@ for i = 1:4 % num_cells
     cell_id = i; % identify each cell 
     num_cycles = max(batch(i).summary.cycle); % get number of cycles
     
+    % find maxes for normalization
+    max_capacity = batch(i).QDischarge;
+    
     %% plot every 100 cycles
     for j = [1 100:100:num_cycles] % plot every 100 cycles
             % plot every 100 cycles
             % Plot IDCA (discharge dQ/dV)
                     figure(cell_id)
                     set(gcf, 'units','normalized','outerposition',[0 0 1 1]) % makes figure fullscreen
-                    set(gcf,'color','w');
+                    set(gcf,'color','w') % make figures white
                     subplot(2,4,8)
                     plot(batch(i).cycles(j).discharge_dQdVvsV.V,batch(i).cycles(j).discharge_dQdVvsV.dQdV,'Color',color_array{fix(j/100)+1}, ...
                         'LineWidth',1.5);
                     hold on
                     xlabel('Voltage (Volts)')
                     ylabel('dQ/dV (Ah/V)')
-                    
 
 
 %             % Plot voltage profiles
@@ -143,38 +142,42 @@ for i = 1:4 % num_cells
     % Add cycle number legend
     subplot(2,4,8)
     legend(legend_array{1:max(fix((j)/100))+1},'Location', ...
-                        'eastoutside', 'Orientation','vertical')         
-    end
-    
-    %% Save figures
+                        'eastoutside', 'Orientation','vertical')
+        %% Save figures
     % add figure/image saving code
     % save into correct folder for 
     
 %     % cd into batch images
 %     cd 'C:/Users//Arbin/Box Sync/Batch images'
 %     
-%     % make folder for current date FIX THIS
-%     mkdir strcat('C:/Users/Arbin/Box Sync/Batch images/','batch_name')
+%     % make folder for current date 
+%     mkdir (strcat('C:/Users/Arbin/Box Sync/Batch images/','batch_name'))
 %     
 %     % cd into new folder
-%     cd strcat('C:/Users/Arbin/Box Sync/Batch images/','batch_name')
+%     cd (strcat('C:/Users/Arbin/Box Sync/Batch images/','batch_name'))
 
+% test code on mike's computer
 	% cd into batch images
     cd '/Users/MichaelChen/Documents/Chueh BMS/2017-05-12 Data'
-    
+        
     % make folder for current date
-    mkdir(strcat('/Users/MichaelChen/Documents/Chueh BMS/2017-05-12 Data/Batch Images/',batch_name))
+    mkdir(strcat('/Users/MichaelChen/Documents/Chueh BMS/2017-05-12 Data/Batch Images/',batch_name));
     
     % cd into new folder
-    cd strcat('/Users/MichaelChen/Documents/Chueh BMS/2017-05-12 Data/Batch Images/',batch_name)
+    cd (strcat('/Users/MichaelChen/Documents/Chueh BMS/2017-05-12 Data/Batch Images/',batch_name));
     
     % save in folder
-    print(strcat(batch(i).policy,'_',batch(i).barcode,'-dpng'))
+    % print(strcat(batch(i).policy,'_',batch(i).barcode),'-dpng')
+    saveas(gcf,strcat(batch(i).policy,'_',batch(i).barcode,'.png'))
     
     % cd out into batch images
     cd ..
     
+    % cd to batch images
+    cd('/Users/MichaelChen/Documents/Chueh BMS/2017-05-12 Data')
+
     close % close figure
+end
     
 end
 
