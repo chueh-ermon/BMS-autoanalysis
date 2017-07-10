@@ -1,8 +1,11 @@
-function T = make_result_tables( batch, batchname )
-%make_result_table makes a table of results for OED.
+function T1 = make_result_tables( batch, batchname )
+%make_result_table makes tables of results for OED.
 %   Parses policy parameters (e.g. CC1, CC2, Q1) and
-%   calculates charging time and average degradation rate (if multiple cells).
-%   Writes the results to a CSV.
+%   calculates charging time and average degradation rate.
+%   In this function, we make two result tables - one for each cell (T), 
+%   and one for each policy (in which results for policies with multiple 
+%   cells are averaged). 
+%   It then writes the results to a CSV.
 
 n = numel(batch); % number of batteries in the batch
 
@@ -58,15 +61,14 @@ for i = 1:46
         min(batch(i).summary.QDischarge(end-100:end)))/ 100;
 end
 
-%% Creates table
-T = table(CC1, Q1, CC2, t80calc, t80meas100, cycles, degrate, ...
+%% Creates table (for each cell)
+T1 = table(CC1, Q1, CC2, t80calc, t80meas100, cycles, degrate, ...
     initdegrate,finaldegrate);
-disp(T)
 
 %% Saves files
 % cd 'C:/Users/Arbin/Box Sync/Batch data'
 results_table_file = [date '_' batchname '_results_table_allcells.xlsx'];
-writetable(T,results_table_file)
+writetable(T1,results_table_file) % Save to CSV
 % Re-writes column headers
 col_headers = {'CC1' 'Q1' 'CC2' ...
     'Time to 80% - calculated (min)' ...
@@ -77,4 +79,25 @@ col_headers = {'CC1' 'Q1' 'CC2' ...
 % xlswrite(results_table_file,col_headers,'A1')
 % cd 'C:/Users/Arbin/Documents/GitHub/BMS-autoanalysis'
 
+%% Creates table for each policy. 
+% Identify 
+
+
+%% Create table (for each policy)
+T2 = table(CC1, Q1, CC2, t80calc, t80meas100, cycles, degrate, ...
+    initdegrate,finaldegrate);
+
+%% Saves files
+% cd 'C:/Users/Arbin/Box Sync/Batch data'
+results_table_file = [date '_' batchname '_results_table_allpolicies.xlsx'];
+writetable(T2,results_table_file) % Save to CSV
+% Re-writes column headers
+col_headers = {'CC1' 'Q1' 'CC2' ...
+    'Time to 80% - calculated (min)' ...
+    'Time to 80% - measured, median of first 100 cycles (min)', ...
+    'Cycles completed', 'Average degradation rate (Ah/cycle)', ...
+    'Initial degradation rate (Ah/cycle)', ...
+    'Final degradation rate (Ah/cycle)'};
+% xlswrite(results_table_file,col_headers,'A1')
+% cd 'C:/Users/Arbin/Documents/GitHub/BMS-autoanalysis'
 end
