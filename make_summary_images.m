@@ -24,10 +24,10 @@ print('summary1_Q_vs_n','-dpng')
 %% Make plots for each
 % Batch 1 (2017-05-12)
 if batch_name == 'batch1'
-
+    batch1_summary_plots(batch, batch_name, T_cells, T_policies)
 % Batch 2 (2017-06-30)
 elseif batch_name == 'batch2'
-    
+    batch2_summary_plots(batch, batch_name, T_cells, T_policies)
 else
     warning('Batch name not recognized. No summary figures generated')
 end
