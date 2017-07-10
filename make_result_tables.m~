@@ -81,30 +81,19 @@ col_headers = {'CC1' 'Q1' 'CC2' ...
 % xlswrite(results_table_file,col_headers,'A1')
 % cd 'C:/Users/Arbin/Documents/GitHub/BMS-autoanalysis'
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%% Creates table for each policy
+%% Creates table for each policy. 
 % Identify all unique policy names
 unique_policies = unique(policies);
-num_policies = length(unique_policies);
 
-% Preinitialize vectors
-CC1_policy = zeros(n,1);
-CC2_policies = zeros(n,1);
-Q1_policies  = zeros(n,1);
-t80calc_policies  = zeros(n,1); % time to 80% (calculated from policy parameters)
-t80meas100_policies  = zeros(n,1); % time to 80% (measured - median of first 100 cycles)
-cycles_policies  = zeros(n,1); % number of cycles completed
-degrate_policies  = zeros(n,1); % average deg rate (Ah/cycles)
-initdegrate_policies  = zeros(n,1); % initial deg rate (Ah/cycles)
-finaldegrate_policies  = zeros(n,1); % final deg rate (Ah/cycles)
+% Create matrix mapping each cell to a policy
+current_policy = batch(1).policy;
+num_policies = length(unique_policis);
 
-for i = 1:num_policies
-    
-    for j = 1:n
-        if unique_policies(i) == batch(j).policy
-            
-        end
+for i = 1:numel(batch)
+    if current_policy == batch(i).policy
+        % Record data
+    else
+        current_policy = batch(i).policy;
     end
 end
 
