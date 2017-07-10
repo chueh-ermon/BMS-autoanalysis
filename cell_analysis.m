@@ -146,7 +146,7 @@ cd 'C://Data'
     end
     
     % ADDED
-    battery.summary.cycle = num_cycles;
+    battery.summary.cycle = 1:j;
     battery.summary.QDischarge = DQ;
     battery.summary.QCharge = CQ;
     battery.summary.IR = IR_CC1;
