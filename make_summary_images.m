@@ -24,34 +24,9 @@ print('summary1_Q_vs_n','-dpng')
 %% Make plots for each
 % Batch 1 (2017-05-12)
 if batch_name == 'batch1'
-    %% Capacity vs charging time
-    
-    
-    xlabel('Time to 80% SOC (minutes)')
-    ylabel('Remaining discharge capacity (Ah)')
-    print('summary2_Q_vs_t80','-png')
-    
-    %% Average degradation vs charging time
-    
-    xlabel('Time to 80% SOC (minutes)')
-    ylabel('Average degradation rate (Ah/cycle)')
-    print('summary3_deg_vs_t80','-png')
-    
-    %% Contour plot
-    
-    print('summary4_contour','-png')
 
 % Batch 2 (2017-06-30)
 elseif batch_name == 'batch2'
-    %% Contour plots
-    % x = CC1, y = CC2, contours = Q1
-    batch2_summary_plots(batch, batch_name, T_cells, T_policies)
-    saveas(gcf, 'summary2_contour1.png')
-    
-    
-    % x = CC1, y = Q1, contours = CC2
-    
-    saveas(gcf, 'summary3_contour2.png')
     
 else
     warning('Batch name not recognized. No summary figures generated')
