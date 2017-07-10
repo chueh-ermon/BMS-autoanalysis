@@ -1,6 +1,7 @@
-function make_summary_images(batch, batchname)
+function make_summary_images(T1, T2, batch_name)
 % make_summary images makes the summary images for each batch. Since each
-% batch will have different 'best' ways of presenting data, 
+% batch will have different 'best' ways of presenting data, have
+% conditional statements to identify which to use
 
 
 %% Q vs n
@@ -11,7 +12,7 @@ saveas('summary2_Q')
 
 %% Make plots for each
 % Batch 1 (2017-05-12)
-if batchname == 'batch1'
+if batch_name == 'batch1'
     %% Capacity vs charging time
     
     
@@ -31,7 +32,7 @@ if batchname == 'batch1'
     saveas(gcf, 'summary4_contour.png')
     
 % Batch 2 (2017-06-30)
-elseif batchname == 'batch2'
+elseif batch_name == 'batch2'
     %% Contour plots
     % x = CC1, y = CC2, contours = Q1
     

@@ -1,4 +1,4 @@
-function make_result_tables( batch, batchname )
+function [T1 T2] = make_result_tables( batch, batch_name )
 %make_result_table makes tables of results for OED.
 %   Parses policy parameters (e.g. CC1, CC2, Q1) and
 %   calculates charging time and average degradation rate.
@@ -68,8 +68,8 @@ T1 = table(CC1, Q1, CC2, t80calc, t80meas100, cycles, degrate, ...
     initdegrate,finaldegrate);
 
 %% Saves files
-% cd 'C:/Users/Arbin/Box Sync/Batch data'
-results_table_file = [date '_' batchname '_results_table_allcells.xlsx'];
+% cd 'C:/Users/Arbin/Box Sync/Result tables'
+results_table_file = [date '_' batch_name '_results_table_allcells.xlsx'];
 writetable(T1,results_table_file) % Save to CSV
 % Re-writes column headers
 col_headers = {'CC1' 'Q1' 'CC2' ...
@@ -88,41 +88,60 @@ col_headers = {'CC1' 'Q1' 'CC2' ...
 unique_policies = unique(policies);
 num_policies = length(unique_policies);
 
-% Preinitialize vectors
-CC1_policy = zeros(n,1);
-CC2_policies = zeros(n,1);
-Q1_policies  = zeros(n,1);
-t80calc_policies  = zeros(n,1); % time to 80% (calculated from policy parameters)
-t80meas100_policies  = zeros(n,1); % time to 80% (measured - median of first 100 cycles)
-cycles_policies  = zeros(n,1); % number of cycles completed
-degrate_policies  = zeros(n,1); % average deg rate (Ah/cycles)
-initdegrate_policies  = zeros(n,1); % initial deg rate (Ah/cycles)
-finaldegrate_policies  = zeros(n,1); % final deg rate (Ah/cycles)
+% Preinitialize vectors. Same as before, but for the policies
+numcells = zeros(num_policies,1); % number of cells for a given policy
+CC1_policies = zeros(num_policies,1);
+CC2_policies = zeros(num_policies,1);
+Q1_policies  = zeros(num_policies,1);
+t80calc_policies  = zeros(num_policies,1); % time to 80% (calculated from policy parameters)
+t80meas100_policies  = zeros(num_policies,1); % time to 80% (measured - median of first 100 cycles)
+cycles_policies  = zeros(num_policies,1); % number of cycles completed
+degrate_policies  = zeros(num_policies,1); % average deg rate (Ah/cycles)
+initdegrate_policies  = zeros(num_policies,1); % initial deg rate (Ah/cycles)
+finaldegrate_policies  = zeros(num_policies,1); % final deg rate (Ah/cycles)
 
+% Loop through each policy, find all cells with that policy, and then
+% compute the parameters
 for i = 1:num_policies
-    
+    battery_index = [];
     for j = 1:n
-        if unique_policies(i) == batch(j).policy
-            
+        if strcmp(unique_policies{i}, batch(j).policy)
+            numcells(i) = numcells(i) + 1;
+            battery_index = [battery_index j];
         end
     end
+    
+    CC1_policies(i) = CC1(battery_index(1));
+    CC2_policies(i) = CC2(battery_index(1));
+    Q1_policies(i)  = Q1(battery_index(1));
+    t80calc_policies(i)  = t80calc(battery_index(1));
+    t80meas100_policies(i)  = mean(t80meas100(battery_index)); % time to 80% (measured - median of first 100 cycles)
+    cycles_policies(i)  = mean(cycles(battery_index)); % number of cycles completed
+    degrate_policies(i)  = mean(degrate(battery_index)); % average deg rate (Ah/cycles)
+    initdegrate_policies(i)  = mean(initdegrate(battery_index)); % initial deg rate (Ah/cycles)
+    finaldegrate_policies(i)  = mean(finaldegrate(battery_index)); % final deg rate (Ah/cycles)
 end
 
 %% Create table (for each policy)
-T2 = table(CC1, Q1, CC2, t80calc, t80meas100, cycles, degrate, ...
-    initdegrate,finaldegrate);
+
+disp(CC1_policies), disp(numcells), disp(t80meas100_policies)
+T2 = table(CC1_policies, Q1_policies, CC2_policies, numcells, ...
+    t80calc_policies, t80meas100_policies, cycles_policies, ...
+    degrate_policies, initdegrate_policies, finaldegrate_policies);
 
 %% Saves files
-% cd 'C:/Users/Arbin/Box Sync/Batch data'
-results_table_file = [date '_' batchname '_results_table_allpolicies.xlsx'];
-writetable(T2,results_table_file) % Save to CSV
+% cd 'C:/Users/Arbin/Box Sync/Result tables'
+results_table_file2 = [date '_' batch_name '_results_table_allpolicies.xlsx'];
+writetable(T2,results_table_file2) % Save to CSV
 % Re-writes column headers
-col_headers = {'CC1' 'Q1' 'CC2' ...
+col_headers = {'Number of cells', 'CC1' 'Q1' 'CC2' ...
     'Time to 80% - calculated (min)' ...
     'Time to 80% - measured, median of first 100 cycles (min)', ...
     'Cycles completed', 'Average degradation rate (Ah/cycle)', ...
     'Initial degradation rate (Ah/cycle)', ...
     'Final degradation rate (Ah/cycle)'};
 % xlswrite(results_table_file,col_headers,'A1')
+
+save([date '_' batch_name 'result_tables'],T1, T2)
 % cd 'C:/Users/Arbin/Documents/GitHub/BMS-autoanalysis'
 end
