@@ -89,4 +89,7 @@ for j = 1:numel(CA_array)
         toc
     end
 end
+cd 'C:\Users\Arbin\Box Sync\Batch data'
+save(strcat(batch_data, '_batchdata'), 'batch_date', 'batch')
+cd 'C:\Users\Arbin\Documents\BMS-autoanalysis'
 end
