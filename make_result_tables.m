@@ -1,4 +1,4 @@
-function T = make_result_table( batch )
+function T = make_result_tables( batch, batchname )
 %make_result_table makes a table of results for OED.
 %   Parses policy parameters (e.g. CC1, CC2, Q1) and
 %   calculates charging time and average degradation rate (if multiple cells).
@@ -65,7 +65,7 @@ disp(T)
 
 %% Saves files
 % cd 'C:/Users/Arbin/Box Sync/Batch data'
-results_table_file = [date '_results_table.xlsx'];
+results_table_file = [date '_' batchname '_results_table_allcells.xlsx'];
 writetable(T,results_table_file)
 % Re-writes column headers
 col_headers = {'CC1' 'Q1' 'CC2' ...
