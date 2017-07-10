@@ -7,15 +7,19 @@ function make_summary_images(batch, batch_name, T_cells, T_policies)
 % cd ['C:/Users//Arbin/Box Sync/Batch images/' batch_name]
 
 %% Q vs n
-for i = 1:numel(T_cells)
-    x = batteries(i).summary.cycle;
-    y = batteries(i).summary.QDischarge;
+ncells = size(T_cells); ncells = ncells(1); % number of cells
+figure('units','normalized','outerposition',[0 0 1 1]), hold on, box on
+for i = 1:ncells
+    x = batch(i).summary.cycle;
+    y = batch(i).summary.QDischarge;
     [col, mark] = random_color('y','y');
     plot(x,y,'color',col,'marker',mark)
 end
 xlabel('Cycle number')
 ylabel('Remaining discharge capacity (Ah)')
-print('summary1_Q_vs_n','-png')
+ylim([0.8 1.1])
+legend()
+print('summary1_Q_vs_n','-dpng')
 
 %% Make plots for each
 % Batch 1 (2017-05-12)
@@ -41,7 +45,7 @@ if batch_name == 'batch1'
 elseif batch_name == 'batch2'
     %% Contour plots
     % x = CC1, y = CC2, contours = Q1
-    
+    batch2_summary_plots(batch, batch_name, T_cells, T_policies)
     saveas(gcf, 'summary2_contour1.png')
     
     
