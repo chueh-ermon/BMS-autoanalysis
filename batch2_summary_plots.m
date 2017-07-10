@@ -1,6 +1,7 @@
 function batch2_summary_plots(batch, batch_name, T_cells, T_policies)
-%UNTITLED6 Summary of this function goes here
-%   Detailed explanation goes here
+%% Function: takes in tabular data to generate contour plots of results
+% Usage: batch2_summary_plots(batteries,'batch_2', T_cells,T_policies)
+% 
 
     %% Contour plots
     % x = CC1, y = CC2, contours = Q1
