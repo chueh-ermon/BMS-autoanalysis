@@ -21,8 +21,8 @@ batch = batch_analysis(batch_date);
 
 %% Generate images & results for all cells
 make_images(batch, batch_name);
-[T1 T2] = make_result_tables(batch, batch_name);
-make_summary_images(T1, T2, batch_name);
+[T_cells, T_policies] = make_result_tables(batch, batch_name);
+make_summary_images(T_cells, T_policies, batch_name);
 
 %% Run the report generator (in Python)
 % This will create the PPT and convert to PDF. It saves in the Box Sync

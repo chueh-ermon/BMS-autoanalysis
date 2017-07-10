@@ -1,4 +1,4 @@
-function [T1 T2] = make_result_tables( batch, batch_name )
+function [T_cells, T_policies] = make_result_tables( batch, batch_name )
 %make_result_table makes tables of results for OED.
 %   Parses policy parameters (e.g. CC1, CC2, Q1) and
 %   calculates charging time and average degradation rate.
@@ -64,13 +64,13 @@ for i = 1:numel(batch)
 end
 
 %% Creates table (for each cell)
-T1 = table(CC1, Q1, CC2, t80calc, t80meas100, cycles, degrate, ...
+T_cells = table(CC1, Q1, CC2, t80calc, t80meas100, cycles, degrate, ...
     initdegrate,finaldegrate);
 
 %% Saves files
 % cd 'C:/Users/Arbin/Box Sync/Result tables'
 results_table_file = [date '_' batch_name '_results_table_allcells.xlsx'];
-writetable(T1,results_table_file) % Save to CSV
+writetable(T_cells,results_table_file) % Save to CSV
 % Re-writes column headers
 col_headers = {'CC1' 'Q1' 'CC2' ...
     'Time to 80% - calculated (min)' ...
@@ -125,14 +125,14 @@ end
 %% Create table (for each policy)
 
 disp(CC1_policies), disp(numcells), disp(t80meas100_policies)
-T2 = table(CC1_policies, Q1_policies, CC2_policies, numcells, ...
+T_policies = table(CC1_policies, Q1_policies, CC2_policies, numcells, ...
     t80calc_policies, t80meas100_policies, cycles_policies, ...
     degrate_policies, initdegrate_policies, finaldegrate_policies);
 
 %% Saves files
 % cd 'C:/Users/Arbin/Box Sync/Result tables'
 results_table_file2 = [date '_' batch_name '_results_table_allpolicies.xlsx'];
-writetable(T2,results_table_file2) % Save to CSV
+writetable(T_policies,results_table_file2) % Save to CSV
 % Re-writes column headers
 col_headers = {'Number of cells', 'CC1' 'Q1' 'CC2' ...
     'Time to 80% - calculated (min)' ...
@@ -142,6 +142,6 @@ col_headers = {'Number of cells', 'CC1' 'Q1' 'CC2' ...
     'Final degradation rate (Ah/cycle)'};
 % xlswrite(results_table_file,col_headers,'A1')
 
-save([date '_' batch_name 'result_tables'],T1, T2)
+save([date '_' batch_name '_result_tables'],'T_cells', 'T_policies')
 % cd 'C:/Users/Arbin/Documents/GitHub/BMS-autoanalysis'
 end

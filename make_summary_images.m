@@ -1,11 +1,12 @@
-function make_summary_images(T1, T2, batch_name)
+function make_summary_images(T_cells, T_policies, batch_name)
 % make_summary images makes the summary images for each batch. Since each
 % batch will have different 'best' ways of presenting data, have
 % conditional statements to identify which to use
 
 
 %% Q vs n
-
+for i = 1:length(T_cells)
+end
 xlabel('Cycle number')
 ylabel('Remaining discharge capacity (Ah)')
 saveas('summary2_Q')
