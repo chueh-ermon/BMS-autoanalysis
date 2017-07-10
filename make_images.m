@@ -2,11 +2,11 @@ function make_images(batch,batch_name)
 close all;
 %% Function:loops through each battery in 'batch'. Makes images (.pngs) of 2 x 4 plot grids. Saves images.
 % Usage: make_images('2017-05-12-batchdata.mat','2017-05-12')
-% Michael Chen
+% July 2017 Michael Chen
 
 %% Initialize folder
 % cd into correct folder to find the batch images
-cd ('/Users/MichaelChen/Documents/Chueh BMS/2017-05-12 Data')
+cd('/Users/MichaelChen/Documents/Chueh BMS/2017-05-12 Data')
 
 %% Plotting initialization 
 % 18 increasing darkness reds for cycle results
@@ -25,27 +25,29 @@ color_array_blue = {[230,230,255]./256; [204,204,255]./256; ...
         [0,0,102]./256; [0,0,77]./256; [0,0,51]./256; [0,0,26]./256; ...
         [0,0,0]};
 % Cycle legends
-legend_array={'100'; '200'; '300'; '400'; '500';'600';'700';'800'; ...
+legend_array={'1'; '100'; '200'; '300'; '400'; '500';'600';'700';'800'; ...
         '900';'1000'; '1100'; '1200'; '1300'; '1400'; '1500'; '1600'; ...
         '1700'; '1800'};
 
-
 %% Preinitialization variables
 % number of batteries in batch
-n = numel(fieldnames(batch)); % get number of batteries
+num_cells = length(batch); % get number of batteries
 
 %% Loops through each battery
-for i = 1:3 % change back to n (number of batteries)
-    cell_id = i % identify each cell 
+for i = 1:4 % num_cells
+    cell_id = i; % identify each cell 
+    num_cycles = max(batch(i).summary.cycle); % get number of cycles
     
-    num_cycles = numel(batch(i).summary.cycle); % get number of cycles
+    % find maxes for normalization
+    max_capacity = batch(i).QDischarge;
     
     %% plot every 100 cycles
-    for j = 1:(num_cycles-1) % plot every cycle but the last one
-        
-        if mod(j,100) == 0 % plot every 100 cycles
+    for j = [1 100:100:num_cycles] % plot every 100 cycles
+            % plot every 100 cycles
             % Plot IDCA (discharge dQ/dV)
                     figure(cell_id)
+                    set(gcf, 'units','normalized','outerposition',[0 0 1 1]) % makes figure fullscreen
+                    set(gcf,'color','w') % make figures white
                     subplot(2,4,8)
                     plot(batch(i).cycles(j).discharge_dQdVvsV.V,batch(i).cycles(j).discharge_dQdVvsV.dQdV,'Color',color_array{fix(j/100)+1}, ...
                         'LineWidth',1.5);
@@ -54,43 +56,43 @@ for i = 1:3 % change back to n (number of batteries)
                     ylabel('dQ/dV (Ah/V)')
 
 
-            % Plot voltage profiles
-                    figure(cell_id)
-                    subplot(2,4,6)
-                    plot(batch(i).cycles(j).VvsQ.Q,batch(i).cycles(j).VvsQ.V,'Color',...
-                        color_array{fix(j/100)+1},'LineWidth',1.5);
-                    hold on
-                    xlabel('Charge Capacity (Ah)')
-                    ylabel('Cell Voltage (V)')
-                    xlim([0 1.2]) % capacity limits
-                    ylim([3.1 3.65]) % voltage limits
-
-            % Plot temperature profiles
-                    figure(cell_id)
-                    subplot(2,4,7)
-                    plot(batch(i).cycles(j).TvsQ.Q,batch(i).cycles(j).TvsQ.T,'Color',...
-                        color_array{fix(j/100)+1},'LineWidth',1.5); % changed indexing 
-                    hold on 
-                    xlabel('Charge Capacity (Ah)')
-                    ylabel('Cell Temperature (°C)')
-                    xlim([0 1.2]) % capacity limits
-                    ylim([28 45]) % temperature limits
-
-            % Plot current profiles 
-                    figure(cell_id)
-                    subplot(2,4,5)
-                    yyaxis left
-                    plot(batch(i).cycles(j).Qvst.t./60,batch(i).cycles(j).Qvst.C,'-',...
-                        'Color', color_array_blue{fix(j/100)+1},'LineWidth',1.5);
-                    xlabel('Time (minutes)')
-                    ylabel('Current (C-Rate)')
-                    hold on
-                    yyaxis right
-                    plot(batch(i).cycles(j).Qvst.t./60,batch(i).cycles(j).Qvst.Q,'-',...
-                        'Color', color_array{fix(j/100)+1},'LineWidth',1.5);
-                    ylabel('Charge Capacity (Ah)')
-                    xlim([0,70])
-        end
+%             % Plot voltage profiles
+%                     figure(cell_id)
+%                     subplot(2,4,6)
+%                     plot(batch(i).cycles(j).VvsQ.Q,batch(i).cycles(j).VvsQ.V,'Color',...
+%                         color_array{fix(j/100)+1},'LineWidth',1.5);
+%                     hold on
+%                     xlabel('Charge Capacity (Ah)')
+%                     ylabel('Cell Voltage (V)')
+%                     xlim([0 1.2]) % capacity limits
+%                     ylim([3.1 3.65]) % voltage limits
+% 
+%             % Plot temperature profiles
+%                     figure(cell_id)
+%                     subplot(2,4,7)
+%                     plot(batch(i).cycles(j).TvsQ.Q,batch(i).cycles(j).TvsQ.T,'Color',...
+%                         color_array{fix(j/100)+1},'LineWidth',1.5); % changed indexing 
+%                     hold on 
+%                     xlabel('Charge Capacity (Ah)')
+%                     ylabel('Cell Temperature (°C)')
+%                     xlim([0 1.2]) % capacity limits
+%                     ylim([28 45]) % temperature limits
+% 
+%             % Plot current profiles 
+%                     figure(cell_id)
+%                     subplot(2,4,5)
+%                     yyaxis left
+%                     plot(batch(i).cycles(j).Qvst.t./60,batch(i).cycles(j).Qvst.C,'-',...
+%                         'Color', color_array_blue{fix(j/100)+1},'LineWidth',1.5);
+%                     xlabel('Time (minutes)')
+%                     ylabel('Current (C-Rate)')
+%                     hold on
+%                     yyaxis right
+%                     plot(batch(i).cycles(j).Qvst.t./60,batch(i).cycles(j).Qvst.Q,'-',...
+%                         'Color', color_array{fix(j/100)+1},'LineWidth',1.5);
+%                     ylabel('Charge Capacity (Ah)')
+%                     xlim([0,70])
+    end
                     
     % Plot remaining capacity
     figure(cell_id)
@@ -136,16 +138,48 @@ for i = 1:3 % change back to n (number of batteries)
     title(batch(i).policy)
     ylim([8.5 14])
     
-    end
-    
-    %% Save figures
+      
+    % Add cycle number legend
+    subplot(2,4,8)
+    legend(legend_array{1:max(fix((j)/100))+1},'Location', ...
+                        'eastoutside', 'Orientation','vertical')
+        %% Save figures
     % add figure/image saving code
     % save into correct folder for 
-    % mkdir ['C:/Users/Arbin/Box Sync/Batch images/batch_batchdate'' batch_name]
-    % cd ['C:/Users//Arbin/Box Sync/Batch images/batch_batchdate'' batch_name]
-    % save into current folder
-    % cd out
+    
+%     % cd into batch images
+%     cd 'C:/Users//Arbin/Box Sync/Batch images'
+%     
+%     % make folder for current date 
+%     mkdir (strcat('C:/Users/Arbin/Box Sync/Batch images/','batch_name'))
+%     
+%     % cd into new folder
+%     cd (strcat('C:/Users/Arbin/Box Sync/Batch images/','batch_name'))
+
+% test code on mike's computer
+	% cd into batch images
+    cd '/Users/MichaelChen/Documents/Chueh BMS/2017-05-12 Data'
+        
+    % make folder for current date
+    mkdir(strcat('/Users/MichaelChen/Documents/Chueh BMS/2017-05-12 Data/Batch Images/',batch_name));
+    
+    % cd into new folder
+    cd (strcat('/Users/MichaelChen/Documents/Chueh BMS/2017-05-12 Data/Batch Images/',batch_name));
+    
+    % save in folder
+    % print(strcat(batch(i).policy,'_',batch(i).barcode),'-dpng')
+    saveas(gcf,strcat(batch(i).policy,'_',batch(i).barcode,'.png'))
+    
+    % cd out into batch images
+    cd ..
+    
+    % cd to batch images
+    cd('/Users/MichaelChen/Documents/Chueh BMS/2017-05-12 Data')
+
+    close % close figure
+end
+    
 end
 
-end
+
 
