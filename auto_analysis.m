@@ -31,7 +31,7 @@ python('reportgenerator.py'); % run python code
 
 %% Send email
 cd 'C:/Users/Arbin/Box Sync/Reports'
-pdf_name = [date '_report'];
+pdf_name = [date '_report.pdf'];
 message_body = 'Hot off the press: Check out the latest results!';
 sendemail('mchen18','BMS project: Updated results', ...
     message_body,char(pdf_name));

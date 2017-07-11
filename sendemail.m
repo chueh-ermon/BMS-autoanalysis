@@ -14,7 +14,7 @@ password = 'batteries2016';          %Your GMail password
 
 if nargin == 1
     message = subject;
-    subject = '';s
+    subject = '';
 elseif nargin == 2
     message = '';
     attachment = '';
@@ -46,11 +46,9 @@ if strcmp(mail,'GmailId@gmail.com')
     disp('after the comments.')
 end
 for i=1:numel(email_list)
-    
     if nargin == 4
         sendmail(email_list{i},subject,message,attachment)
     else
         sendmail(email_list{i},subject,message)
     end
-    
 end
