@@ -144,6 +144,7 @@ for i = 1:num_cells
     
       
     % Add cycle number legend
+    figure(cell_id)
     subplot(2,4,8)
     legend(legend_array{1:max(fix((j)/100))+1},'Location', ...
                         'eastoutside', 'Orientation','vertical')
@@ -166,15 +167,16 @@ for i = 1:num_cells
     cd (strcat('C:/Users/Arbin/Box Sync/Batch images/', batch_name))
     
     % save in folder
-    print(strcat(batch(i).policy, '_' , batch(i).barcode), '-dpng')
-    % saveas(gcf,strcat(batch(i).policy,'_',batch(i).barcode), 'png')
+    charging_alg = string(batch(i).policy);
+    barcode = string(batch(i).barcode);
+    filename = strcat(charging_alg, '_' , barcode);
+    savefig(gcf, filename)
+    print(filename, '-dpng')
+    saveas(gcf, filename, 'png')
     
     % cd out into batch images
-    cd ..
+    % cd ..
 
     close % close figure
 end   
 end
-
-
-
