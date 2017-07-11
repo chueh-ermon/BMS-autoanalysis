@@ -123,14 +123,12 @@ for i = 1:num_policies
 end
 
 %% Create table (for each policy)
-
-disp(CC1_policies), disp(numcells), disp(t80meas100_policies)
 T_policies = table(CC1_policies, Q1_policies, CC2_policies, numcells, ...
     t80calc_policies, t80meas100_policies, cycles_policies, ...
     degrate_policies, initdegrate_policies, finaldegrate_policies);
 
 %% Saves files
-% cd 'C:/Users/Arbin/Box Sync/Result tables'
+cd 'C:/Users/Arbin/Box Sync/Result tables'
 results_table_file2 = [date '_' batch_name '_results_table_allpolicies.xlsx'];
 writetable(T_policies,results_table_file2) % Save to CSV
 % Re-writes column headers
@@ -143,5 +141,5 @@ col_headers = {'Number of cells', 'CC1' 'Q1' 'CC2' ...
 % xlswrite(results_table_file,col_headers,'A1')
 
 save([date '_' batch_name '_result_tables'],'T_cells', 'T_policies')
-% cd 'C:/Users/Arbin/Documents/GitHub/BMS-autoanalysis'
+cd 'C:/Users/Arbin/Documents/GitHub/BMS-autoanalysis'
 end

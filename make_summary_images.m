@@ -6,22 +6,35 @@ function make_summary_images(batch, batch_name, T_cells, T_policies)
 %% Move to image directory
 % cd ['C:/Users/Arbin/Box Sync/Batch images/' batch_name]
 
-%% Q vs n
-ncells = size(T_cells); ncells = ncells(1); % number of cells
+%% Q vs n for each policy
+policies = cell(height(T_cells),1);
+for i = 1:numel(batch)
+    policies{i} = batch(i).policy;
+end
+disp(policies)
+unique_policies = unique(policies);
+
+map = colormap('jet(32)');
 figure('units','normalized','outerposition',[0 0 1 1]), hold on, box on
-for i = 1:ncells
-    x = batch(i).summary.cycle;
-    y = batch(i).summary.QDischarge;
+for i = 1:length(unique_policies)
+    % Keep consistent color
     [col, mark] = random_color('y','y');
-    plot(x,y,'color',col,'marker',mark)
+    % Find all cells with policy i
+    for j = 1:numel(batch)
+        if strcmp(unique_policies{i}, batch(j).policy)
+            x = batch(j).summary.cycle;
+            y = batch(j).summary.QDischarge;
+            plot(x,y,'o','color',col)
+        end
+    end
 end
 xlabel('Cycle number')
 ylabel('Remaining discharge capacity (Ah)')
-ylim([0.8 1.1])
-legend()
+ylim([0.85 1.1])
+leg = legend(unique_policies); leg.Location = 'eastoutside';
 print('summary1_Q_vs_n','-dpng')
 
-%% Make plots for each
+%% Make different summary plots for each batch
 % Batch 1 (2017-05-12)
 if batch_name == 'batch1'
     batch1_summary_plots(batch, batch_name, T_cells, T_policies)
@@ -32,6 +45,6 @@ else
     warning('Batch name not recognized. No summary figures generated')
 end
 
-cd 'C:/Users/Arbin/Documents/GitHub/BMS-autoanalysis'
+% cd 'C:/Users/Arbin/Documents/GitHub/BMS-autoanalysis'
 
 end
