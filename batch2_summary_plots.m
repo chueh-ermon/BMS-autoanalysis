@@ -5,7 +5,7 @@ function batch2_summary_plots(batch, batch_name, T_cells, T_policies)
 
     %% Contour plots
     % x = CC1, y = CC2, contours = Q1
-    batch2_summary_plots(batch, batch_name, T_cells, T_policies)
+w    batch2_summary_plots(batch, batch_name, T_cells, T_policies)
     saveas(gcf, 'summary2_contour1.png')
     
     
