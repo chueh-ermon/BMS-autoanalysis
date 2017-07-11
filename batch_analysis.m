@@ -2,12 +2,20 @@ function batch = batch_analysis(batch_date)
 
 %% Initialize batch struct
 batch = struct('policy', ' ', 'barcode', ' ', 'cycles', ...
-        struct('discharge_dQdVvsV', struct('V', [], 'dQdV', []), ...
-        'Qvst', struct('t', [], 'Q', [], 'C', []), 'VvsQ', struct('V', [], ...
-        'Q', []), 'TvsQ', struct('T', [], 'Q', [])), ...
-        'summary', struct('cycle', [], 'QDischarge', [], 'QCharge', ...
-        [], 'IR', [], 'Tmax', [], 'Tavg', [], 'Tmin', [], ...
-        'chargetime', []));
+    struct('discharge_dQdVvsV', struct('V', [], 'dQdV', []), ...
+    'Qvst', struct('t', [], 'Q', [], 'C', []), 'VvsQ', struct('V', [], ...
+    'Q', []), 'TvsQ', struct('T', [], 'Q', [])), ...
+    'summary', struct('cycle', [], 'QDischarge', [], 'QCharge', ...
+    [], 'IR', [], 'Tmax', [], 'Tavg', [], 'Tmin', [], ...
+    'chargetime', []));
+
+%% Initialize Summary Arrays and values
+% An Array of Charging Algorithm names
+CA_array={};
+%List of all file names including Metadata
+test_files={};
+% An array of barcodes for each cell pulled from metadata 
+barcodes={};
 
 %% Find CSVs from this batch
 cd 'C:/Data'
@@ -75,6 +83,7 @@ for j = 1:numel(CA_array)
             result_data = csvread(strcat('C:\Data\',test_files{i}),1,1);
             cd 'C:/Users/Arbin/Documents/GitHub/BMS-autoanalysis'
             battery = cell_analysis(result_data, charging_algorithm);
+            battery.barcode = barcodes(i);
             batch(i) = battery;
             num_batt = num_batt + 1;
             
@@ -90,6 +99,8 @@ for j = 1:numel(CA_array)
     end
 end
 cd 'C:\Users\Arbin\Box Sync\Batch data'
-save(strcat(batch_data, '_batchdata'), 'batch_date', 'batch')
-cd 'C:\Users\Arbin\Documents\BMS-autoanalysis'
+tic
+save(strcat(batch_date, '_batchdata'), 'batch_date', 'batch')
+toc
+cd 'C:/Users/Arbin/Documents/GitHub/BMS-autoanalysis'
 end
