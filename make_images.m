@@ -30,8 +30,23 @@ legend_array = {'1'; '100'; '200'; '300'; '400'; '500'; '600'; '700'; ...
 % number of batteries in batch
 num_cells = length(batch); % get number of batteries
 
+% cd into batch images
+cd 'C:/Users//Arbin/Box Sync/Batch images'
+
+% make folder for current date
+if exist(batch_name,'dir')
+   % Remove existing folder (if it exists) and make a new directory
+   rmdir(batch_name,'s')
+end
+
+mkdir(strcat('C:/Users/Arbin/Box Sync/Batch images/', batch_name))
+
+% cd into new folder
+cd (strcat('C:/Users/Arbin/Box Sync/Batch images/', batch_name))
+
 %% Loops through each battery
 for i = 1:num_cells
+    close all;
     cell_id = i; % identify each cell 
     num_cycles = max(batch(i).summary.cycle); % get number of cycles
     
@@ -81,7 +96,7 @@ for i = 1:num_cells
         subplot(2,4,5)
         yyaxis left
         plot(batch(i).cycles(j).Qvst.t,batch(i).cycles(j).Qvst.C,'-',...
-            'Color', color_array_blue{fix(j/100)+1},'LineWidth',1.5);
+            'Color', color_array_blue{fix(j/100)+1},'LineWidth',1.5); %change naming convention for "I" from "t"
         xlabel('Time (minutes)')
         ylabel('Current (C-Rate)')
         hold on
@@ -89,7 +104,7 @@ for i = 1:num_cells
         plot(batch(i).cycles(j).Qvst.t,batch(i).cycles(j).Qvst.Q,'-', ...
             'Color', color_array{fix(j/100)+1},'LineWidth',1.5);
         ylabel('Charge Capacity (Ah)')
-        xlim([0,70])
+        xlim([0,70]), ylim([0 1.2])
     end
                     
     % Plot remaining capacity
@@ -139,7 +154,7 @@ for i = 1:num_cells
     hold on 
     xlabel('Cycle Index')
     ylabel('Time to 80% SOC (minutes)')
-    title(batch(i).policy)
+    title(batch(i).policy_readable)
     ylim([8.5 14])
     
       
@@ -152,31 +167,21 @@ for i = 1:num_cells
     % add figure/image saving code
     % save into correct folder for 
     
-    % cd into batch images
-    cd 'C:/Users//Arbin/Box Sync/Batch images'
     
-    % make folder for current date
-    if exist(batch_name,'dir')
-       % Remove existing folder (if it exists) and make a new directory
-       rmdir(batch_name,'s')
-    end
-    
-    mkdir(strcat('C:/Users/Arbin/Box Sync/Batch images/', batch_name))
-    
-    % cd into new folder
-    cd (strcat('C:/Users/Arbin/Box Sync/Batch images/', batch_name))
     
     % save in folder
-    charging_alg = string(batch(i).policy);
-    barcode = string(batch(i).barcode);
-    filename = strcat(charging_alg, '_' , barcode);
-    savefig(gcf, filename)
-    print(filename, '-dpng')
-    saveas(gcf, filename, 'png')
+    charging_alg = batch(i).policy;
+    barcode = batch(i).barcode;
+%     file_name = strcat(charging_alg, '_' , barcode);
+%     savefig(gcf, filename)
+%     print(file_name, '-dpng')
+%     saveas(gcf, file_name, 'png')
+    savefig(gcf,[char(strcat(charging_alg,'_',barcode))])
+     print(gcf,[char(strcat(charging_alg,'_',barcode))],'-dpng')
     
     % cd out into batch images
     % cd ..
 
-    close % close figure
+%     close % close figure
 end   
 end

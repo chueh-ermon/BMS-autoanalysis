@@ -10,7 +10,7 @@ function [T_cells, T_policies] = make_result_tables( batch, batch_name )
 n = numel(batch); % number of batteries in the batch
 
 %% Preinitialize variables
-policies = cell(n,1);
+policies = cellstr(n,1);
 CC1 = zeros(n,1);
 CC2 = zeros(n,1);
 Q1  = zeros(n,1);
@@ -25,8 +25,8 @@ finaldegrate  = zeros(n,1); % final deg rate (Ah/cycles)
 for i = 1:numel(batch)
     % Parses file name. Two-step policy names are in this format:
     % 8C(35%)-3.6C
-    policy = batch(i).policy;
-    policies{i} = policy;
+    policy = string(batch(i).policy);
+    policies(i) = policy;
     %% Identify CC1, CC2, Q1
     try
         % CC1 is the number before the first 'C'

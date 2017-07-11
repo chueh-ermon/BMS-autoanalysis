@@ -4,11 +4,10 @@ function battery = cell_analysis(result_data, charging_algorithm, ...
 %% Initialize battery struct
 battery = struct('policy', ' ', 'barcode', ' ', 'policy_readable', ...
     ' ', 'cycles', struct('discharge_dQdVvsV', struct('V', [], 'dQdV', ...
-    []), 'Qvst', struct('t', [], 'Q', [], 'C', []), 'VvsQ', ...
-    struct('V', [], 'Q', []), 'TvsQ', struct('T', [], 'Q', [])), ...
+    []), 'tQCVT', struct('t', [], 'Q', [], 'C', [],'V', [], 'T', []), ...
     'summary', struct('cycle', [], 'QDischarge', [], 'QCharge', ...
     [], 'IR', [], 'Tmax', [], 'Tavg', [], 'Tmin', [], ...
-    'chargetime', []));
+    'chargetime', [])));
 
 cd 'C://Data'
 
@@ -16,15 +15,6 @@ cd 'C://Data'
     Total_time = result_data(:,1); 
     % Unix Date Time
     Date_time = result_data(:,2);
-    
-    %{ 
-    TODO: delete
-    Time for individual step
-    Step_Time = result_data(:,3);
-    Index of step in Schedule file
-    Step_Index = round(result_data(:,4));
-    end_cycle = result_data(end,5);
-    %}
     
     % Cycle index, 0 is formation cycle
     Cycle_Index = result_data(:,5);
@@ -106,22 +96,18 @@ cd 'C://Data'
         % add VvsQ to batch.battery
         charge_capacity = Charge_cap(charge_start:charge_end);
         volt = Voltage(charge_start:charge_end);
-        battery.cycles(j).VvsQ.Q = charge_capacity;
-        battery.cycles(j).VvsQ.V = volt;
+        battery.cycles(j).tQCVT.Q = charge_capacity;
+        battery.cycles(j).tQCVT.V = volt;
         
         % add TvsQ to batch.battery
-        chrg_cap = Charge_cap(charge_start:charge_end);
         temperature = temp(charge_start:charge_end);
-        battery.cycles(j).TvsQ.T = temperature;
-        battery.cycles(j).TvsQ.Q = chrg_cap;
+        battery.cycles(j).tQCVT.T = temperature;
         
         % add Qvst to batch.battery
         cycle_t = cycle_time(charge_start:charge_end)./60;
         current = Current_J(charge_start:charge_end)/1.1;
-        charge_cap = Charge_cap(charge_start:charge_end);
-        battery.cycles(j).Qvst.t = cycle_t;
-        battery.cycles(j).Qvst.Q = charge_cap;
-        battery.cycles(j).Qvst.C = current;
+        battery.cycles(j).tQCVT.t = cycle_t;
+        battery.cycles(j).tQCVT.C = current;
         
         
         %% Add Cycle Legend

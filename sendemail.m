@@ -24,7 +24,7 @@ end
 
 % Send Mail ID
 emailto = strcat(id,'@stanford.edu');
-email_list={emailto};%'chueh-ermon-bms@lists.stanford.edu'};
+% email_list={emailto};%'chueh-ermon-bms@lists.stanford.edu'};
 %% Set up Gmail SMTP service.
 % Then this code will set up the preferences properly:
 setpref('Internet','E_mail',mail);
