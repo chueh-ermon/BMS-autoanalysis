@@ -80,7 +80,8 @@ for j = 1:numel(CA_array)
             %% Run CSV Analysis for this file
             result_data = csvread(strcat('C:\Data\',test_files{i}),1,1);
             cd 'C:/Users/Arbin/Documents/GitHub/BMS-autoanalysis'
-            battery = cell_analysis(result_data, charging_algorithm);
+            battery = cell_analysis(result_data, charging_algorithm, ...
+                batch_date);
             battery.barcode = barcodes(i);
             batch(i) = battery;
             

@@ -1,4 +1,5 @@
-function battery = cell_analysis(result_data, charging_algorithm)
+function battery = cell_analysis(result_data, charging_algorithm, ...
+    batch_date)
 
 %% Initialize battery struct
 battery = struct('policy', ' ', 'barcode', ' ', 'policy_readable', ...
@@ -54,8 +55,19 @@ cd 'C://Data'
     
     thisdir = cd;
     cd(charging_algorithm)
+    
+    % if batch1, skip cycle 1 data, and add all cycles, including last to
+    % struct
+    if batch_date == '2017-05-12'
+        x = 0;
+        start = 2;
+    else
+        x = 1;
+        start = 1;
+    end
+    
     %% Go Through Every Cycle except current running one
-    for j = 1:max(Cycle_Index) - 1
+    for j = start:max(Cycle_Index) - x
         cycle_indices = find(Cycle_Index == j);
         cycle_start = cycle_indices(1); 
         cycle_end = cycle_indices(end);
@@ -68,7 +80,7 @@ cd 'C://Data'
         Current_J = Current(cycle_start:cycle_end);
         % Charge Capacity for the cycle 
         Charge_cap = Charge_CapacityAh(cycle_start:cycle_end);
-        %Discharge Capacity for the cycle 
+        % Discharge Capacity for the cycle 
         Discharge_cap = Discharge_CapacityAh(cycle_start:cycle_end);
         % Temperature of the cycle. 
         temp = TemperatureT1(cycle_start:cycle_end);
