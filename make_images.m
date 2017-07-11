@@ -1,4 +1,4 @@
-function make_images(batch,batch_name)
+function make_images(batch, batch_name)
 close all;
 %% Function:loops through each battery in 'batch'. Makes images (.pngs) of 2 x 4 plot grids. Saves images.
 % Usage: make_images('2017-05-12-batchdata.mat','2017-05-12')
@@ -6,7 +6,7 @@ close all;
 
 %% Initialize folder
 % cd into correct folder to find the batch images
-cd('/Users/MichaelChen/Documents/Chueh BMS/2017-05-12 Data')
+% cd('/Users/MichaelChen/Documents/Chueh BMS/2017-05-12 Data')
 
 %% Plotting initialization 
 % 18 increasing darkness reds for cycle results
@@ -34,12 +34,12 @@ legend_array={'1'; '100'; '200'; '300'; '400'; '500';'600';'700';'800'; ...
 num_cells = length(batch); % get number of batteries
 
 %% Loops through each battery
-for i = 1:4 % num_cells
+for i = 1:num_cells
     cell_id = i; % identify each cell 
     num_cycles = max(batch(i).summary.cycle); % get number of cycles
     
     % find maxes for normalization
-    max_capacity = batch(i).QDischarge;
+    max_capacity = batch(i).summary.QDischarge;
     
     %% plot every 100 cycles
     for j = [1 100:100:num_cycles] % plot every 100 cycles
@@ -56,42 +56,42 @@ for i = 1:4 % num_cells
                     ylabel('dQ/dV (Ah/V)')
 
 
-%             % Plot voltage profiles
-%                     figure(cell_id)
-%                     subplot(2,4,6)
-%                     plot(batch(i).cycles(j).VvsQ.Q,batch(i).cycles(j).VvsQ.V,'Color',...
-%                         color_array{fix(j/100)+1},'LineWidth',1.5);
-%                     hold on
-%                     xlabel('Charge Capacity (Ah)')
-%                     ylabel('Cell Voltage (V)')
-%                     xlim([0 1.2]) % capacity limits
-%                     ylim([3.1 3.65]) % voltage limits
-% 
-%             % Plot temperature profiles
-%                     figure(cell_id)
-%                     subplot(2,4,7)
-%                     plot(batch(i).cycles(j).TvsQ.Q,batch(i).cycles(j).TvsQ.T,'Color',...
-%                         color_array{fix(j/100)+1},'LineWidth',1.5); % changed indexing 
-%                     hold on 
-%                     xlabel('Charge Capacity (Ah)')
-%                     ylabel('Cell Temperature (°C)')
-%                     xlim([0 1.2]) % capacity limits
-%                     ylim([28 45]) % temperature limits
-% 
-%             % Plot current profiles 
-%                     figure(cell_id)
-%                     subplot(2,4,5)
-%                     yyaxis left
-%                     plot(batch(i).cycles(j).Qvst.t./60,batch(i).cycles(j).Qvst.C,'-',...
-%                         'Color', color_array_blue{fix(j/100)+1},'LineWidth',1.5);
-%                     xlabel('Time (minutes)')
-%                     ylabel('Current (C-Rate)')
-%                     hold on
-%                     yyaxis right
-%                     plot(batch(i).cycles(j).Qvst.t./60,batch(i).cycles(j).Qvst.Q,'-',...
-%                         'Color', color_array{fix(j/100)+1},'LineWidth',1.5);
-%                     ylabel('Charge Capacity (Ah)')
-%                     xlim([0,70])
+            % Plot voltage profiles
+                    figure(cell_id)
+                    subplot(2,4,6)
+                    plot(batch(i).cycles(j).VvsQ.Q,batch(i).cycles(j).VvsQ.V,'Color',...
+                        color_array{fix(j/100)+1},'LineWidth',1.5);
+                    hold on
+                    xlabel('Charge Capacity (Ah)')
+                    ylabel('Cell Voltage (V)')
+                    xlim([0 1.2]) % capacity limits
+                    ylim([3.1 3.65]) % voltage limits
+
+            % Plot temperature profiles
+                    figure(cell_id)
+                    subplot(2,4,7)
+                    plot(batch(i).cycles(j).TvsQ.Q,batch(i).cycles(j).TvsQ.T,'Color',...
+                        color_array{fix(j/100)+1},'LineWidth',1.5); % changed indexing 
+                    hold on 
+                    xlabel('Charge Capacity (Ah)')
+                    ylabel('Cell Temperature (°C)')
+                    xlim([0 1.2]) % capacity limits
+                    ylim([28 45]) % temperature limits
+
+            % Plot current profiles 
+                    figure(cell_id)
+                    subplot(2,4,5)
+                    yyaxis left
+                    plot(batch(i).cycles(j).Qvst.t,batch(i).cycles(j).Qvst.C,'-',...
+                        'Color', color_array_blue{fix(j/100)+1},'LineWidth',1.5);
+                    xlabel('Time (minutes)')
+                    ylabel('Current (C-Rate)')
+                    hold on
+                    yyaxis right
+                    plot(batch(i).cycles(j).Qvst.t,batch(i).cycles(j).Qvst.Q,'-',...
+                        'Color', color_array{fix(j/100)+1},'LineWidth',1.5);
+                    ylabel('Charge Capacity (Ah)')
+                    xlim([0,70])
     end
                     
     % Plot remaining capacity
@@ -147,34 +147,34 @@ for i = 1:4 % num_cells
     % add figure/image saving code
     % save into correct folder for 
     
-%     % cd into batch images
-%     cd 'C:/Users//Arbin/Box Sync/Batch images'
-%     
-%     % make folder for current date 
-%     mkdir (strcat('C:/Users/Arbin/Box Sync/Batch images/','batch_name'))
-%     
-%     % cd into new folder
-%     cd (strcat('C:/Users/Arbin/Box Sync/Batch images/','batch_name'))
-
-% test code on mike's computer
-	% cd into batch images
-    cd '/Users/MichaelChen/Documents/Chueh BMS/2017-05-12 Data'
-        
-    % make folder for current date
-    mkdir(strcat('/Users/MichaelChen/Documents/Chueh BMS/2017-05-12 Data/Batch Images/',batch_name));
+    % cd into batch images
+    cd 'C:/Users//Arbin/Box Sync/Batch images'
+    
+    % make folder for current date 
+    mkdir (strcat('C:/Users/Arbin/Box Sync/Batch images/','batch_name'))
     
     % cd into new folder
-    cd (strcat('/Users/MichaelChen/Documents/Chueh BMS/2017-05-12 Data/Batch Images/',batch_name));
-    
-    % save in folder
-    % print(strcat(batch(i).policy,'_',batch(i).barcode),'-dpng')
-    saveas(gcf,strcat(batch(i).policy,'_',batch(i).barcode,'.png'))
-    
-    % cd out into batch images
-    cd ..
+    cd (strcat('C:/Users/Arbin/Box Sync/Batch images/','batch_name'))
+
+% % test code on mike's computer
+% 	% cd into batch images
+%     % cd '/Users/MichaelChen/Documents/Chueh BMS/2017-05-12 Data'
+%         
+%     % make folder for current date
+%     mkdir(strcat('/Users/MichaelChen/Documents/Chueh BMS/2017-05-12 Data/Batch Images/',batch_name));
+%     
+%     % cd into new folder
+%     cd (strcat('/Users/MichaelChen/Documents/Chueh BMS/2017-05-12 Data/Batch Images/',batch_name));
+%     
+%     % save in folder
+    print([batch(i).policy, '_',batch(i).barcode],'-dpng')
+%    saveas(gcf,strcat(batch(i).policy,'_',batch(i).barcode), 'png')
+%     
+%     % cd out into batch images
+%     cd ..
     
     % cd to batch images
-    cd('/Users/MichaelChen/Documents/Chueh BMS/2017-05-12 Data')
+    % cd('/Users/MichaelChen/Documents/Chueh BMS/2017-05-12 Data')
 
     close % close figure
 end

@@ -51,8 +51,6 @@ cd 'C://Data'
     t = strrep(t, 'per.' , '%)-' );
     battery.policy = t;
     
-    % Set Figure
-    cell_ID1 = figure('units','normalized','outerposition',[0 0 1 1]);
     thisdir = cd;
     cd(charging_algorithm)
     %% Go Through Every Cycle except current running one
@@ -153,7 +151,7 @@ cd 'C://Data'
     battery.summary.Tmax = tmax;
     battery.summary.Tavg = t_avg;
     battery.summary.Tmin = tmin;
-    battery.summary.chargetime = (tt_80./60)';
+    battery.summary.chargetime = tt_80./60;
     % ADDED
     
     cd(thisdir)

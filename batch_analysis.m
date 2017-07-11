@@ -66,8 +66,6 @@ CA_array = unique(CA_array);
 
 %% Load each file sequentially, save data into struct 
 for j = 1:numel(CA_array)
-    % Track how many batteries per charging algorithm
-    num_batt = 1; % TODO: is this needed
     charging_algorithm = CA_array{j};
     
     for i = 1:numel(test_files)
@@ -85,13 +83,8 @@ for j = 1:numel(CA_array)
             battery = cell_analysis(result_data, charging_algorithm);
             battery.barcode = barcodes(i);
             batch(i) = battery;
-            num_batt = num_batt + 1;
             
             cd 'C:/Data'
-            % Close figures if more than 2 are open 
-            if num_batt == 3
-                close all
-            end
         else 
             continue
         end
