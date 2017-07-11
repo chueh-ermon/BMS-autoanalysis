@@ -155,31 +155,22 @@ for i = 1:num_cells
     cd 'C:/Users//Arbin/Box Sync/Batch images'
     
     % make folder for current date
+    if exist(batch_name,'dir')
+       % Remove existing folder (if it exists) and make a new directory
+       rmdir(batch_name,'s')
+    end
     
-    mkdir (strcat('C:/Users/Arbin/Box Sync/Batch images/','batch_name'))
+    mkdir(strcat('C:/Users/Arbin/Box Sync/Batch images/', batch_name))
     
     % cd into new folder
-    cd (strcat('C:/Users/Arbin/Box Sync/Batch images/','batch_name'))
-
-% % test code on mike's computer
-% 	% cd into batch images
-%     % cd '/Users/MichaelChen/Documents/Chueh BMS/2017-05-12 Data'
-%         
-%     % make folder for current date
-%     mkdir(strcat('/Users/MichaelChen/Documents/Chueh BMS/2017-05-12 Data/Batch Images/',batch_name));
-%     
-%     % cd into new folder
-%     cd (strcat('/Users/MichaelChen/Documents/Chueh BMS/2017-05-12 Data/Batch Images/',batch_name));
-%     
-%     % save in folder
-    print([batch(i).policy, '_',batch(i).barcode],'-dpng')
-%    saveas(gcf,strcat(batch(i).policy,'_',batch(i).barcode), 'png')
-%     
-%     % cd out into batch images
-%     cd ..
+    cd (strcat('C:/Users/Arbin/Box Sync/Batch images/', batch_name))
     
-    % cd to batch images
-    % cd('/Users/MichaelChen/Documents/Chueh BMS/2017-05-12 Data')
+    % save in folder
+    print(strcat(batch(i).policy, '_' , batch(i).barcode), '-dpng')
+    % saveas(gcf,strcat(batch(i).policy,'_',batch(i).barcode), 'png')
+    
+    % cd out into batch images
+    cd ..
 
     close % close figure
 end   
