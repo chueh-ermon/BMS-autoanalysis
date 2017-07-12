@@ -8,15 +8,10 @@ function batch1_summary_plots(batch, batch_name, T_cells, T_policies)
     %% Initialization and inputs
     
     % pull names from policies
-    policies = cell(height(T_cells),1);
-    readable_policies = cell(height(T_cells),1);
-    for i = 1:numel(batch)
-        policies{i} = batch(i).policy;
-        readable_policies{i}=batch(i).policy_readable;
+    cell_names = cell(numel(batch),1);
+    for k = 1:numel(batch)
+        cell_names{k}=batch(k).policy_readable;
     end
-    disp(policies)
-    unique_policies = unique(policies);
-    unique_readable_policies = unique(readable_policies);
     
     T_policies = table2array(T_policies); % convert to array
     T_cells = table2array(T_cells); % convert to arrayT

@@ -71,6 +71,9 @@ for i = 1:T_size(1)
 end
 xlabel('CC1'),ylabel('CC2')
 
+% legend loop
+
+
 %% Save file
 % saveas(gcf, 'summary3_contour2.png')
 
