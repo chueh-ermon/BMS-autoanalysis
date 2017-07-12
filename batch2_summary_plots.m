@@ -43,7 +43,7 @@ end
 xlabel('CC1'),ylabel('Q1 (%)')
 
 %% Save file
-saveas(gcf, 'summary2_contour1.png')
+saveas(gcf, 'summary3_contour1.png')
 
         
 %% Initialize plot 2
@@ -75,6 +75,6 @@ xlabel('CC1'),ylabel('CC2')
 
 
 %% Save file
-% saveas(gcf, 'summary3_contour2.png')
+saveas(gcf, 'summary4_contour2.png')
 
 end
