@@ -16,7 +16,7 @@ maxvalue = max(T_policies(:,8))*scalefactor; % scale degradation rate
 
 
 %% Initialize plot 1
-figure(1) % x = CC1, y = Q1, contours = CC2
+fig1 = figure % x = CC1, y = Q1, contours = CC2
 set(gcf, 'units','normalized','outerposition',[0 0 1 1]) % resize for screen
 set(gcf,'color','w') % make figures white
 hold on
@@ -43,7 +43,7 @@ end
 xlabel('CC1'),ylabel('Q1 (%)')
 
 %% Save file
-saveas(gcf, 'summary2_contour1.png')
+saveas(gcf, 'summary3_contour1.png')
 
         
 %% Initialize plot 2
@@ -75,6 +75,6 @@ xlabel('CC1'),ylabel('CC2')
 
 
 %% Save file
-% saveas(gcf, 'summary3_contour2.png')
+saveas(gcf, 'summary4_contour2.png')
 
 end

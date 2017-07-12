@@ -19,7 +19,7 @@ function batch1_summary_plots(batch, batch_name, T_cells, T_policies)
     colormap jet;
     scalefactor = 1e6; % factor to scale degradation rates by
     maxvalue = max(T_policies(:,8))*scalefactor; % scale degradation rate
-        
+    
     CC1 = T_cells(:,1); % CC1
     Q1 = T_cells(:,2); % Q1
     CC2 = T_cells(:,3); % CC2 
@@ -50,8 +50,7 @@ function batch1_summary_plots(batch, batch_name, T_cells, T_policies)
     
     %% Average degradation vs charging time
      
-    figure(2)
-    set(gcf, 'units','normalized','outerposition',[0 0 1 1])
+    figure, set(gcf, 'units','normalized','outerposition',[0 0 1 1])
     scatter(tt80,degradation_rate,200,col,mark,'LineWidth',2);
     
     columnlegend(2,cell_names,'Location','NortheastOutside','boxoff');

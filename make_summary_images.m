@@ -18,11 +18,10 @@ disp(policies)
 unique_policies = unique(policies);
 unique_readable_policies = unique(readable_policies);
 
-map = colormap('jet(32)');
-%Two figures, absolute and normalized. We switvh between the two as we
+%Two figures, absolute and normalized. We switch between the two as we
 %plot and format the images
-figAbsolute = figure('units','normalized','outerposition',[0 0 1 1]), hold on, box on
-figNormalized = figure('units','normalized','outerposition',[0 0 1 1]), hold on, box on
+figAbsolute = figure('units','normalized','outerposition',[0 0 1 1]); hold on, box on
+figNormalized = figure('units','normalized','outerposition',[0 0 1 1]); hold on, box on
 for i = 1:length(unique_policies)
     % Keep consistent color
     [col, mark] = random_color('y','y');
