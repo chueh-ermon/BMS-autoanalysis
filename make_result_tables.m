@@ -10,7 +10,7 @@ function [T_cells, T_policies] = make_result_tables( batch, batch_name )
 n = numel(batch); % number of batteries in the batch
 
 %% Preinitialize variables
-policies = cellstr(n,1);
+policies = cell(n,1);
 CC1 = zeros(n,1);
 CC2 = zeros(n,1);
 Q1  = zeros(n,1);
@@ -25,13 +25,13 @@ finaldegrate  = zeros(n,1); % final deg rate (Ah/cycles)
 for i = 1:numel(batch)
     % Parses file name. Two-step policy names are in this format:
     % 8C(35%)-3.6C
-    policy = string(batch(i).policy);
-    policies(i) = policy;
+    policy = batch(i).policy_readable;
+    policies{i} = policy;
     %% Identify CC1, CC2, Q1
     try
         % CC1 is the number before the first 'C'
         C_indices = strfind(policy,'C');
-        CC1(i) = str2double(policy(1:C_indices(1)-1));
+        CC1(i) = str2double(policy(1:C_indices(1)-1)); 
         % CC2 is the number after '-' but before the second 'C'
         dash_index = strfind(policy,'-');
         CC2(i) = str2double(policy(dash_index+1:C_indices(2)-1));
@@ -40,7 +40,7 @@ for i = 1:numel(batch)
         percent_index = strfind(policy,'%');
         Q1(i) = str2double(policy(paren_index+1:percent_index-1));
     catch
-        warning(['Policy names cannot be parsed by MATLAB. Ensure the ' 
+        warning(['Policy names cannot be parsed by MATLAB. Ensure the ' ...
             'policy names follow the format 8C(35%)-3.6C'])
     end
     
@@ -68,7 +68,7 @@ T_cells = table(CC1, Q1, CC2, t80calc, t80meas100, cycles, degrate, ...
     initdegrate,finaldegrate);
 
 %% Saves files
-cd 'C:/Users/Arbin/Box Sync/Result tables'
+cd 'C:\Users\Arbin\Box Sync\Data\Result tables'
 results_table_file = [date '_' batch_name '_results_table_allcells.xlsx'];
 writetable(T_cells,results_table_file) % Save to CSV
 % Re-writes column headers
@@ -78,8 +78,8 @@ col_headers = {'CC1' 'Q1' 'CC2' ...
     'Cycles completed', 'Average degradation rate (Ah/cycle)', ...
     'Initial degradation rate (Ah/cycle)', ...
     'Final degradation rate (Ah/cycle)'};
-xlswrite(results_table_file,col_headers,'A1')
-cd 'C:/Users/Arbin/Documents/GitHub/BMS-autoanalysis'
+xlswrite(results_table_file,col_headers,'Sheet1','A1')
+cd 'C:\Users\Arbin\Documents\GitHub\BMS-autoanalysis'
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -105,7 +105,7 @@ finaldegrate_policies  = zeros(num_policies,1); % final deg rate (Ah/cycles)
 for i = 1:num_policies
     battery_index = [];
     for j = 1:n
-        if strcmp(unique_policies{i}, batch(j).policy)
+        if strcmp(unique_policies{i}, batch(j).policy_readable)
             numcells(i) = numcells(i) + 1;
             battery_index = [battery_index j];
         end
@@ -128,17 +128,17 @@ T_policies = table(CC1_policies, Q1_policies, CC2_policies, numcells, ...
     degrate_policies, initdegrate_policies, finaldegrate_policies);
 
 %% Saves files
-cd 'C:/Users/Arbin/Box Sync/Result tables'
+cd 'C:\Users\Arbin\Box Sync\Data\Result tables'
 results_table_file2 = [date '_' batch_name '_results_table_allpolicies.xlsx'];
 writetable(T_policies,results_table_file2) % Save to CSV
 % Re-writes column headers
-col_headers = {'Number of cells', 'CC1' 'Q1' 'CC2' ...
+col_headers = {'CC1' 'Q1' 'CC2','Number of cells' ...
     'Time to 80% - calculated (min)' ...
     'Time to 80% - measured, median of first 100 cycles (min)', ...
     'Cycles completed', 'Average degradation rate (Ah/cycle)', ...
     'Initial degradation rate (Ah/cycle)', ...
     'Final degradation rate (Ah/cycle)'};
-xlswrite(results_table_file,col_headers,'A1')
+xlswrite(results_table_file2,col_headers,'Sheet1','A1')
 
 save([date '_' batch_name '_result_tables'],'T_cells', 'T_policies')
 cd 'C:/Users/Arbin/Documents/GitHub/BMS-autoanalysis'

@@ -22,20 +22,20 @@ batch_name = 'batch2';
 batch = batch_analysis(batch_date);
 
 %% Generate images & results for all cells
-make_images(batch, batch_name);
+make_images(batch, batch_name, batch_date);
 [T_cells, T_policies] = make_result_tables(batch, batch_name);
 make_summary_images(batch, batch_name, T_cells, T_policies);
 
 %% Run the report generator (in Python)
 % This will create the PPT and convert to PDF. It saves in the Box Sync
 % folder
-cd 'C:/Users/Arbin/Documents/GitHub/BMS-autoanalysis'
+cd 'C:\Users\Arbin\Documents\GitHub\BMS-autoanalysis'
 python('reportgenerator.py'); % run python code
 
 %% Send email
-cd 'C:/Users/Arbin/Box Sync/Reports'
+cd 'C:\Users\Arbin\Box Sync\Data\Reports'
 pdf_name = [date '_report.pdf'];
 message_body = 'Hot off the press: Check out the latest results!';
 sendemail('mchen18','BMS project: Updated results', ...
     message_body,char(pdf_name));
-cd 'C:/Users/Arbin/Documents/GitHub/BMS-autoanalysis'
+cd 'C:\Users\Arbin\Documents\GitHub\BMS-autoanalysis'

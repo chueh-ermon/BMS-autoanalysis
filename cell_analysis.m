@@ -2,14 +2,14 @@ function battery = cell_analysis(result_data, charging_algorithm, ...
     batch_date)
 
 %% Initialize battery struct
-battery = struct('policy', ' ', 'barcode', ' ', 'policy_readable', ...
-    ' ', 'cycles', struct('discharge_dQdVvsV', struct('V', [], 'dQdV', ...
-    []), 'tQCVT', struct('t', [], 'Q', [], 'C', [],'V', [], 'T', []), ...
-    'summary', struct('cycle', [], 'QDischarge', [], 'QCharge', ...
-    [], 'IR', [], 'Tmax', [], 'Tavg', [], 'Tmin', [], ...
-    'chargetime', [])));
+battery = struct('policy', ' ', 'policy_readable', ' ', 'barcode', ...
+    ' ', 'channel_id', ' ', 'cycles', struct('discharge_dQdVvsV', ...
+    struct('V', [], 'dQdV', []), 't', [], 'Qc', [], 'I', [],'V', [], ...
+    'T', [], 'Qd', [], 'Q', []), 'summary', struct('cycle', [], ...
+    'QDischarge', [], 'QCharge', [], 'IR', [], 'Tmax', [], 'Tavg', ...
+    [], 'Tmin', [], 'chargetime', []));
 
-cd 'C://Data'
+cd 'C:\Data'
 
     % Total Test time
     Total_time = result_data(:,1); 
@@ -44,20 +44,19 @@ cd 'C://Data'
     battery.policy_readable = t;
     
     thisdir = cd;
-    cd(charging_algorithm)
     
     % if batch1, skip cycle 1 data, and add all cycles, including last to
     % struct
     if batch_date == '2017-05-12'
-        x = 0;
+        %x = 0;
         start = 2;
     else
-        x = 1;
+        %x = 1;
         start = 1;
     end
     
     %% Go Through Every Cycle except current running one
-    for j = start:max(Cycle_Index) - x
+    for j = start:max(Cycle_Index) - 1
         cycle_indices = find(Cycle_Index == j);
         cycle_start = cycle_indices(1); 
         cycle_end = cycle_indices(end);
@@ -74,9 +73,12 @@ cd 'C://Data'
         Discharge_cap = Discharge_CapacityAh(cycle_start:cycle_end);
         % Temperature of the cycle. 
         temp = TemperatureT1(cycle_start:cycle_end);
+        
+        %{
         % Index of any charging portion
         charge_indices = find(Current(cycle_start:cycle_end) >= 0); % todo: > or >= ?
         charge_start = charge_indices(1); charge_end = charge_indices(end);
+        %}
         % Index of discharging portion of the cycle 
         discharge_indices = find(Current(cycle_start:cycle_end) < 0);
         % In case i3 is empty
@@ -87,28 +89,30 @@ cd 'C://Data'
             discharge_end = discharge_indices(end);
         end
         
+        
+        
         % record discharge dQdV vs V
-        [IDC,xVoltage2] = IDCA(Discharge_cap(discharge_start: ...
-            discharge_end),Voltage(discharge_start:discharge_end));
+        [IDC,xVoltage2] = IDCA(Discharge_cap(discharge_start:discharge_end), ...
+            Voltage(discharge_start:discharge_end));
         battery.cycles(j).discharge_dQdVvsV.V = xVoltage2;
         battery.cycles(j).discharge_dQdVvsV.dQdV = IDC;
-
-        % add VvsQ to batch.battery
-        charge_capacity = Charge_cap(charge_start:charge_end);
-        volt = Voltage(charge_start:charge_end);
-        battery.cycles(j).tQCVT.Q = charge_capacity;
-        battery.cycles(j).tQCVT.V = volt;
         
-        % add TvsQ to batch.battery
-        temperature = temp(charge_start:charge_end);
-        battery.cycles(j).tQCVT.T = temperature;
+        % record Qd
+        battery.cycles(j).Qd = Discharge_cap;
         
-        % add Qvst to batch.battery
-        cycle_t = cycle_time(charge_start:charge_end)./60;
-        current = Current_J(charge_start:charge_end)/1.1;
-        battery.cycles(j).tQCVT.t = cycle_t;
-        battery.cycles(j).tQCVT.C = current;
+        % add Qc and V to batch
+        battery.cycles(j).Qc = Charge_cap;
+        battery.cycles(j).V = Voltage;
         
+        % add T to batch
+        battery.cycles(j).T = temp;
+        
+        % add t and C to batch
+        battery.cycles(j).t = cycle_time./60;
+        battery.cycles(j).I = Current_J/1.1;
+        
+        
+        battery.cycles(j).Q = Charge_cap - Discharge_cap;
         
         %% Add Cycle Legend
         C_in(j) = max(Charge_cap);
