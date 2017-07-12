@@ -4,12 +4,12 @@ function battery = cell_analysis(result_data, charging_algorithm, ...
 %% Initialize battery struct
 battery = struct('policy', ' ', 'barcode', ' ', 'policy_readable', ...
     ' ', 'cycles', struct('discharge_dQdVvsV', struct('V', [], 'dQdV', ...
-    []), 'tQCVT', struct('t', [], 'Q', [], 'C', [],'V', [], 'T', []), ...
+    []), 'tQCVT', struct('t', [], 'Q', [], 'C', [],'V', [], 'T', [])), ...
     'summary', struct('cycle', [], 'QDischarge', [], 'QCharge', ...
     [], 'IR', [], 'Tmax', [], 'Tavg', [], 'Tmin', [], ...
-    'chargetime', [])));
+    'chargetime', []));
 
-cd 'C://Data'
+cd 'C:\Data'
 
     % Total Test time
     Total_time = result_data(:,1); 
@@ -44,20 +44,19 @@ cd 'C://Data'
     battery.policy_readable = t;
     
     thisdir = cd;
-    cd(charging_algorithm)
     
     % if batch1, skip cycle 1 data, and add all cycles, including last to
     % struct
     if batch_date == '2017-05-12'
-        x = 0;
+        %x = 0;
         start = 2;
     else
-        x = 1;
+        %x = 1;
         start = 1;
     end
     
     %% Go Through Every Cycle except current running one
-    for j = start:max(Cycle_Index) - x
+    for j = start:max(Cycle_Index) - 1
         cycle_indices = find(Cycle_Index == j);
         cycle_start = cycle_indices(1); 
         cycle_end = cycle_indices(end);
@@ -88,8 +87,8 @@ cd 'C://Data'
         end
         
         % record discharge dQdV vs V
-        [IDC,xVoltage2] = IDCA(Discharge_cap(discharge_start: ...
-            discharge_end),Voltage(discharge_start:discharge_end));
+        [IDC,xVoltage2] = IDCA(Discharge_cap(discharge_start:discharge_end), ...
+            Voltage(discharge_start:discharge_end));
         battery.cycles(j).discharge_dQdVvsV.V = xVoltage2;
         battery.cycles(j).discharge_dQdVvsV.dQdV = IDC;
 

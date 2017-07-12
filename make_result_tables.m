@@ -68,7 +68,7 @@ T_cells = table(CC1, Q1, CC2, t80calc, t80meas100, cycles, degrate, ...
     initdegrate,finaldegrate);
 
 %% Saves files
-cd 'C:/Users/Arbin/Box Sync/Result tables'
+cd 'C:\Users\Arbin\Box Sync\Data\Result tables'
 results_table_file = [date '_' batch_name '_results_table_allcells.xlsx'];
 writetable(T_cells,results_table_file) % Save to CSV
 % Re-writes column headers
@@ -79,7 +79,7 @@ col_headers = {'CC1' 'Q1' 'CC2' ...
     'Initial degradation rate (Ah/cycle)', ...
     'Final degradation rate (Ah/cycle)'};
 xlswrite(results_table_file,col_headers,'A1')
-cd 'C:/Users/Arbin/Documents/GitHub/BMS-autoanalysis'
+cd 'C:\Users\Arbin\Documents\GitHub\BMS-autoanalysis'
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -128,7 +128,7 @@ T_policies = table(CC1_policies, Q1_policies, CC2_policies, numcells, ...
     degrate_policies, initdegrate_policies, finaldegrate_policies);
 
 %% Saves files
-cd 'C:/Users/Arbin/Box Sync/Result tables'
+cd 'C:\Users\Arbin\Box Sync\Data\Result tables'
 results_table_file2 = [date '_' batch_name '_results_table_allpolicies.xlsx'];
 writetable(T_policies,results_table_file2) % Save to CSV
 % Re-writes column headers

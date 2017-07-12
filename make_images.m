@@ -31,7 +31,7 @@ legend_array = {'1'; '100'; '200'; '300'; '400'; '500'; '600'; '700'; ...
 num_cells = length(batch); % get number of batteries
 
 % cd into batch images
-cd 'C:/Users//Arbin/Box Sync/Batch images'
+cd 'C:\Users\Arbin\Box Sync\Data\Batch images'
 
 % make folder for current date
 if exist(batch_name,'dir')
@@ -39,10 +39,10 @@ if exist(batch_name,'dir')
    rmdir(batch_name,'s')
 end
 
-mkdir(strcat('C:/Users/Arbin/Box Sync/Batch images/', batch_name))
+mkdir(strcat('C:\Users\Arbin\Box Sync\Data\Batch images\', batch_name))
 
 % cd into new folder
-cd (strcat('C:/Users/Arbin/Box Sync/Batch images/', batch_name))
+cd (strcat('C:\Users\Arbin\Box Sync\Data\Batch images\', batch_name))
 
 %% Loops through each battery
 for i = 1:num_cells
