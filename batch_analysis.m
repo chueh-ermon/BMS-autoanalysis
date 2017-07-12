@@ -45,9 +45,10 @@ for i = 1:numel(filenames)
         % If so then read the cell barcode from the metadata
         [~, ~, text_data] = xlsread(filenames{i});
         cell_ID = string(text_data{2, 11});
-        channel_id = string(text_data{2, 4});
+        channel_id = string((text_data{2, 4} + 1));
         % Here would be where to remove other Metadata info 
         barcodes = [barcodes, cell_ID];
+
         channel_ids = [channel_ids, channel_id];
         continue
     else 
