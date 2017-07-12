@@ -1,4 +1,4 @@
-function make_images(batch, batch_name)
+function make_images(batch, batch_name, batch_date)
 close all;
 %% Function: loops through each battery in 'batch'. Makes images (.pngs) 
 %  of 2 x 4 plot grids. Saves images.
@@ -64,6 +64,7 @@ for i = 1:num_cells
     plot(batch(i).summary.cycle, batch(i).summary.QCharge, 'Color', ...
         'b','LineWidth',1.5)
     hold on
+    title(['Batch started ', batch_date])
     legend('Discharge', 'Charge')
     xlabel('Cycle Index')
     ylabel('Remaining Capacity (Ah)')    
@@ -100,6 +101,7 @@ for i = 1:num_cells
     subplot(2,4,4)
     plot(batch(i).summary.cycle,batch(i).summary.IR,'LineWidth',1.5)
     hold on
+    title(['Channel ', batch(i).channel_id])
     xlabel('Cycle Index')
     ylabel('Internal Resistance (Ohms)')
     ylim([.015 .02])   
@@ -128,10 +130,11 @@ for i = 1:num_cells
         % Plot 6: voltage profiles
         figure(cell_id)
         subplot(2,4,6)
-        plot(batch(i).cycles(j).Q,batch(i).cycles(j).V, ...
-            'Color', color_array{fix(j/100)+1}, 'LineWidth',1.5);
+        plot(batch(i).cycles(j).Qc + batch(i).cycles(j).Qd, ...
+            batch(i).cycles(j).V, 'Color', color_array{fix(j/100)+1}, ...
+            'LineWidth',1.5);
         hold on
-        xlabel('Charge Capacity (Ah)')
+        xlabel('Capacity (Ah)')
         ylabel('Cell Voltage (V)')
         xlim([0 1.2]) % capacity limits
         ylim([3.1 3.65]) % voltage limits
@@ -142,10 +145,10 @@ for i = 1:num_cells
         plot(batch(i).cycles(j).t,batch(i).cycles(j).T, ...
             'Color', color_array{fix(j/100)+1},'LineWidth',1.5); 
         hold on 
-        xlabel('Charge Capacity (Ah)')
+        xlabel('Time (minutes)')
         ylabel('Cell Temperature (°C)')
-%         xlim([0 1.2]) % capacity limits TO-DO
-        ylim([28 45]) % temperature limits
+         xlim([0 70]) % capacity limits TO-DO
+        ylim([28 40]) % temperature limits
         
         % Plot 8: IDCA (discharge dQ/dV)
         figure(cell_id)

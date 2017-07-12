@@ -2,20 +2,20 @@ function batch = batch_analysis(batch_date)
 
 %% Initialize batch struct
 batch = struct('policy', ' ', 'policy_readable', ' ', 'barcode', ...
-    ' ', 'cycles', struct('discharge_dQdVvsV', struct('V', [], 'dQdV', ...
-    []), 't', [], 'Qc', [], 'I', [],'V', [], 'T', [], 'Qd', [], 'Q', ...
-    []), 'summary', struct('cycle', [], 'QDischarge', [], 'QCharge', ...
-    [], 'IR', [], 'Tmax', [], 'Tavg', [], 'Tmin', [], ...
-    'chargetime', []));
+    ' ', 'channel_id', ' ', 'cycles', struct('discharge_dQdVvsV', ...
+    struct('V', [], 'dQdV', []), 't', [], 'Qc', [], 'I', [],'V', [], ...
+    'T', [], 'Qd', [], 'Q', []), 'summary', struct('cycle', [], ...
+    'QDischarge', [], 'QCharge', [], 'IR', [], 'Tmax', [], 'Tavg', ...
+    [], 'Tmin', [], 'chargetime', []));
 
 %% Initialize Summary Arrays and values
 % An Array of Charging Algorithm names
-CA_array={};
+CA_array = {};
 %List of all file names including Metadata
-test_files={};
+test_files = {};
 % An array of barcodes for each cell pulled from metadata 
-barcodes={};
-
+barcodes = {};
+channel_ids = {};
 %% Find CSVs from this batch
 cd 'C:\Data'
 
@@ -43,10 +43,12 @@ for i = 1:numel(filenames)
     % Finds if .csv is a metadata
     if contains(filenames{i}, 'Meta') == 1
         % If so then read the cell barcode from the metadata
-        [~, text_data] = xlsread(filenames{i});
-        cell_ID = string(text_data{2, 10});
+        [~, ~, text_data] = xlsread(filenames{i});
+        cell_ID = string(text_data{2, 11});
+        channel_id = string(text_data{2, 4});
         % Here would be where to remove other Metadata info 
         barcodes = [barcodes, cell_ID];
+        channel_ids = [channel_ids, channel_id];
         continue
     else 
         % File is a result Data 
@@ -82,6 +84,7 @@ for j = 1:numel(CA_array)
             battery = cell_analysis(result_data, charging_algorithm, ...
                 batch_date);
             battery.barcode = barcodes(i);
+            battery.channel_id = channel_ids(i);
             batch(i) = battery;
             
             cd 'C:\Data'

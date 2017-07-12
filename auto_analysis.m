@@ -22,7 +22,7 @@ batch_name = 'batch2';
 batch = batch_analysis(batch_date);
 
 %% Generate images & results for all cells
-make_images(batch, batch_name);
+make_images(batch, batch_name, batch_date);
 [T_cells, T_policies] = make_result_tables(batch, batch_name);
 make_summary_images(batch, batch_name, T_cells, T_policies);
 
