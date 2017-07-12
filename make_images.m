@@ -101,7 +101,7 @@ for i = 1:num_cells
     subplot(2,4,4)
     plot(batch(i).summary.cycle,batch(i).summary.IR,'LineWidth',1.5)
     hold on
-    title(['Channel ', batch(i).channel_id])
+    title(strcat('Channel', {' '}, batch(i).channel_id))
     xlabel('Cycle Index')
     ylabel('Internal Resistance (Ohms)')
     ylim([.015 .02])   
