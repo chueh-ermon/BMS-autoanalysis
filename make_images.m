@@ -53,61 +53,9 @@ for i = 1:num_cells
     % find maxes for normalization
     max_capacity = batch(i).summary.QDischarge;
     
-    %% plot every 100 cycles
-    for j = [1 100:100:num_cycles] % plot every 100 cycles
-        % plot every 100 cycles
-        % Plot IDCA (discharge dQ/dV)
-        figure(cell_id)
-        set(gcf, 'units','normalized','outerposition', ...
-            [0 0 1 1]) % makes figure fullscreen
-        set(gcf,'color','w') % make figures white
-        subplot(2,4,8)
-        plot(batch(i).cycles(j).discharge_dQdVvsV.V, ...
-            batch(i).cycles(j).discharge_dQdVvsV.dQdV,'Color', ...
-            color_array{fix(j/100)+1}, 'LineWidth',1.5);
-        hold on
-        xlabel('Voltage (Volts)')
-        ylabel('dQ/dV (Ah/V)')
-
-        % Plot voltage profiles
-        figure(cell_id)
-        subplot(2,4,6)
-        plot(batch(i).cycles(j).VvsQ.Q,batch(i).cycles(j).VvsQ.V, ...
-            'Color', color_array{fix(j/100)+1}, 'LineWidth',1.5);
-        hold on
-        xlabel('Charge Capacity (Ah)')
-        ylabel('Cell Voltage (V)')
-        xlim([0 1.2]) % capacity limits
-        ylim([3.1 3.65]) % voltage limits
-
-        % Plot temperature profiles
-        figure(cell_id)
-        subplot(2,4,7)
-        plot(batch(i).cycles(j).TvsQ.Q,batch(i).cycles(j).TvsQ.T, ...
-            'Color', color_array{fix(j/100)+1},'LineWidth',1.5); % changed indexing 
-        hold on 
-        xlabel('Charge Capacity (Ah)')
-        ylabel('Cell Temperature (°C)')
-        xlim([0 1.2]) % capacity limits
-        ylim([28 45]) % temperature limits
-
-        % Plot current profiles 
-        figure(cell_id)
-        subplot(2,4,5)
-        yyaxis left
-        plot(batch(i).cycles(j).Qvst.t,batch(i).cycles(j).Qvst.C,'-',...
-            'Color', color_array_blue{fix(j/100)+1},'LineWidth',1.5); %change naming convention for "I" from "t"
-        xlabel('Time (minutes)')
-        ylabel('Current (C-Rate)')
-        hold on
-        yyaxis right
-        plot(batch(i).cycles(j).Qvst.t,batch(i).cycles(j).Qvst.Q,'-', ...
-            'Color', color_array{fix(j/100)+1},'LineWidth',1.5);
-        ylabel('Charge Capacity (Ah)')
-        xlim([0,70]), ylim([0 1.2])
-    end
-                    
-    % Plot remaining capacity
+    %% summary plots
+    
+     % Plot 1: Remaining capacity
     figure(cell_id)
     subplot(2,4,1)
     plot(batch(i).summary.cycle, batch(i).summary.QDischarge, ...
@@ -118,18 +66,20 @@ for i = 1:num_cells
     hold on
     legend('Discharge', 'Charge')
     xlabel('Cycle Index')
-    ylabel('Remaining Capacity (Ah)')
+    ylabel('Remaining Capacity (Ah)')    
     
-    % Plot internal resistance
+     % Plot 2: Charge time 
     figure(cell_id)
-    subplot(2,4,4)
-    plot(batch(i).summary.cycle,batch(i).summary.IR,'LineWidth',1.5)
-    hold on
+    subplot(2,4,2)
+    plot(batch(i).summary.cycle,batch(i).summary.chargetime, ...
+        'LineWidth',1.5)
+    hold on 
     xlabel('Cycle Index')
-    ylabel('Internal Resistance (Ohms)')
-    ylim([.015 .02])       
+    ylabel('Time to 80% SOC (minutes)')
+    title(batch(i).policy_readable)
+    ylim([8.5 14])
     
-    % Plot temperature as a function of cycle index
+    % Plot 3: Temperature as a function of cycle index
     figure(cell_id)
     subplot(2,4,3)
     plot(batch(i).summary.cycle, batch(i).summary.Tmax, 'Color', ...
@@ -145,19 +95,73 @@ for i = 1:num_cells
     ylim([28 45])
     title(batch(i).barcode)
   
-    
-    % Plot charge time 
+    % Plot 4: Internal resistance
     figure(cell_id)
-    subplot(2,4,2)
-    plot(batch(i).summary.cycle,batch(i).summary.chargetime, ...
-        'LineWidth',1.5)
-    hold on 
+    subplot(2,4,4)
+    plot(batch(i).summary.cycle,batch(i).summary.IR,'LineWidth',1.5)
+    hold on
     xlabel('Cycle Index')
-    ylabel('Time to 80% SOC (minutes)')
-    title(batch(i).policy_readable)
-    ylim([8.5 14])
+    ylabel('Internal Resistance (Ohms)')
+    ylim([.015 .02])   
     
-      
+    %% plot every 100 cycles
+    for j = [1 100:100:num_cycles] % plot every 100 cycles
+        % plot every 100 cycles
+        
+        % Plot 5: current profiles 
+        figure(cell_id)
+        subplot(2,4,5)
+        yyaxis left
+        % plot I vs. t
+        plot(batch(i).cycles(j).t,batch(i).cycles(j).I,'-',...
+            'Color', color_array_blue{fix(j/100)+1},'LineWidth',1.5);
+        xlabel('Time (minutes)')
+        ylabel('Current (C-Rate)')
+        hold on
+        yyaxis right
+        % plot Qc-Qd
+        plot(batch(i).cycles(j).t,batch(i).cycles(j).Q,'-', ...
+            'Color', color_array{fix(j/100)+1},'LineWidth',1.5);
+        ylabel('Charge Capacity (Ah)')
+        xlim([0,70]), ylim([0 1.2])
+        
+        % Plot 6: voltage profiles
+        figure(cell_id)
+        subplot(2,4,6)
+        plot(batch(i).cycles(j).Q,batch(i).cycles(j).V, ...
+            'Color', color_array{fix(j/100)+1}, 'LineWidth',1.5);
+        hold on
+        xlabel('Charge Capacity (Ah)')
+        ylabel('Cell Voltage (V)')
+        xlim([0 1.2]) % capacity limits
+        ylim([3.1 3.65]) % voltage limits
+
+        % Plot 7: temperature profiles
+        figure(cell_id)
+        subplot(2,4,7)
+        plot(batch(i).cycles(j).t,batch(i).cycles(j).T, ...
+            'Color', color_array{fix(j/100)+1},'LineWidth',1.5); 
+        hold on 
+        xlabel('Charge Capacity (Ah)')
+        ylabel('Cell Temperature (°C)')
+%         xlim([0 1.2]) % capacity limits TO-DO
+        ylim([28 45]) % temperature limits
+        
+        % Plot 8: IDCA (discharge dQ/dV)
+        figure(cell_id)
+        set(gcf, 'units','normalized','outerposition', ...
+            [0 0 1 1]) % makes figure fullscreen
+        set(gcf,'color','w') % make figures white
+        subplot(2,4,8)
+        plot(batch(i).cycles(j).discharge_dQdVvsV.V, ...
+            batch(i).cycles(j).discharge_dQdVvsV.dQdV,'Color', ...
+            color_array{fix(j/100)+1}, 'LineWidth',1.5);
+        hold on
+        xlabel('Voltage (Volts)')
+        ylabel('dQ/dV (Ah/V)')
+       
+    end
+                    
     % Add cycle number legend
     figure(cell_id)
     subplot(2,4,8)
