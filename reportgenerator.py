@@ -56,7 +56,7 @@ title.text = "Current Cycling Progress"
 subtitle.text = today
 
 # CD to directory with most recent images
-os.chdir('C:\\Users\\Arbin\\Box Sync\\Batch images\\' + today + '\\')
+os.chdir('C:\\Users\\Arbin\\Box Sync\\Data\\Batch images\\' + today + '\\')
 
 # Add .png files in this directory. Start with summary figures
 all_images = glob.glob('*.png')
@@ -70,8 +70,8 @@ for file in all_images:
         addImageSlide(file)
 
 # Directory for saving reports
-saveDir = 'C:\\Users\\Arbin\\Box Sync\\Reports'
-os.chdir(saveDir)
+saveDir = 'C:\\Users\\Arbin\\Box Sync\\Data\\Reports'
+os.chdir(saveDir)pyth
 
 # Create file names
 reportFileFull = saveDir + '\\' + reportFile
