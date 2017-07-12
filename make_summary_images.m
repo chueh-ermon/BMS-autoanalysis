@@ -8,30 +8,38 @@ cd (strcat('C:/Users/Arbin/Box Sync/Batch images/', batch_name))
 
 %% Q vs n for each policy
 policies = cell(height(T_cells),1);
+readable_policies = cell(height(T_cells),1);
 for i = 1:numel(batch)
     policies{i} = batch(i).policy;
+    readable_policies{i}=batch(i).policy_readable;
+    %strrep(policies{i},'(','/(');
+    %strrep(policies{i},')','/)');
 end
 disp(policies)
 unique_policies = unique(policies);
+unique_readable_policies = unique(readable_policies);
 
 map = colormap('jet(32)');
 figure('units','normalized','outerposition',[0 0 1 1]), hold on, box on
 for i = 1:length(unique_policies)
     % Keep consistent color
     [col, mark] = random_color('y','y');
+    %All the markers we want to use
+    markers = {'+','o','*','.','x','s','d','^','v','>','<','p','h'}
     % Find all cells with policy i
     for j = 1:numel(batch)
         if strcmp(unique_policies{i}, batch(j).policy)
             x = batch(j).summary.cycle;
             y = batch(j).summary.QDischarge;
-            plot(x,y,'o','color',col)
+            plot(x,y,markers{mod(j,numel(markers))+1},'color',col);
         end
     end
 end
 xlabel('Cycle number')
 ylabel('Remaining discharge capacity (Ah)')
 ylim([0.85 1.1])
-leg = legend(unique_policies); leg.Location = 'eastoutside';
+%2-column legend via custom function. Not perfect but workable
+leg = columnlegend(2,unique_readable_policies,'Location','NortheastOutside','boxoff');
 print('summary1_Q_vs_n','-dpng')
 
 %% Make different summary plots for each batch
