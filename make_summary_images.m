@@ -4,7 +4,7 @@ function make_summary_images(batch, batch_name, T_cells, T_policies)
 % conditional statements to identify which to use
 
 %% Move to image directory
-cd (strcat('C:/Users/Arbin/Box Sync/Batch images/', batch_name))
+%cd (strcat('C:/Users/Arbin/Box Sync/Batch images/', batch_name))
 
 %% Q vs n for each policy
 policies = cell(height(T_cells),1);
@@ -20,7 +20,7 @@ unique_readable_policies = unique(readable_policies);
 
 map = colormap('jet(32)');
 %Two figures, absolute and normalized. We switvh between the two as we
-%plot/format the images
+%plot and format the images
 figAbsolute = figure('units','normalized','outerposition',[0 0 1 1]), hold on, box on
 figNormalized = figure('units','normalized','outerposition',[0 0 1 1]), hold on, box on
 for i = 1:length(unique_policies)
@@ -28,19 +28,21 @@ for i = 1:length(unique_policies)
     [col, mark] = random_color('y','y');
     %All the markers we want to use
     markers = {'+','o','*','.','x','s','d','^','v','>','<','p','h'};
-    % Find all cells with policy i
+    % Find all cells with policy i, generate combined x,y
+    x=double.empty;
+    y=double.empty;
     for j = 1:numel(batch)
         if strcmp(unique_policies{i}, batch(j).policy)
-            x = batch(j).summary.cycle;
-            y = batch(j).summary.QDischarge;
-            sortedy = sort(y,'descend');
-            normalizationValue = sortedy(3);
-            figure(figAbsolute);
-            plot(x,y,markers{mod(j,numel(markers))+1},'color',col);
-            figure(figNormalized);
-            plot(x,y./normalizationValue,markers{mod(j,numel(markers))+1},'color',col);
+            x = cat(2,x,batch(j).summary.cycle);
+            y = cat(2,y,batch(j).summary.QDischarge);
         end
     end
+    sortedy = sort(y,'descend');
+    normalizationValue = sortedy(3);
+    figure(figAbsolute);
+    plot(x,y,markers{mod(j,numel(markers))+1},'color',col);
+    figure(figNormalized);
+    plot(x,y./normalizationValue,markers{mod(j,numel(markers))+1},'color',col);
 end
 %Formatting of figures
 figure(figAbsolute);
