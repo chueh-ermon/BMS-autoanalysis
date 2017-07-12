@@ -9,7 +9,7 @@ Created on Fri Jul  7 12:10:30 2017
 # Imports
 import os # file i/o operations
 import glob # file i/o operations
-from datetime import time# finding today's date
+from datetime import date# finding today's date
 from pptx import Presentation # creating the PPT
 from pptx.util import Inches
 import comtypes.client # for opening PowerPoint from python
@@ -29,13 +29,13 @@ def PPTtoPDF(inputFileName, outputFileName, formatType = 32):
     deck.Close()
     powerpoint.Quit()
 
-def addImageSlide(imageFileName):
+def addImageSlide(image_file_name):
     """
     Adds a full-screen image to a blank full-screen slide.
     """
     blank_slide_layout = prs.slide_layouts[6]
     slide = prs.slides.add_slide(blank_slide_layout)
-    pic = slide.shapes.add_picture(img_path, 0, 0, height=prs.slide_height, width=prs.slide_width)
+    slide.shapes.add_picture(image_file_name, 0, 0, height=prs.slide_height, width=prs.slide_width)
 
 # Get today's date, formatted to MATLAB's default (e.g. 2017-Jul-09)
 today = date.today().strftime('%d-%b-%Y')
@@ -58,13 +58,16 @@ subtitle.text = today
 # CD to directory with most recent images
 os.chdir('C:\\Users\\Arbin\\Box Sync\\Batch images\\' + today + '\\')
 
-# Add summary slide
-img_path = 'contour.png'
-addImageSlide(img_path)
-
-# Add each cell "spec sheet" .png files in this directory
-for file in glob.glob('*.png'):
-    addImageSlide(file)
+# Add .png files in this directory. Start with summary figures
+all_images = glob.glob('*.png')
+for file in all_images:
+    if "summary" in file:
+        addImageSlide(file)
+        
+# Cell "spec sheets"
+for file in all_images:
+    if "summary" not in file:
+        addImageSlide(file)
 
 # Directory for saving reports
 saveDir = 'C:\\Users\\Arbin\\Box Sync\\Reports'
