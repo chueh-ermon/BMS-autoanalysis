@@ -6,13 +6,25 @@ function batch1_summary_plots(batch, batch_name, T_cells, T_policies)
 
 
     %% Initialization and inputs
+    
+    % pull names from policies
+    policies = cell(height(T_cells),1);
+    readable_policies = cell(height(T_cells),1);
+    for i = 1:numel(batch)
+        policies{i} = batch(i).policy;
+        readable_policies{i}=batch(i).policy_readable;
+    end
+    disp(policies)
+    unique_policies = unique(policies);
+    unique_readable_policies = unique(readable_policies);
+    
     T_policies = table2array(T_policies); % convert to array
     T_cells = table2array(T_cells); % convert to arrayT
     T_size = size(T_policies);
     colormap jet;
     scalefactor = 1e6; % factor to scale degradation rates by
     maxvalue = max(T_policies(:,8))*scalefactor; % scale degradation rate
-    
+        
     CC1 = T_cells(:,1); % CC1
     Q1 = T_cells(:,2); % Q1
     CC2 = T_cells(:,3); % CC2 
@@ -35,7 +47,8 @@ function batch1_summary_plots(batch, batch_name, T_cells, T_policies)
     [col, mark]=random_color('y','y');
     scatter(tt_80,capacities,100,col,mark,'LineWidth',2)
     hold on
-
+    
+    columnlegend(2,cell_names,'Location','NortheastOutside','boxoff');
     xlabel('Time to 80% SOC (minutes)')
     ylabel('Remaining discharge capacity (Ah)')
     print('summary3_Q_vs_t80','-dpng')
@@ -46,6 +59,7 @@ function batch1_summary_plots(batch, batch_name, T_cells, T_policies)
     set(gcf, 'units','normalized','outerposition',[0 0 1 1])
     scatter(tt80,degradation_rate,200,col,mark,'LineWidth',2);
     
+    columnlegend(2,cell_names,'Location','NortheastOutside','boxoff');
     xlabel('Time to 80% SOC (minutes)')
     ylabel('Average degradation rate (Ah/cycle)')
     print('summary4_deg_vs_t80','-dpng')
@@ -100,7 +114,9 @@ function batch1_summary_plots(batch, batch_name, T_cells, T_policies)
             caxis([0 maxvalue])
         end
     end
-
+    
+    columnlegend(2,policy_names,'Location','NortheastOutside','boxoff');
+    
     print('summary5_contour','-dpng')
 
 
