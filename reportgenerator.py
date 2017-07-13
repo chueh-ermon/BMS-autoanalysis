@@ -14,6 +14,11 @@ from pptx import Presentation # creating the PPT
 from pptx.util import Inches
 import comtypes.client # for opening PowerPoint from python
 
+"""
+CHANGE BATCH NAME HERE
+"""
+batch_name = 'batch2'
+
 def PPTtoPDF(inputFileName, outputFileName, formatType = 32):
     """
     Converts a PPT file to a PDF by opening PowerPoint, opening the file, and 
@@ -56,7 +61,7 @@ title.text = "Current Cycling Progress"
 subtitle.text = today
 
 # CD to directory with most recent images
-os.chdir('C:\\Users\\Arbin\\Box Sync\\Data\\Batch images\\batch2\\') # may need to change this batch in future
+os.chdir('C:\\Users\\Arbin\\Box Sync\\Data\\Batch images\\' + batch_name + '\\')
 
 # Add .png files in this directory. Start with summary figures
 all_images = glob.glob('*.png')

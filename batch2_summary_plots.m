@@ -16,7 +16,7 @@ maxvalue = max(T_policies(:,8))*scalefactor; % scale degradation rate
 
 
 %% Initialize plot 1
-fig1 = figure % x = CC1, y = Q1, contours = CC2
+figure % x = CC1, y = Q1, contours = CC2
 set(gcf, 'units','normalized','outerposition',[0 0 1 1]) % resize for screen
 set(gcf,'color','w') % make figures white
 hold on
