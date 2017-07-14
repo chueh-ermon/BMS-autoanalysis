@@ -1,7 +1,5 @@
-function props = sendemail(id,subject,message,attachment)
-%% SEND_MAIL_MESSAGE send email to gmail once calculation is done
-% Example
-% send_mail_message('its.neeraj','Simulation finished','This is the message area','results.doc')
+function props = sendemail(email_list,subject,message,attachment)
+%% sendemail: send email from gmail account
  
 % Pradyumna
 % June 2008
@@ -22,9 +20,6 @@ elseif nargin == 3
     attachment = '';
 end
 
-% Send Mail ID
-emailto = strcat(id,'@stanford.edu');
-email_list = {emailto} %'chueh-ermon-bms@lists.stanford.edu'};
 %% Set up Gmail SMTP service.
 % Then this code will set up the preferences properly:
 setpref('Internet','E_mail',mail);
@@ -40,11 +35,6 @@ props.setProperty('mail.smtp.socketFactory.port','465');
 props.setProperty('mail.smtp.starttls.enable', 'true');
 
 %% Send the email
-if strcmp(mail,'GmailId@gmail.com')
-    disp('Please provide your own gmail.')
-    disp('You can do that by modifying the first two lines of the code')
-    disp('after the comments.')
-end
 for i=1:numel(email_list)
     if nargin == 4
         sendmail(email_list{i},subject,message,attachment)
