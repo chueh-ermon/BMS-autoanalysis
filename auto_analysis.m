@@ -1,8 +1,7 @@
 %% auto_analysis.m...
-%   - Runs Batch_Analysis
-%   - Saves data to .mat
-%   - Makes images
-%   - Makes PPT & converts to PDF
+%   - Runs batch_analysis (converts to struct and saves data to .mat)
+%   - Makes images (make_images and make_summary_images)
+%   - Creates PDF report (reportgenerator.py)
 %   - Emails results
 % Nick Perkins, Zi Yang, Michael Chen, Peter Attia
 
@@ -11,7 +10,7 @@
 %   - Also, ensure the required Python libraries are installed (see
 %   reportgenerator.py)
 
-clear
+clear, close all
 init_tic = tic; % time entire script
 
 %% CHANGE THIS SETTING %%%%%%%
