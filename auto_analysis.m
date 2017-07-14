@@ -1,7 +1,8 @@
 %% auto_analysis.m...
 %   - Runs batch_analysis (converts to struct and saves data to .mat)
-%   - Makes images (make_images and make_summary_images)
-%   - Creates PDF report (reportgenerator.py)
+%   - Runs makes images (cell summary info)
+%   - RUns make_result_tables and make_summary_images (batch summary info)
+%   - Runs reportgenerator.py (creates PDF report)
 %   - Emails results
 % Nick Perkins, Zi Yang, Michael Chen, Peter Attia
 
@@ -36,7 +37,7 @@ python('reportgenerator.py'); % run python code
 cd 'C:\Users\Arbin\Box Sync\Data\Reports'
 pdf_name = [date '_report.pdf'];
 message_body = 'Hot off the press: Check out the latest results!';
-email_list = {'pattia@stanford.edu'};
+email_list = {'chueh-ermon-bms@lists.stanford.edu'};
 sendemail(email_list,'BMS project: Updated results', ...
     message_body,char(pdf_name));
 cd 'C:\Users\Arbin\Documents\GitHub\BMS-autoanalysis'
