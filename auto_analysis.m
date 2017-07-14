@@ -1,7 +1,7 @@
 %% auto_analysis.m...
 %   - Runs batch_analysis (converts to struct and saves data to .mat)
 %   - Runs makes images (cell summary info)
-%   - RUns make_result_tables and make_summary_images (batch summary info)
+%   - Runs make_result_tables and make_summary_images (batch summary info)
 %   - Runs reportgenerator.py (creates PDF report)
 %   - Emails results
 % Nick Perkins, Zi Yang, Michael Chen, Peter Attia
