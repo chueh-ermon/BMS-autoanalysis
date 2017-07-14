@@ -12,6 +12,7 @@
 %   reportgenerator.py)
 
 clear
+init_tic = tic; % time entire script
 
 %% CHANGE THIS SETTING %%%%%%%
 batch_date = '2017-06-30'; % Format as 'yyyy-mm-dd'
@@ -36,6 +37,8 @@ python('reportgenerator.py'); % run python code
 cd 'C:\Users\Arbin\Box Sync\Data\Reports'
 pdf_name = [date '_report.pdf'];
 message_body = 'Hot off the press: Check out the latest results!';
-sendemail('mchen18','BMS project: Updated results', ...
+email_list = {'pattia@stanford.edu'};
+sendemail(email_list,'BMS project: Updated results', ...
     message_body,char(pdf_name));
 cd 'C:\Users\Arbin\Documents\GitHub\BMS-autoanalysis'
+disp('Email sent - success!'), toc(init_tic)

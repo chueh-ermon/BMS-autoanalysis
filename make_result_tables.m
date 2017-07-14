@@ -7,6 +7,8 @@ function [T_cells, T_policies] = make_result_tables( batch, batch_name )
 %   cells are averaged). 
 %   It then writes the results to a CSV.
 
+disp('Starting make_result_tables'),tic
+
 n = numel(batch); % number of batteries in the batch
 
 %% Preinitialize variables
@@ -142,4 +144,6 @@ xlswrite(results_table_file2,col_headers,'Sheet1','A1')
 
 save([date '_' batch_name '_result_tables'],'T_cells', 'T_policies')
 cd 'C:/Users/Arbin/Documents/GitHub/BMS-autoanalysis'
+
+disp('Completed make_result_tables'),toc
 end

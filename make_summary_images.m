@@ -3,6 +3,8 @@ function make_summary_images(batch, batch_name, T_cells, T_policies)
 % batch will have different 'best' ways of presenting data, have
 % conditional statements to identify which to use
 
+disp('Starting make_summary_images'), tic
+
 %% Move to image directory
 cd (strcat('C:\Users\Arbin\Box Sync\Data\Batch images\', batch_name))
 
@@ -71,6 +73,9 @@ else
     warning('Batch name not recognized. No summary figures generated')
 end
 
+close all
 cd 'C:/Users/Arbin/Documents/GitHub/BMS-autoanalysis'
+
+disp('Completed make_summary_images'),toc
 
 end

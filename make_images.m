@@ -1,11 +1,13 @@
 function make_images(batch, batch_name, batch_date)
 close all;
-%% Function: loops through each battery in 'batch'. Makes images (.pngs) 
+%% Function: loops through each battery in 'batch'. Makes images (.pngs)
 %  of 2 x 4 plot grids. Saves images.
 %  Usage: make_images('2017-05-12-batchdata.mat','2017-05-12')
 %  July 2017 Michael Chen
 
-%% Plotting initialization 
+disp('Starting make_images'), tic
+
+%% Plotting initialization
 % 18 increasing darkness reds for cycle results
 color_array = {[255,230,230]./256; [255,204,204]./256; ...
     [255,179,179]./256; [255,153,153]./256; [255,128,128]./256; ...
@@ -35,8 +37,8 @@ cd 'C:\Users\Arbin\Box Sync\Data\Batch images'
 
 % make folder for current date
 if exist(batch_name,'dir')
-   % Remove existing folder (if it exists) and make a new directory
-   rmdir(batch_name,'s')
+    % Remove existing folder (if it exists) and make a new directory
+    rmdir(batch_name,'s')
 end
 
 mkdir(strcat('C:\Users\Arbin\Box Sync\Data\Batch images\', batch_name))
@@ -47,7 +49,7 @@ cd (strcat('C:\Users\Arbin\Box Sync\Data\Batch images\', batch_name))
 %% Loops through each battery
 for i = 1:num_cells
     close all;
-    cell_id = i; % identify each cell 
+    cell_id = i; % identify each cell
     num_cycles = max(batch(i).summary.cycle); % get number of cycles
     
     % find maxes for normalization
@@ -55,7 +57,7 @@ for i = 1:num_cells
     
     %% summary plots
     
-     % Plot 1: Remaining capacity
+    % Plot 1: Remaining capacity
     figure(cell_id)
     subplot(2,4,1)
     plot(batch(i).summary.cycle, batch(i).summary.QDischarge, ...
@@ -67,14 +69,14 @@ for i = 1:num_cells
     title(['Batch started ', batch_date])
     legend('Discharge', 'Charge')
     xlabel('Cycle Index')
-    ylabel('Remaining Capacity (Ah)')    
+    ylabel('Remaining Capacity (Ah)')
     
-     % Plot 2: Charge time 
+    % Plot 2: Charge time
     figure(cell_id)
     subplot(2,4,2)
     plot(batch(i).summary.cycle,batch(i).summary.chargetime, ...
         'LineWidth',1.5)
-    hold on 
+    hold on
     xlabel('Cycle Index')
     ylabel('Time to 80% SOC (minutes)')
     title(batch(i).policy_readable)
@@ -88,14 +90,14 @@ for i = 1:num_cells
     hold on
     plot(batch(i).summary.cycle, batch(i).summary.Tmin, 'Color', ...
         [0.600000 0.730000 0.890000],'LineWidth',1.5)
-    hold on 
+    hold on
     plot(batch(i).summary.cycle, batch(i).summary.Tavg, 'Color', ...
         [1.000000 0.620000 0.000000],'LineWidth',1.5)
     xlabel('Cycle Index')
     ylabel('Temperature (°C)')
     ylim([28 45])
     title(batch(i).barcode)
-  
+    
     % Plot 4: Internal resistance
     figure(cell_id)
     subplot(2,4,4)
@@ -104,13 +106,13 @@ for i = 1:num_cells
     title(strcat('Channel', {' '}, batch(i).channel_id))
     xlabel('Cycle Index')
     ylabel('Internal Resistance (Ohms)')
-    ylim([.015 .02])   
+    ylim([.015 .02])
     
     %% plot every 100 cycles
     for j = [1 100:100:num_cycles] % plot every 100 cycles
         % plot every 100 cycles
         
-        % Plot 5: current profiles 
+        % Plot 5: current profiles
         figure(cell_id)
         subplot(2,4,5)
         yyaxis left
@@ -138,16 +140,16 @@ for i = 1:num_cells
         ylabel('Cell Voltage (V)')
         xlim([0 1.2]) % capacity limits
         ylim([3.1 3.65]) % voltage limits
-
+        
         % Plot 7: temperature profiles
         figure(cell_id)
         subplot(2,4,7)
         plot(batch(i).cycles(j).t,batch(i).cycles(j).T, ...
-            'Color', color_array{fix(j/100)+1},'LineWidth',1.5); 
-        hold on 
+            'Color', color_array{fix(j/100)+1},'LineWidth',1.5);
+        hold on
         xlabel('Time (minutes)')
         ylabel('Cell Temperature (°C)')
-         xlim([0 70]) % capacity limits TO-DO
+        xlim([0 70]) % capacity limits TO-DO
         ylim([28 40]) % temperature limits
         
         % Plot 8: IDCA (discharge dQ/dV)
@@ -162,33 +164,33 @@ for i = 1:num_cells
         hold on
         xlabel('Voltage (Volts)')
         ylabel('dQ/dV (Ah/V)')
-       
+        
     end
-                    
+    
     % Add cycle number legend
     figure(cell_id)
     subplot(2,4,8)
     legend(legend_array{1:max(fix((j)/100))+1},'Location', ...
-                        'eastoutside', 'Orientation','vertical')
+        'eastoutside', 'Orientation','vertical')
     %% Save figures
     % add figure/image saving code
-    % save into correct folder for 
-    
-    
+    % save into correct folder for
     
     % save in folder
     charging_alg = batch(i).policy;
     barcode = batch(i).barcode;
-%     file_name = strcat(charging_alg, '_' , barcode);
-%     savefig(gcf, filename)
-%     print(file_name, '-dpng')
-%     saveas(gcf, file_name, 'png')
+    %     file_name = strcat(charging_alg, '_' , barcode);
+    %     savefig(gcf, filename)
+    %     print(file_name, '-dpng')
+    %     saveas(gcf, file_name, 'png')
     savefig(gcf,[char(strcat(charging_alg,'_',barcode))])
-     print(gcf,[char(strcat(charging_alg,'_',barcode))],'-dpng')
+    print(gcf,[char(strcat(charging_alg,'_',barcode))],'-dpng')
     
     % cd out into batch images
     % cd ..
+    
+    % close % close figure
+end
 
-%     close % close figure
-end   
+disp('Completed make_images'), toc
 end
