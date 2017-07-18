@@ -10,6 +10,8 @@ T_policies = table2array(T_policies); % convert to array
 % T_cells = table2array(T_cells); % convert to array (not really needed)
 T_size = size(T_policies);
 time = 10; % target time of policies, in minutes
+colormap jet
+colormap = colormap(flipud(colormap));
 scalefactor = 5e5; % factor to scale degradation rates by
 maxvalue = max(T_policies(:,8))*scalefactor/4; % scale degradation rate
 
@@ -88,7 +90,7 @@ line([4.9 7.99],[4.9 7.99], 'LineWidth',20,'color','w');
 
 % add explanation of color
 dim = [0.3 0.1 0.3 0.2];
-str = {'Color = degradation rate',' (yellow = higher degradation rate)'};
+str = {'Color = degradation rate',' (blue = higher degradation rate)'};
 annotation('textbox',dim,'String',str,'FitBoxToText','on','LineStyle','none','FontSize',16)
 
 %% Save file
