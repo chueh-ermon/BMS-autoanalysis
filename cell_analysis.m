@@ -35,6 +35,15 @@ cd 'C:\Data'
     tmax = [];
     dDQdV = [];
     
+    % Init whats needed for saving struct
+    DQ = [];
+    CQ = [];
+    IR_CC1 = [];
+    tmax = [];
+    t_avg = [];
+    tmin = [];
+    tt_80 = [];
+    
     % Translate charging algorithm to something we can put in a legend.
     t = charging_algorithm;
     battery.policy = t;
