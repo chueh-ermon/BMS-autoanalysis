@@ -10,10 +10,8 @@ T_policies = table2array(T_policies); % convert to array
 % T_cells = table2array(T_cells); % convert to array (not really needed)
 T_size = size(T_policies);
 time = 10; % target time of policies, in minutes
-colormap jet
-colormap = colormap(flipud(colormap));
 scalefactor = 5e5; % factor to scale degradation rates by
-maxvalue = max(T_policies(:,8))*scalefactor/4; % scale degradation rate
+maxvalue = max(T_policies(:,8))*scalefactor/2; % scale degradation rate
 
 
 %% Initialize plot 1

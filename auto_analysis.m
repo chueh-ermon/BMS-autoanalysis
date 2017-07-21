@@ -44,4 +44,4 @@ cd 'C:\Users\Arbin\Documents\GitHub\BMS-autoanalysis'
 disp('Email sent - success!'), toc(init_tic)
 
 %% Make summary gifs (for presentations)
-make_summary_gifs(batch, batch_name, T_cells, T_policies);
+%make_summary_gifs(batch, batch_name, T_cells, T_policies);
