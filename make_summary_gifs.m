@@ -67,7 +67,7 @@ end
 figure('units','normalized','outerposition',[0 0 1 1]), box on
 xlabel('Cycle number')
 ylabel('Remaining discharge capacity (Ah)')
-axis([0 1000 0.80 1.2])
+axis([0 1000 0.85 1.15])
 set(gcf, 'Color' ,'w')
 hline(0.88)
 
