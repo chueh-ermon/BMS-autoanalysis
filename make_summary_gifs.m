@@ -5,6 +5,12 @@ function make_summary_gifs(batch, batch_name)
 
 disp('Starting make_summary_gifs'), tic
 
+%% ONLY FOR BATCH 1
+% for i = 1:numel(batch)
+%     batch(i).summary.QDischarge = batch(i).summary.QDischarge(2:end);
+% end
+%%
+
 %% CHANGE THESE SETTINGS - development mode
 filename = ['Qnplot_' batch_name '.gif']; % Specify the output file name
 endcycle = 1000; % Last cycle plotted
