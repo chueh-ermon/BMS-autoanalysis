@@ -55,6 +55,8 @@ saveas(contour1, 'summary3_contour1.png')
 
 %% Initialize plot 2
 contour2 = figure; % x = CC1, y = CC2 contours = Q1
+colormap jet;
+colormap(flipud(colormap));
 set(gcf, 'units','normalized','outerposition',[0 0 1 1]) % resize for screen
 set(gcf,'color','w') % make figures white
 hold on, box on, axis square
@@ -67,6 +69,7 @@ axis([0.9 8.1 0.9 8.1])
 
 % plot contour values for plot 2
 contour(X,Y,Q1,Q1_values,'LineWidth',2,'ShowText','on')
+
 for i = 1:T_size(1)
     if T_policies(i,2) == 80
         if T_policies(i,1) == 4.8
@@ -93,5 +96,8 @@ annotation('textbox',dim,'String',str,'FitBoxToText','on','LineStyle','none','Fo
 
 %% Save file
 saveas(contour2, 'summary4_contour2.png')
+
+%% Close all figure windows
+close all
 
 end
