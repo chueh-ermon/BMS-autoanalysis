@@ -16,7 +16,7 @@ filename = ['Qnplot_' batch_name '.gif']; % Specify the output file name
 endcycle = 1000; % Last cycle plotted
 
 %% Move to GIF directory
-%cd 'C:\Users\Arbin\Box Sync\Data\Batch GIFS\'
+% cd 'C:\Users\Arbin\Box Sync\Data\Batch GIFS\'
 
 %% Find all unique policies
 n_cells = numel(batch);
@@ -66,10 +66,11 @@ end
 %% Make full screen figure
 figure('units','normalized','outerposition',[0 0 1 1]), box on
 xlabel('Cycle number')
-ylabel('Remaining discharge capacity (Ah)')
-axis([0 1000 0.85 1.15])
+ylabel('Remaining capacity (normalized)')
+% ylabel('Remaining discharge capacity (Ah)')
+axis([0 1000 0.78 1.05]) % y = 0.85 -> 1.15
 set(gcf, 'Color' ,'w')
-hline(0.88)
+hline(0.8)
 
 %% Begin looping. j = cycle index
 for j=1:endcycle
@@ -92,7 +93,7 @@ for j=1:endcycle
         end
         
         % Plot points for this policy
-        scatter(cycles,Qn,100,cols{i},marks{i},'LineWidth',1.5);
+        scatter(cycles,Qn./1.1,100,cols{i},marks{i},'LineWidth',1.5);
     end
     % Misc plotting stuff
     title(['Cycle ' num2str(j)])
