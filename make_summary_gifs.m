@@ -5,12 +5,6 @@ function make_summary_gifs(batch, batch_name)
 
 disp('Starting make_summary_gifs'), tic
 
-%% ONLY FOR BATCH 1
-% for i = 1:numel(batch)
-%     batch(i).summary.QDischarge = batch(i).summary.QDischarge(2:end);
-% end
-%%
-
 %% CHANGE THESE SETTINGS - development mode
 filename = ['Qnplot_' batch_name '.gif']; % Specify the output file name
 endcycle = 1000; % Last cycle plotted
@@ -30,12 +24,16 @@ unique_policies = unique(policies);
 unique_readable_policies = unique(readable_policies);
 n_policies = numel(unique_policies);
 
-%% Preinitialize random colors and markers
-cols = cell(1,n_policies);
+%% Preinitialize random colors and markers. 
+% Random colors: Updated to use 'pretty colors' (linspecer.m)
+cols = linspecer(n_policies);
+ordering = randperm(n_policies);
+cols = cols(ordering, :); % shuffle
+
+% Random markers
 marks = cell(1,n_policies);
 for i = 1:n_policies
-    [col, mark]=random_color('y','y');
-    cols{i} = col;
+    [~, mark]=random_color('y','y');
     marks{i} = mark;
 end
 
@@ -69,14 +67,14 @@ xlabel('Cycle number','FontSize',16)
 ylabel('Remaining capacity (normalized)','FontSize',16)
 set(gca,'FontSize',16)
 % ylabel('Remaining discharge capacity (Ah)')
-axis([0 1000 0.79 1.01]) % y = 0.85 -> 1.15
+axis([0 1000 0.79 1.0]) % y = 0.85 -> 1.15
 set(gcf, 'Color' ,'w')
 hline(0.8)
 
 %% Begin looping. j = cycle index
 for j=1:endcycle
     % i = policy index
-    for i=1:n_policies        
+    for i=1:n_policies
         %% Plot each policy 
         hold on
         
@@ -94,7 +92,7 @@ for j=1:endcycle
         end
         
         % Plot points for this policy
-        scatter(cycles,Qn./1.1,100,cols{i},marks{i},'LineWidth',1.5);
+        scatter(cycles,Qn./1.1,100,cols(i,:),marks{i},'LineWidth',1.5);
     end
     % Misc plotting stuff
     title(['Cycle ' num2str(j)],'FontSize',16)

@@ -52,15 +52,17 @@ ylabel('Remaining discharge capacity (Ah)')
 ylim([0.85 1.1])
 figure(figNormalized);
 xlabel('Cycle number')
-ylabel('Normalized Remaining discharge capacity')
+ylabel('Remaining discharge capacity (normalized)')
 ylim([0.80 1.0])
 %2-column legend via custom function. Not perfect but workable
 figure(figAbsolute);
 leg = columnlegend(2,unique_readable_policies,'Location','NortheastOutside','boxoff');
 print('summary1_Q_vs_n','-dpng')
+savefig(gcf,'summary1_Q_vs_n')
 figure(figNormalized);
 leg = columnlegend(2,unique_readable_policies,'Location','NortheastOutside','boxoff');
-print('summary2_Q_vs_n','-dpng')
+print('summary2_Q_vs_n_norm','-dpng')
+savefig(gcf,'summary2_Q_vs_n_norm')
 
 %% Make different summary plots for each batch
 % Batch 1 (2017-05-12)
