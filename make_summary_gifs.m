@@ -65,10 +65,11 @@ end
 
 %% Make full screen figure
 figure('units','normalized','outerposition',[0 0 1 1]), box on
-xlabel('Cycle number')
-ylabel('Remaining capacity (normalized)')
+xlabel('Cycle number','FontSize',16)
+ylabel('Remaining capacity (normalized)','FontSize',16)
+set(gca,'FontSize',16)
 % ylabel('Remaining discharge capacity (Ah)')
-axis([0 1000 0.78 1.05]) % y = 0.85 -> 1.15
+axis([0 1000 0.79 1.01]) % y = 0.85 -> 1.15
 set(gcf, 'Color' ,'w')
 hline(0.8)
 
@@ -96,9 +97,9 @@ for j=1:endcycle
         scatter(cycles,Qn./1.1,100,cols{i},marks{i},'LineWidth',1.5);
     end
     % Misc plotting stuff
-    title(['Cycle ' num2str(j)])
+    title(['Cycle ' num2str(j)],'FontSize',16)
     %leg = columnlegend(2,unique_readable_policies,'Location','NortheastOutside','boxoff');
-    leg = legend(unique_readable_policies','Location','EastOutside');
+    leg = legend(unique_readable_policies','Location','EastOutside','FontSize',14);
     hold off
     
     % Create GIF
