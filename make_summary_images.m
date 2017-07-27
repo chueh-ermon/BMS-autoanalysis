@@ -5,8 +5,10 @@ function make_summary_images(batch, batch_name, T_cells, T_policies)
 
 disp('Starting make_summary_images'), tic
 
+load path.mat
+
 %% Move to image directory
-cd (strcat('C:\Users\Arbin\Box Sync\Data\Batch images\', batch_name))
+cd (strcat(path.images, batch_name))
 
 %% Q vs n for each policy
 policies = cell(height(T_cells),1);
@@ -76,8 +78,7 @@ else
 end
 
 close all
-cd 'C:/Users/Arbin/Documents/GitHub/BMS-autoanalysis'
-
+cd(path.code)
 disp('Completed make_summary_images'),toc
 
 end

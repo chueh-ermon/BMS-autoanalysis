@@ -1,4 +1,4 @@
-function make_images(batch, batch_name, batch_date)
+function make_images(batch, batch_name, batch_date, imagespath)
 close all;
 %% Function: loops through each battery in 'batch'. Makes images (.pngs)
 %  of 2 x 4 plot grids. Saves images.
@@ -33,7 +33,7 @@ legend_array = {'1'; '100'; '200'; '300'; '400'; '500'; '600'; '700'; ...
 num_cells = length(batch); % get number of batteries
 
 % cd into batch images
-cd 'C:\Users\Arbin\Box Sync\Data\Batch images'
+cd(imagespath)
 
 % make folder for current date
 if exist(batch_name,'dir')
@@ -41,10 +41,10 @@ if exist(batch_name,'dir')
     rmdir(batch_name,'s')
 end
 
-mkdir(strcat('C:\Users\Arbin\Box Sync\Data\Batch images\', batch_name))
+mkdir(strcat(imagespath, batch_name))
 
 % cd into new folder
-cd (strcat('C:\Users\Arbin\Box Sync\Data\Batch images\', batch_name))
+cd (strcat(imagespath, batch_name))
 
 %% Loops through each battery
 for i = 1:num_cells

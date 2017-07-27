@@ -1,5 +1,5 @@
 function battery = cell_analysis(result_data, charging_algorithm, ...
-    batch_date)
+    batch_date, csvpath)
 
 %% Initialize battery struct
 battery = struct('policy', ' ', 'policy_readable', ' ', 'barcode', ...
@@ -9,7 +9,7 @@ battery = struct('policy', ' ', 'policy_readable', ' ', 'barcode', ...
     'QDischarge', [], 'QCharge', [], 'IR', [], 'Tmax', [], 'Tavg', ...
     [], 'Tmin', [], 'chargetime', []));
 
-cd 'C:\Data'
+cd(csvpath)
 
     % Total Test time
     Total_time = result_data(:,1); 

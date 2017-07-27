@@ -19,28 +19,32 @@ batch_date = '2017-06-30'; % Format as 'yyyy-mm-dd'
 batch_name = 'batch2';
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%% Load path names
+load path.mat
+
 %% Run Batch Analysis for all cells
 batch = batch_analysis(batch_date);
 
 %% Generate images & results for all cells
-make_images(batch, batch_name, batch_date);
-[T_cells, T_policies] = make_result_tables(batch, batch_name);
+make_images(batch, batch_name, batch_date, path.images);
+[T_cells, T_policies] = make_result_tables(batch, batch_name, ...
+    path.result_tables, path.code);
 make_summary_images(batch, batch_name, T_cells, T_policies);
 
 %% Run the report generator (in Python)
 % This will create the PPT and convert to PDF. It saves in the Box Sync
 % folder
-cd 'C:\Users\Arbin\Documents\GitHub\BMS-autoanalysis'
+cd(path.code)
 python('reportgenerator.py'); % run python code
 
 %% Send email
-cd 'C:\Users\Arbin\Box Sync\Data\Reports'
+cd(path.reports)
 pdf_name = [date '_report.pdf'];
 message_body = 'Hot off the press: Check out the latest results!';
 email_list = {'chueh-ermon-bms@lists.stanford.edu'};
 sendemail(email_list,'BMS project: Updated results', ...
     message_body,char(pdf_name));
-cd 'C:\Users\Arbin\Documents\GitHub\BMS-autoanalysis'
+cd(path.code)
 disp('Email sent - success!'), toc(init_tic)
 
 %% Make summary gifs (for presentations)

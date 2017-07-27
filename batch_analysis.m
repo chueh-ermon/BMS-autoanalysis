@@ -8,6 +8,9 @@ batch = struct('policy', ' ', 'policy_readable', ' ', 'barcode', ...
     'QDischarge', [], 'QCharge', [], 'IR', [], 'Tmax', [], 'Tavg', ...
     [], 'Tmin', [], 'chargetime', []));
 
+%% Load path names
+load path.mat
+
 %% Initialize Summary Arrays and values
 % An Array of Charging Algorithm names
 CA_array = {};
@@ -17,7 +20,7 @@ test_files = {};
 barcodes = {};
 channel_ids = {};
 %% Find CSVs from this batch
-cd 'C:\Data'
+cd(path.csv_data)
 
 batch_file_name = strcat('*', batch_date, '*.csv');
 dir_info = dir(char(batch_file_name));
@@ -80,25 +83,25 @@ for j = 1:numel(CA_array)
                 num2str(numel(test_files)) ': ' filename])
             
             %% Run CSV Analysis for this file
-            result_data = csvread(strcat('C:\Data\',test_files{i}),1,1);
-            cd 'C:\Users\Arbin\Documents\GitHub\BMS-autoanalysis'
+            result_data = csvread(strcat(path.csv_data,test_files{i}),1,1);
+            cd(path.code)
             battery = cell_analysis(result_data, charging_algorithm, ...
-                batch_date);
+                batch_date, path.csv_data);
             battery.barcode = barcodes(i);
             battery.channel_id = channel_ids(i);
             batch(i) = battery;
             
-            cd 'C:\Data'
+            cd(path.csv_data)
         else 
             continue
         end
         toc
     end
 end
-cd 'C:\Users\Arbin\Box Sync\Data\Batch data'
+cd(path.batch_struct)
 disp(['Saving batch information to directory ', cd])
 tic
 save(strcat(batch_date, '_batchdata'), 'batch_date', 'batch')
 toc
-cd 'C:\Users\Arbin\Documents\GitHub\BMS-autoanalysis'
+cd(path.code)
 end
