@@ -25,10 +25,13 @@ unique_readable_policies = unique(readable_policies);
 n_policies = numel(unique_policies);
 
 %% Preinitialize random colors and markers. 
-% Random colors: Updated to use 'pretty colors' (linspecer.m)
-cols = linspecer(n_policies);
-ordering = randperm(n_policies);
-cols = cols(ordering, :); % shuffle
+% % Random colors: Updated to use 'pretty colors' (linspecer.m)
+% cols = linspecer(n_policies);
+% ordering = randperm(n_policies);
+% cols = cols(ordering, :); % shuffle
+% Distinguishable colors: Colors with maximum contrast
+% (distinguishable_colors.m)
+cols = distinguishable_colors(n_policies);
 
 % Random markers
 marks = cell(1,n_policies);

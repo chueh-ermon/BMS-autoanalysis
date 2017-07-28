@@ -51,7 +51,8 @@ str = {'Color = degradation rate',' (yellow = higher degradation rate)'};
 annotation('textbox',dim,'String',str,'FitBoxToText','on','LineStyle','none','FontSize',16)
 
 %% Save file
-saveas(contour1, 'summary4_contour2.png')
+saveas(contour1, 'summary3_contour1.png')
+savefig(contour1,'summary3_contour1')
 
 %% Initialize plot 2
 contour2 = figure; % x = CC1, y = CC2 contours = Q1
@@ -96,9 +97,6 @@ annotation('textbox',dim,'String',str,'FitBoxToText','on','LineStyle','none','Fo
 
 %% Save file
 saveas(contour2, 'summary4_contour2.png')
-savefig(gcf,'summary4_contour2.png')
-
-%% Close all figure windows
-close all
+savefig(contour2,'summary4_contour2')
 
 end
