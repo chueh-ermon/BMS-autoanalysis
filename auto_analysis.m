@@ -24,7 +24,7 @@ load path.mat
 
 %% Pull CSVs if program is running on Amazon Workspace
 if path.whichcomp == 'amazonws'
-    system(aws s3 sync s3://matr.io/experiment/d3batt D:\Data --exclude "*" --include "2017-06*")
+    system('aws s3 sync s3://matr.io/experiment/d3batt D:\Data --exclude "*" --include "2017-06*"')
 end
 
 %% Run Batch Analysis for all cells
@@ -54,7 +54,7 @@ disp('Email sent - success!'),
 
 if path.whichcomp == 'amazonws'
     disp('Syncing Data_Matlab from Amazon WS to Amazon s3')
-    system(aws s3 sync D:\Data_Matlab s3://matr.io/experiment/d3batt_matlab)
+    system('aws s3 sync D:\Data_Matlab s3://matr.io/experiment/d3batt_matlab')
     disp('Sync complete!')
 end
 toc(init_tic)
