@@ -45,7 +45,7 @@ python('reportgenerator.py', path.images, path.reports); % run python code
 %% Send email
 cd(path.reports)
 pdf_name = [date '_report.pdf'];
-message_body = ['Hot off the press: Check out the latest results! ', path.message];
+message_body = {'Hot off the press: Check out the latest results! '; path.message};
 email_list = {'chueh-ermon-bms@lists.stanford.edu'};
 sendemail(email_list,'BMS project: Updated results', ...
     message_body,char(pdf_name));
