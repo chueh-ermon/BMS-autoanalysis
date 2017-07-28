@@ -83,7 +83,7 @@ for j = 1:numel(CA_array)
                 num2str(numel(test_files)) ': ' filename])
             
             %% Run CSV Analysis for this file
-            result_data = csvread(strcat(path.csv_data,test_files{i}),1,1);
+            result_data = csvread(strcat(path.csv_data, '\', test_files{i}),1,1);
             cd(path.code)
             battery = cell_analysis(result_data, charging_algorithm, ...
                 batch_date, path.csv_data);

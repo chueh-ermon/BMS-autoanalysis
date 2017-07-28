@@ -41,10 +41,10 @@ if exist(batch_name,'dir')
     rmdir(batch_name,'s')
 end
 
-mkdir(strcat(imagespath, batch_name))
+mkdir(strcat(imagespath, '\', batch_name))
 
 % cd into new folder
-cd (strcat(imagespath, batch_name))
+cd (strcat(imagespath, '\', batch_name))
 
 %% Loops through each battery
 for i = 1:num_cells

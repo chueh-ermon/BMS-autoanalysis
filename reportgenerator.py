@@ -13,6 +13,7 @@ from datetime import date# finding today's date
 from pptx import Presentation # creating the PPT
 from pptx.util import Inches
 import comtypes.client # for opening PowerPoint from python
+import sys
 
 """
 CHANGE BATCH NAME HERE
@@ -61,7 +62,7 @@ title.text = "Current Cycling Progress"
 subtitle.text = today
 
 # CD to directory with most recent images
-os.chdir('C:\\Users\\Arbin\\Box Sync\\Data\\Batch images\\' + batch_name + '\\')
+os.chdir(sys.argv[1] + '\\' + batch_name + '\\')
 
 # Add .png files in this directory. Start with summary figures
 all_images = glob.glob('*.png')
@@ -75,7 +76,7 @@ for file in all_images:
         addImageSlide(file)
 
 # Directory for saving reports
-saveDir = 'C:\\Users\\Arbin\\Box Sync\\Data\\Reports'
+saveDir = sys.argv[2]
 os.chdir(saveDir)
 
 # Create file names
