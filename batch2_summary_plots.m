@@ -101,5 +101,5 @@ savefig(gcf,'summary4_contour2.fig')
 
 %% Close all figure windows
 close all
-s
+
 end
