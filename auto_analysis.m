@@ -22,6 +22,11 @@ batch_name = 'batch2';
 %% Load path names
 load path.mat
 
+%% Pull CSVs if program is running on Amazon Workspace
+if path.whichcomp == 'amazonws'
+    system('aws s3 sync s3://matr.io/experiment/d3batt D:\Data --exclude "*" --include "2017-06*"')
+end
+
 %% Run Batch Analysis for all cells
 batch = batch_analysis(batch_date);
 
@@ -35,17 +40,24 @@ make_summary_images(batch, batch_name, T_cells, T_policies);
 % This will create the PPT and convert to PDF. It saves in the Box Sync
 % folder
 cd(path.code)
-python('reportgenerator.py'); % run python code
+python('reportgenerator.py', path.images, path.reports); % run python code
 
 %% Send email
 cd(path.reports)
 pdf_name = [date '_report.pdf'];
-message_body = 'Hot off the press: Check out the latest results!';
+message_body = ['Hot off the press: Check out the latest results!'; path.message];
 email_list = {'chueh-ermon-bms@lists.stanford.edu'};
 sendemail(email_list,'BMS project: Updated results', ...
     message_body,char(pdf_name));
 cd(path.code)
-disp('Email sent - success!'), toc(init_tic)
+disp('Email sent - success!'), 
+
+if path.whichcomp == 'amazonws'
+    disp('Syncing Data_Matlab from Amazon WS to Amazon s3')
+    system('aws s3 sync D:\Data_Matlab s3://matr.io/experiment/d3batt_matlab')
+    disp('Sync complete!')
+end
+toc(init_tic)
 
 %% Make summary gifs (for presentations)
 %make_summary_gifs(batch, batch_name);

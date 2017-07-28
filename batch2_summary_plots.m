@@ -97,6 +97,9 @@ annotation('textbox',dim,'String',str,'FitBoxToText','on','LineStyle','none','Fo
 
 %% Save file
 saveas(contour2, 'summary4_contour2.png')
-savefig(contour2,'summary4_contour2')
+savefig(gcf,'summary4_contour2.fig')
 
+%% Close all figure windows
+close all
+s
 end

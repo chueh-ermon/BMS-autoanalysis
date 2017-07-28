@@ -8,7 +8,7 @@ disp('Starting make_summary_images'), tic
 load path.mat
 
 %% Move to image directory
-cd (strcat(path.images, batch_name))
+cd (strcat(path.images, '\', batch_name))
 
 %% Q vs n for each policy
 policies = cell(height(T_cells),1);
