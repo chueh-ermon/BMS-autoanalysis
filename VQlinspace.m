@@ -20,7 +20,7 @@ V1 = 2.0;
 V2 = 3.5;
 
 spacing = (V2 - V1) / n_points;
-Vlin = 2.0:spacing:3.6; % voltage range for interpolation
+Vlin = V1:spacing:V2; % voltage range for interpolation
 Qlin = VQfit(Vlin);
 
 end
