@@ -101,7 +101,7 @@ end
 cd(path.batch_struct)
 disp(['Saving batch information to directory ', cd])
 tic
-save(strcat(batch_date, '_batchdata'), 'batch_date', 'batch')
+%save(strcat(batch_date, '_batchdata'), 'batch_date', 'batch')
 toc
 cd(path.code)
 end
