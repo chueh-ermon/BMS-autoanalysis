@@ -30,40 +30,56 @@ for i = 1:numel(batch)
     % 8C(35%)-3.6C
     policy = batch(i).policy_readable;
     policies{i} = policy;
-    %% Identify CC1, CC2, Q1
-    try
-        % CC1 is the number before the first 'C'
-        C_indices = strfind(policy,'C');
-        CC1(i) = str2double(policy(1:C_indices(1)-1)); 
-        % CC2 is the number after '-' but before the second 'C'
-        dash_index = strfind(policy,'-');
-        CC2(i) = str2double(policy(dash_index+1:C_indices(2)-1));
-        % Q1 is the number between '(' and '%'
-        paren_index = strfind(policy,'(');
-        percent_index = strfind(policy,'%');
-        Q1(i) = str2double(policy(paren_index+1:percent_index-1));
-    catch
-        warning(['Policy names cannot be parsed by MATLAB. Ensure the ' ...
-            'policy names follow the format 8C(35%)-3.6C'])
+    experimental = ['discharge','dod','restattop','ratetest'];
+    TF = contains(policy,experimental); % logical to check if the tests are experimental
+    if TF == 1
+        continue % skip if test is experimental
+    else
+        %% Identify CC1, CC2, Q1
+        try
+            % CC1 is the number before the first 'C'
+            C_indices = strfind(policy,'C');
+            CC1(i) = str2double(policy(1:C_indices(1)-1));
+            % CC2 is the number after '-' but before the second 'C'
+            dash_index = strfind(policy,'-');
+            CC2(i) = str2double(policy(dash_index+1:C_indices(2)-1));
+            % Q1 is the number between '(' and '%'
+            paren_index = strfind(policy,'(');
+            percent_index = strfind(policy,'%');
+            Q1(i) = str2double(policy(paren_index+1:percent_index-1));
+        catch
+            warning(['Policy names cannot be parsed by MATLAB. Ensure the ' ...
+                'policy names follow the format 8C(35%)-3.6C'])
+        end
+        
+        %% Charging time - calculated and measured
+        t80calc(i) = 60./CC1(i) .* Q1(i)./100 + 60./CC2(i) .* (80-Q1(i))./100;
+        if length(batch(i).summary.chargetime) > 100
+            t80meas100(i) = mean(batch(i).summary.chargetime(1:100));
+        else
+            t80meas100(i) = mean(batch(i).summary.chargetime);
+        end
+        
+        %% Cycles. Number of cycles completed
+        cycles(i) = max(batch(i).summary.cycle);
+        
+        %% Degradation rate. Defined as (max(capacity) - min(capacity))/cycles
+        degrate(i) = (max(batch(i).summary.QDischarge) -  ...
+            min(batch(i).summary.QDischarge))/ ...
+            cycles(i);
+        
+        if length(batch(i).summary.chargetime) > 100
+            initdegrate(i) = (max(batch(i).summary.QDischarge(1:100)) -  ...
+                min(batch(i).summary.QDischarge(1:100)))/ 100;
+            
+            finaldegrate(i) = (max(batch(i).summary.QDischarge(end-100:end)) -  ...
+                min(batch(i).summary.QDischarge(end-100:end)))/ 100;
+        else
+            initdegrate(i) = degrate(i);
+            
+            finaldegrate(i) = degrate(i);
+        end
     end
-    
-    %% Charging time - calculated and measured
-    t80calc(i) = 60./CC1(i) .* Q1(i)./100 + 60./CC2(i) .* (80-Q1(i))./100;
-    t80meas100(i) = mean(batch(i).summary.chargetime(1:100));
-    
-    %% Cycles. Number of cycles completed
-    cycles(i) = max(batch(i).summary.cycle);
-    
-    %% Degradation rate. Defined as (max(capacity) - min(capacity))/cycles
-    degrate(i) = (max(batch(i).summary.QDischarge) -  ...
-        min(batch(i).summary.QDischarge))/ ...
-        cycles(i);
-    
-    initdegrate(i) = (max(batch(i).summary.QDischarge(1:100)) -  ...
-        min(batch(i).summary.QDischarge(1:100)))/ 100;
-    
-    finaldegrate(i) = (max(batch(i).summary.QDischarge(end-100:end)) -  ...
-        min(batch(i).summary.QDischarge(end-100:end)))/ 100;
 end
 
 %% Creates table (for each cell)

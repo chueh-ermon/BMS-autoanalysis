@@ -17,6 +17,9 @@ init_tic = tic; % time entire script
 %% CHANGE THIS SETTING %%%%%%%
 batch_date = '2017-06-30'; % Format as 'yyyy-mm-dd'
 batch_name = 'batch2';
+% ALSO, CHANGE:
+%   - LINE 30 OF THIS SCRIPT - 'INCLUDE' DATE
+%   - LINE 21 OF REPORTGENERATOR.PY
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Load path names
@@ -24,8 +27,18 @@ load path.mat
 
 %% Pull CSVs if program is running on Amazon Workspace
 if path.whichcomp == 'amazonws'
-    system('aws s3 sync s3://matr.io/experiment/d3batt D:\Data --exclude "*" --include "2017-06*"')
+    system('aws s3 sync s3://matr.io/experiment/d3batt D:\Data --exclude "*" --include "2017-08*"')
 end
+
+%% Workaround for bad data %%%%%%%
+if strcmp(batch_name, 'batch2')
+    delete([path.csv_data '\' '2017-06-30_CH14.csv'])
+    delete([path.csv_data '\' '2017-06-30_CH14_Metadata.csv']')
+elseif strcmp(batch_name, 'batch3')
+    delete([path.csv_data '\' '2017-08-14_2C-5per_3_8C_CH4.csv'])
+    delete([path.csv_data '\' '2017-08-14_2C-5per_3_8C_CH4_Metadata.csv']')
+end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Run Batch Analysis for all cells
 batch = batch_analysis(batch_date);
@@ -47,8 +60,8 @@ cd(path.reports)
 pdf_name = [date '_report.pdf'];
 message_body = {'Hot off the press: Check out the latest results! '; path.message};
 email_list = {'chueh-ermon-bms@lists.stanford.edu'};
-sendemail(email_list,'BMS project: Updated results', ...
-    message_body, char(pdf_name));
+%sendemail(email_list,'BMS project: Updated results', ...
+%    message_body, char(pdf_name));
 cd(path.code)
 disp('Email sent - success!')
 

@@ -9,7 +9,7 @@ function batch3_summary_plots(batch, batch_name, T_cells, T_policies)
 T_policies = table2array(T_policies); % convert to array
 % T_cells = table2array(T_cells); % convert to array (not really needed)
 T_size = size(T_policies);
-time = 10; % target time of policies, in minutes
+time = 13.333; % target time of policies, in minutes
 scalefactor = 1e2; % factor to scale cycle life by
 maxvalue = max(T_policies(:,7))*scalefactor/2; % scale cycle life
 
@@ -49,10 +49,10 @@ hcb = colorbar; set(hcb,'YTick',[]) % colorbar with no axis
 line([8 3.6],[7.9 3.6], 'LineWidth',22.5,'color','w');
 line([3.6 1],[3.6 1], 'LineWidth',22.5,'color','w');
 
-% add explanation of color
-dim = [0.3 0.1 0.3 0.2];
-str = {'Color = cycle life',' (blue = higher worse cycle life)'};
-annotation('textbox',dim,'String',str,'FitBoxToText','on','LineStyle','none','FontSize',16)
+% % add explanation of color
+% dim = [0.3 0.1 0.3 0.2];
+% str = {'Color = cycle life',' (blue = higher worse cycle life)'};
+% annotation('textbox',dim,'String',str,'FitBoxToText','on','LineStyle','none','FontSize',16)
 
 %% Save file
 saveas(contour1, 'summary3_contour1.png')
