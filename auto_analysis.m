@@ -14,13 +14,25 @@
 clear, close all
 init_tic = tic; % time entire script
 
-%% CHANGE THIS SETTING %%%%%%%
-batch_date = '2017-06-30'; % Format as 'yyyy-mm-dd'
-batch_name = 'batch2';
+%%%%%%% CHANGE THIS SETTING %%%%%%%
+batch_name = 'batch3';
 % ALSO, CHANGE:
-%   - LINE 30 OF THIS SCRIPT - 'INCLUDE' DATE
+%   - LINE 40 OF THIS SCRIPT - 'INCLUDE' DATE
 %   - LINE 21 OF REPORTGENERATOR.PY
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% IF ADDING A NEW BATCH, ADD batch_date TO THE SWITCH/CASE STATEMENT BELOW
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Get batch_date from batch_name
+switch batch_name % Format as 'yyyy-mm-dd'
+    case 'batch1'
+        batch_date = '2017-05-12';
+    case 'batch2'
+        batch_date = '2017-06-30';
+    case 'batch3'
+        batch_date = '2017-08-14';
+    otherwise
+        warning('batch_date not recognized')
+end
 
 %% Load path names
 load path.mat
@@ -30,7 +42,7 @@ if path.whichcomp == 'amazonws'
     system('aws s3 sync s3://matr.io/experiment/d3batt D:\Data --exclude "*" --include "2017-08*"')
 end
 
-%% Workaround for bad data %%%%%%%
+%% Workaround for bad csvs %%%%%%%
 if strcmp(batch_name, 'batch2')
     delete([path.csv_data '\' '2017-06-30_CH14.csv'])
     delete([path.csv_data '\' '2017-06-30_CH14_Metadata.csv']')
