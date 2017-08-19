@@ -26,6 +26,8 @@ unique_readable_policies = unique(readable_policies);
 %plot and format the images
 figAbsolute = figure('units','normalized','outerposition',[0 0 1 1]); hold on, box on
 figNormalized = figure('units','normalized','outerposition',[0 0 1 1]); hold on, box on
+
+% Loop through
 for i = 1:length(unique_policies)
     % Keep consistent color
     [col, mark] = random_color('y','y');
@@ -43,27 +45,30 @@ for i = 1:length(unique_policies)
     sortedy = sort(y,'descend');
     normalizationValue = sortedy(3);
     figure(figAbsolute);
-    plot(x,y,markers{mod(j,numel(markers))+1},'color',col);
+    plot(x,y,markers{mod(i,numel(markers))+1},'color',col);
     figure(figNormalized);
-    plot(x,y./normalizationValue,markers{mod(j,numel(markers))+1},'color',col);
+    plot(x,y./normalizationValue,markers{mod(i,numel(markers))+1},'color',col);
 end
 
 %Formatting of figures
 figure(figAbsolute);
 xlabel('Cycle number')
 ylabel('Remaining discharge capacity (Ah)')
-ylim([0.85 1.1])
+if strcmp(batch_name, 'batch1') || strcmp(batch_name, 'batch2')
+    ylim([0.85 1.1])
+else
+    ylim([0.85 1.25])
+end
+%2-column legend via custom function. Not perfect but workable
+leg = columnlegend(2,unique_readable_policies,'Location','NortheastOutside','boxoff');
+print('summary1_Q_vs_n','-dpng')
+savefig(gcf,'summary1_Q_vs_n')
+
 figure(figNormalized);
 xlabel('Cycle number')
 ylabel('Remaining discharge capacity (normalized)')
 ylim([0.80 1.0])
-
 %2-column legend via custom function. Not perfect but workable
-figure(figAbsolute);
-leg = columnlegend(2,unique_readable_policies,'Location','NortheastOutside','boxoff');
-print('summary1_Q_vs_n','-dpng')
-savefig(gcf,'summary1_Q_vs_n')
-figure(figNormalized);
 leg = columnlegend(2,unique_readable_policies,'Location','NortheastOutside','boxoff');
 print('summary2_Q_vs_n_norm','-dpng')
 savefig(gcf,'summary2_Q_vs_n_norm')

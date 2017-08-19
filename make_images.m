@@ -106,7 +106,11 @@ for i = 1:num_cells
     title(strcat('Channel', {' '}, batch(i).channel_id))
     xlabel('Cycle Index')
     ylabel('Internal Resistance (Ohms)')
-    ylim([.015 .02])
+    if strcmp(batch_name, 'batch1') || strcmp(batch_name, 'batch2')
+        ylim([.015 .02])
+    else
+        ylim([.012 .014])
+    end
     
     %% plot every 100 cycles
     for j = [1 100:100:num_cycles] % plot every 100 cycles
