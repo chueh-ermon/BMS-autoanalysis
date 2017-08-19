@@ -86,7 +86,7 @@ end
 T_cells = table(CC1, Q1, CC2, t80calc, t80meas100, cycles, degrate, ...
     initdegrate,finaldegrate);
 
-%% Saves files
+%% Saves files on a cell basis
 cd(tablespath)
 results_table_file = [date '_' batch_name '_results_table_allcells.xlsx'];
 writetable(T_cells,results_table_file) % Save to CSV
@@ -100,6 +100,8 @@ col_headers = {'CC1' 'Q1' 'CC2' ...
 xlswrite(results_table_file,col_headers,'Sheet1','A1')
 cd(codepath)
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% POLICY-SPECIFIC TABLES %%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Creates table for each policy
@@ -146,7 +148,7 @@ T_policies = table(CC1_policies, Q1_policies, CC2_policies, numcells, ...
     t80calc_policies, t80meas100_policies, cycles_policies, ...
     degrate_policies, initdegrate_policies, finaldegrate_policies);
 
-%% Saves files
+%% Saves files on a policy basis
 cd(tablespath)
 results_table_file2 = [date '_' batch_name '_results_table_allpolicies.xlsx'];
 writetable(T_policies,results_table_file2) % Save to CSV
@@ -159,6 +161,7 @@ col_headers = {'CC1' 'Q1' 'CC2','Number of cells' ...
     'Final degradation rate (Ah/cycle)'};
 xlswrite(results_table_file2,col_headers,'Sheet1','A1')
 
+%% Save both result tables as .mat
 save([date '_' batch_name '_result_tables'],'T_cells', 'T_policies')
 cd(codepath)
 
