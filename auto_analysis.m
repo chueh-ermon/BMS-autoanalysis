@@ -15,7 +15,7 @@ clear, close all
 init_tic = tic; % time entire script
 
 %%%%%%% CHANGE THESE SETTINGS %%%%%%%
-email = false;
+email = true;
 batch_name = 'batch3';
 % ALSO, CHANGE:
 %   - LINE 40 OF THIS SCRIPT - 'INCLUDE' DATE
@@ -65,14 +65,13 @@ make_summary_images(batch, batch_name, T_cells, T_policies);
 %% Run the report generator (in Python)
 % This will create the PPT and convert to PDF. It saves in the Box Sync
 % folder
-cd(path.code)
 python('reportgenerator.py', path.images, path.reports); % run python code
 
 %% Send email
 cd(path.reports)
 pdf_name = [date '_report.pdf'];
-message_body = {['Hot off the press: Check out the latest ' batch_name ' results! ']; ...
-    path.message};
+message_body = {['Hot off the press: Check out the latest ' batch_name ' results, ' ...
+    'now featuring new and improved summary plots!']; path.message; ''; ''};
 email_list = {'chueh-ermon-bms@lists.stanford.edu'};
 if email
     sendemail(email_list,'BMS project: Updated results', ...
@@ -81,6 +80,7 @@ if email
 end
 cd(path.code)
 
+%% Sync Data_Matlab folder to AWS
 if path.whichcomp == 'amazonws'
     disp('Syncing Data_Matlab from Amazon WS to Amazon s3')
     system('aws s3 sync D:\Data_Matlab s3://matr.io/experiment/d3batt_matlab')

@@ -25,7 +25,9 @@ unique_readable_policies = unique(readable_policies);
 %Two figures, absolute and normalized. We switch between the two as we
 %plot and format the images
 figAbsolute = figure('units','normalized','outerposition',[0 0 1 1]); hold on, box on
+set(gca, 'FontSize', 16)
 figNormalized = figure('units','normalized','outerposition',[0 0 1 1]); hold on, box on
+set(gca, 'FontSize', 16)
 
 % Loop through
 for i = 1:length(unique_policies)
@@ -82,7 +84,7 @@ elseif batch_name == 'batch2'
     batch2_summary_plots(batch, batch_name, T_cells, T_policies)
 % Batch 3 (2017-8-14)
 elseif batch_name == 'batch3'
-    batch3_summary_plots(batch, batch_name, T_cells, T_policies)
+    batch3_summary_plots(T_policies)
 else
     warning('Batch name not recognized. No summary figures generated')
 end
