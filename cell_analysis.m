@@ -26,6 +26,9 @@ cd(csvpath)
     Discharge_CapacityAh = result_data(:,9);
     Internal_Resistance = result_data(:,13);
     TemperatureT1 = result_data(:,14);
+    % batch0 attempts
+    %Internal_Resistance = ones(length(result_data(:,1)),1);
+    %TemperatureT1 = ones(length(result_data(:,1)),1);
 
     % Cell temp is 14, Shelf is 15 and 16
     % Initialize Vector of capacity in and out, maximum temperature, 
@@ -56,7 +59,7 @@ cd(csvpath)
     
     % if batch1, skip cycle 1 data, and add all cycles, including last to
     % struct
-    if batch_date == '2017-05-12'
+    if strcmp(batch_date, '2017-05-12')
         %x = 0;
         start = 2;
     else

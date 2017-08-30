@@ -1,5 +1,7 @@
 function batch = batch_analysis(batch_date)
 
+disp('Starting batch_analysis'), batch_tic = tic;
+
 %% Initialize batch struct
 batch = struct('policy', ' ', 'policy_readable', ' ', 'barcode', ...
     ' ', 'channel_id', ' ', 'cycles', struct('discharge_dQdVvsV', ...
@@ -49,24 +51,32 @@ for i = 1:numel(filenames)
         [~, ~, text_data] = xlsread(filenames{i});
         cell_ID = string(text_data{2, 11});
         channel_id = string((text_data{2, 4} + 1));
-        % Here would be where to remove other Metadata info 
+        % Eextract metadata 
         barcodes = [barcodes, cell_ID];
 
         channel_ids = [channel_ids, channel_id];
         continue
     else 
-        % File is a result Data 
+        % File is a result csv 
         test_files = [test_files, filenames{i}];
         test_name = filenames{i};
-        underscore_i = strfind(test_name, '_');
-        %Find underscore before and after charging algorithm.
-        charging_algorithm = test_name(underscore_i(1) ...
-            + 1:underscore_i(end) - 1);
-        % Store Charging Algorithm name
+        
+
+        if strcmp(batch_date,'20170411')
+            underscore_i = strfind(test_name, '-');
+            charging_algorithm = test_name(underscore_i(1):end);
+        else
+            % Find underscore before and after charging algorithm
+            underscore_i = strfind(test_name, '_');
+            charging_algorithm = test_name(underscore_i(1) ...
+                + 1:underscore_i(end) - 1);
+        end
+        
+        % Store charging algorithm name
         CA_array = [CA_array, charging_algorithm];
     end
 end
-% Remove any duplicates. 
+% Remove any duplicates
 CA_array = unique(CA_array);
 
 %% Load each file sequentially, save data into struct 
@@ -74,23 +84,25 @@ for j = 1:numel(CA_array)
     charging_algorithm = CA_array{j};
     
     for i = 1:numel(test_files)
-        % Find tests that are within that charging algorithm.
+        % Find tests that are within that charging algorithm
         filename = test_files{i};
         if contains(filename, charging_algorithm) == 1
-            % Update on progress 
+            % Update user on progress 
             tic
+            
             disp(['Starting processing of file ' num2str(i) ' of ' ...
                 num2str(numel(test_files)) ': ' filename])
             
-            %% Run CSV Analysis for this file
+            %% Run cell_analysis for this file
             result_data = csvread(strcat(path.csv_data, '\', test_files{i}),1,1);
             cd(path.code)
+            try
             battery = cell_analysis(result_data, charging_algorithm, ...
                 batch_date, path.csv_data);
             battery.barcode = barcodes(i);
             battery.channel_id = channel_ids(i);
             batch(i) = battery;
-            
+            end
             cd(path.csv_data)
         else 
             continue
@@ -104,4 +116,7 @@ tic
 save(strcat(batch_date, '_batchdata'), 'batch_date', 'batch')
 toc
 cd(path.code)
+
+disp('Completed batch_analysis'), toc(batch_tic)
+
 end
