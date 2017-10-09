@@ -97,7 +97,11 @@ col_headers = {'CC1' 'Q1' 'CC2' ...
     'Cycles completed', 'Average degradation rate (Ah/cycle)', ...
     'Initial degradation rate (Ah/cycle)', ...
     'Final degradation rate (Ah/cycle)'};
-xlswrite(results_table_file,col_headers,'Sheet1','A1')
+try
+    xlswrite(results_table_file,col_headers,'Sheet1','A1')
+catch
+    warning('xlswrite error')
+end
 cd(codepath)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -159,7 +163,11 @@ col_headers = {'CC1' 'Q1' 'CC2','Number of cells' ...
     'Cycles completed', 'Average degradation rate (Ah/cycle)', ...
     'Initial degradation rate (Ah/cycle)', ...
     'Final degradation rate (Ah/cycle)'};
-xlswrite(results_table_file2,col_headers,'Sheet1','A1')
+try
+    xlswrite(results_table_file2,col_headers,'Sheet1','A1')
+catch
+    warning('xlswrite error')
+end
 
 %% Save both result tables as .mat
 save([date '_' batch_name '_result_tables'],'T_cells', 'T_policies')

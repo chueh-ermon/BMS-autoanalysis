@@ -43,7 +43,7 @@ if numel(filenames) == 0
     return
 end
 
-%% Extract Metadata and then remove from filename array
+%% Extract metadata and then remove from filename array
 for i = 1:numel(filenames)
     % Finds if .csv is a metadata
     if contains(filenames{i}, 'Meta') == 1
@@ -62,9 +62,9 @@ for i = 1:numel(filenames)
         test_name = filenames{i};
         
 
-        if strcmp(batch_date,'20170411')
-            underscore_i = strfind(test_name, '-');
-            charging_algorithm = test_name(underscore_i(1):end);
+        if strcmp(batch_date,'20170412')
+            underscore_i = strfind(test_name, '_');
+            charging_algorithm = test_name(10:underscore_i - 1);
         else
             % Find underscore before and after charging algorithm
             underscore_i = strfind(test_name, '_');
@@ -79,6 +79,10 @@ end
 % Remove any duplicates
 CA_array = unique(CA_array);
 
+if strcmp(batch_date,'20170412')
+    test_files = test_files([1:29 42:end]);
+end
+
 %% Load each file sequentially, save data into struct 
 for j = 1:numel(CA_array)
     charging_algorithm = CA_array{j};
@@ -86,22 +90,28 @@ for j = 1:numel(CA_array)
     for i = 1:numel(test_files)
         % Find tests that are within that charging algorithm
         filename = test_files{i};
-        if contains(filename, charging_algorithm) == 1
+        if contains(filename, charging_algorithm)
             % Update user on progress 
             tic
-            
             disp(['Starting processing of file ' num2str(i) ' of ' ...
                 num2str(numel(test_files)) ': ' filename])
             
             %% Run cell_analysis for this file
             result_data = csvread(strcat(path.csv_data, '\', test_files{i}),1,1);
             cd(path.code)
-            try
-            battery = cell_analysis(result_data, charging_algorithm, ...
-                batch_date, path.csv_data);
-            battery.barcode = barcodes(i);
-            battery.channel_id = channel_ids(i);
-            batch(i) = battery;
+            
+            if strcmp(batch_date,'20170412')
+                battery = cell_analysis_batch0(result_data, charging_algorithm, ...
+                    batch_date, path.csv_data);
+                battery.barcode = barcodes(i);
+                battery.channel_id = channel_ids(i);
+                batch(i) = battery;
+            else
+                battery = cell_analysis(result_data, charging_algorithm, ...
+                    batch_date, path.csv_data);
+                battery.barcode = barcodes(i);
+                battery.channel_id = channel_ids(i);
+                batch(i) = battery;
             end
             cd(path.csv_data)
         else 

@@ -24,15 +24,21 @@ cd(csvpath)
     Current = result_data(:,6);
     Charge_CapacityAh = result_data(:,8);
     Discharge_CapacityAh = result_data(:,9);
-    Internal_Resistance = result_data(:,13);
-    TemperatureT1 = result_data(:,14);
+    % Internal_Resistance = result_data(:,13);
+    % TemperatureT1 = result_data(:,14);
+    % batch0 attempts
+    Internal_Resistance = ones(length(result_data(:,1)),1);
+    TemperatureT1 = ones(length(result_data(:,1)),1);
 
-    % Cell temp is column 14, shelf temps are 15 and 16
-    % Initialize vectors
+    % Cell temp is 14, Shelf is 15 and 16
+    % Initialize Vector of capacity in and out, maximum temperature, 
+    % and discharge dQdV
     C_in = [];
     C_out = [];
     tmax = [];
     dDQdV = [];
+    
+    % Init whats needed for saving struct
     DQ = [];
     CQ = [];
     IR_CC1 = [];
@@ -41,7 +47,7 @@ cd(csvpath)
     tmin = [];
     tt_80 = [];
     
-    % Translate charging algorithm to human-readable format
+    % Translate charging algorithm to something we can put in a legend.
     t = charging_algorithm;
     battery.policy = t;
     t = strrep(t, '_' , '.' );
@@ -137,7 +143,7 @@ cd(csvpath)
             Total_time(discharge_indices + cycle_start);
             Total_time(cycle_start);
         end
-        % In case of an incomplete charge
+        % In case an incomplete charge
         if tt_80(j)<300
             tt_80(j) = tt_80(j-1);
         end
