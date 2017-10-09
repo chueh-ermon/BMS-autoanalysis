@@ -1,7 +1,7 @@
 function batch3_summary_plots(T_policies)
 %% Function: takes in tabular data to generate contour plots of results
 % Usage: batch3_summary_plots(batteries [struct],'batch_2' [str], T_cells [table],T_policies [table])
-% August 2017 Michael Chen
+% August 2017 Michael Chen & Peter Attia
 % 
 % Plot needs fixing because of artifacts
 

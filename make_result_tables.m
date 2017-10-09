@@ -7,6 +7,7 @@ function [T_cells, T_policies] = make_result_tables( batch, batch_name, ...
 %   and one for each policy (in which results for policies with multiple 
 %   cells are averaged). 
 %   It then writes the results to a CSV.
+%   Peter Attia, July 2017
 
 disp('Starting make_result_tables'),tic
 
