@@ -18,13 +18,13 @@ color_array_red = cell(num_colors,1);
 color_array_blue = cell(num_colors,1);
 
 for i = 1:num_colors/2
-    color_array_red{i}  = [255,255-i*step_size,255-i*step_size];%./256;
-    color_array_blue{i} = [255-i*step_size,255-i*step_size,255];%./256;
+    color_array_red{i}  = [255,255-i*step_size,255-i*step_size]./256;
+    color_array_blue{i} = [255-i*step_size,255-i*step_size,255]./256;
 end
 
 for i = 1:num_colors/2
-    color_array_red{i+num_colors/2}  = [255-i*step_size,0,0];%./256;
-    color_array_blue{i+num_colors/2} = [0,0,255-i*step_size];%./256;
+    color_array_red{i+num_colors/2}  = [255-i*step_size,0,0]./256;
+    color_array_blue{i+num_colors/2} = [0,0,255-i*step_size]./256;
 end
 
 % Manual color settings - deprecated 10/9/2017 (remove if above code works)
