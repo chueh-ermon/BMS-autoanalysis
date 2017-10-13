@@ -8,25 +8,49 @@ close all;
 disp('Starting make_images'), tic
 
 %% Plotting initialization
-% 18 increasing darkness reds for cycle results
-color_array = {[255,230,230]./256; [255,204,204]./256; ...
-    [255,179,179]./256; [255,153,153]./256; [255,128,128]./256; ...
-    [255,102,102]./256; [255,77,77]./256; [255,0,0]./256; ...
-    [230,0,0]./256; [204,0,0]./256; [179,0,0]./256; [153,0,0]./256; ...
-    [128,0,0]./256; [102,0,0]./256; [77,0,0]./256; [51,0,0]./256; ...
-    [26,0,0]./256; [0,0,0]};
-% 18 increasing darkness blues for cycle results
-color_array_blue = {[230,230,255]./256; [204,204,255]./256; ...
-    [179,179,255]./256; [153,153,255]./256; [128,128,255]./256; ...
-    [102,102,255]./256; [77,77,255]./256; [51,51,255]./256; ...
-    [26,26,255]./256; [0,0,255]./256; [0,0,230]./256; ...
-    [0,0,204]./256; [0,0,179]./256; [0,0,153]./256; [0,0,128]./256; ...
-    [0,0,102]./256; [0,0,77]./256; [0,0,51]./256; [0,0,26]./256; ...
-    [0,0,0]};
+% max_cycles MUST be divisible by 100, and max_cycles/100 MUST be odd.
+% e.g. 1700, 2300. can fix later
+max_cycles = 2300; % max number of cycles in the batch - can manually adjust
+num_colors = max_cycles/100 + 1; % number of colors to plot
+step_size = 256/num_colors*2-1;
+
+color_array_red = cell(num_colors,1);
+color_array_blue = cell(num_colors,1);
+
+for i = 1:num_colors/2
+    color_array_red{i}  = [255,255-i*step_size,255-i*step_size];%./256;
+    color_array_blue{i} = [255-i*step_size,255-i*step_size,255];%./256;
+end
+
+for i = 1:num_colors/2
+    color_array_red{i+num_colors/2}  = [255-i*step_size,0,0];%./256;
+    color_array_blue{i+num_colors/2} = [0,0,255-i*step_size];%./256;
+end
+
+% Manual color settings - deprecated 10/9/2017 (remove if above code works)
+% % 'numColors' increasing darkness reds for cycle results
+% color_array_red = {[255,230,230]./256; [255,204,204]./256; ...
+%     [255,179,179]./256; [255,153,153]./256; [255,128,128]./256; ...
+%     [255,102,102]./256; [255,77,77]./256; [255,0,0]./256; ...
+%     [230,0,0]./256; [204,0,0]./256; [179,0,0]./256; [153,0,0]./256; ...
+%     [128,0,0]./256; [102,0,0]./256; [77,0,0]./256; [51,0,0]./256; ...
+%     [26,0,0]./256; [0,0,0]};
+% % 'numColors' increasing darkness blues for cycle results
+% color_array_blue = {[230,230,255]./256; [204,204,255]./256; ...
+%     [179,179,255]./256; [153,153,255]./256; [128,128,255]./256; ...
+%     [102,102,255]./256; [77,77,255]./256; [51,51,255]./256; ...
+%     [26,26,255]./256; [0,0,255]./256; [0,0,230]./256; ...
+%     [0,0,204]./256; [0,0,179]./256; [0,0,153]./256; [0,0,128]./256; ...
+%     [0,0,102]./256; [0,0,77]./256; [0,0,51]./256; [0,0,26]./256; ...
+%     [0,0,0]};
+
 % Cycle legends
-legend_array = {'1'; '100'; '200'; '300'; '400'; '500'; '600'; '700'; ...
-    '800'; '900'; '1000'; '1100'; '1200'; '1300'; '1400'; '1500'; ...
-    '1600'; '1700'; '1800'};
+legend_array = {'1'}; % will look like {'1','100','200','300',...}
+idx = 2;
+for j = 100:100:max_cycles
+    legend_array{idx} = num2str(j);
+    idx = idx + 1;
+end
 
 %% Preinitialization variables
 % number of batteries in batch
@@ -129,7 +153,7 @@ for i = 1:num_cells
         yyaxis right
         % plot Qc-Qd
         plot(batch(i).cycles(j).t,batch(i).cycles(j).Q,'-', ...
-            'Color', color_array{fix(j/100)+1},'LineWidth',1.5);
+            'Color', color_array_red{fix(j/100)+1},'LineWidth',1.5);
         ylabel('Charge Capacity (Ah)')
         xlim([0,70]), ylim([0 1.2])
         
@@ -137,7 +161,7 @@ for i = 1:num_cells
         figure(cell_id)
         subplot(2,4,6)
         plot(batch(i).cycles(j).Qc + batch(i).cycles(j).Qd, ...
-            batch(i).cycles(j).V, 'Color', color_array{fix(j/100)+1}, ...
+            batch(i).cycles(j).V, 'Color', color_array_red{fix(j/100)+1}, ...
             'LineWidth',1.5);
         hold on
         xlabel('Capacity (Ah)')
@@ -149,7 +173,7 @@ for i = 1:num_cells
         figure(cell_id)
         subplot(2,4,7)
         plot(batch(i).cycles(j).t,batch(i).cycles(j).T, ...
-            'Color', color_array{fix(j/100)+1},'LineWidth',1.5);
+            'Color', color_array_red{fix(j/100)+1},'LineWidth',1.5);
         hold on
         xlabel('Time (minutes)')
         ylabel('Cell Temperature (°C)')
@@ -164,7 +188,7 @@ for i = 1:num_cells
         subplot(2,4,8)
         plot(batch(i).cycles(j).discharge_dQdVvsV.V, ...
             batch(i).cycles(j).discharge_dQdVvsV.dQdV,'Color', ...
-            color_array{fix(j/100)+1}, 'LineWidth',1.5);
+            color_array_red{fix(j/100)+1}, 'LineWidth',1.5);
         hold on
         xlabel('Voltage (Volts)')
         ylabel('dQ/dV (Ah/V)')

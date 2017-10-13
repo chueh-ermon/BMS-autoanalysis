@@ -26,7 +26,7 @@ batch_name = 'batch3';
 % Get batch_date from batch_name
 switch batch_name % Format as 'yyyy-mm-dd'
     case 'batch0'
-        batch_date = '20170411';
+        batch_date = '20170412';
     case 'batch1'
         batch_date = '2017-05-12';
     case 'batch2'
