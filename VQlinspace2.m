@@ -5,6 +5,7 @@ function [ Qlin, Vlin ] = VQlinspace2( cycle )
 %VQlinspace2 uses time/current to generate discharge capacity due to 
 %discrepancy for Qdischarge. This produces a "smoother" and more 
 %physically meaningful discharge curve
+% Last modified October 9, 2017
 
 % 1. Get the indices of all currents ~ -4 C, i.e. discharge indices.
 % For all policies, we discharge at 4C (= -4.4A)
@@ -14,7 +15,7 @@ indices = find(abs(cycle.I+4) < 0.05);
 indices = indices(1:index2);
 
 % 2. Extract Q_dis (from t_dis) and V_dis: 
-Q_dis_raw = (cycle.t(indices)-cycle.t(indices(1)))./60.*4.4;
+Q_dis_raw = -(cycle.t(indices)-cycle.t(indices(1)))./60.*cycle.I(indices).*1.1;
 V_dis_raw = cycle.V(indices);
 
 % 3. Fit to function. Ensure data is nearly untransformed
