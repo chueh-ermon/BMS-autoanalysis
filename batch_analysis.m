@@ -28,7 +28,7 @@ batch_file_name = strcat('*', batch_date, '*.csv');
 dir_info = dir(char(batch_file_name));
 filenames = {dir_info.name};
 
-% Remove deleted filenames from list 
+% Remove deleted filenames from list
 deletedcount = 0;
 for i = 1:numel(filenames)
     if filenames{i}(1) == '~'
