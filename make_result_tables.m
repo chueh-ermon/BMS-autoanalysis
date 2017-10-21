@@ -61,8 +61,12 @@ for i = 1:numel(batch)
             t80meas100(i) = mean(batch(i).summary.chargetime);
         end
         
-        %% Cycles. Number of cycles completed
-        cycles(i) = max(batch(i).summary.cycle);
+        %% Cycles. Cycle life, or number of cycles completed
+        if batch(i).summary.QDischarge(end) < 0.88
+            cycles(i) = find(batch(i).summary.QDischarge < 0.88,1);
+        else
+            cycles(i) = max(batch(i).summary.cycle);
+        end
         
         %% Degradation rate. Defined as (max(capacity) - min(capacity))/cycles
         degrate(i) = (max(batch(i).summary.QDischarge) -  ...

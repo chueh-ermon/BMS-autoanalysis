@@ -79,6 +79,10 @@ if email
     sendemail(email_list,'BMS project: Updated results', ...
         message_body, char(pdf_name));
     disp('Email sent - success!')
+else
+    sendemail({'pattia@stanford.edu'},'BMS project: Updated results', ...
+        message_body, char(pdf_name));
+    disp('Email sent - success!')
 end
 cd(path.code)
 
