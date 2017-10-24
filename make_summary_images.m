@@ -40,8 +40,10 @@ for i = 1:length(unique_policies)
     y=double.empty;
     for j = 1:numel(batch)
         if strcmp(unique_policies{i}, batch(j).policy)
+            unique_policies{i},disp(i)
+            disp(size(x)),disp(size(y))
             x = cat(2,x,batch(j).summary.cycle);
-            y = cat(2,y,batch(j).summary.QDischarge);
+            y = cat(2,y,batch(j).summary.QDischarge');
         end
     end
     sortedy = sort(y,'descend');

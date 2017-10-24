@@ -15,7 +15,7 @@ clear, close all
 init_tic = tic; % time entire script
 
 %%%%%%% CHANGE THESE SETTINGS %%%%%%%
-email = true;
+email_group = false;
 batch_name = 'batch3';
 % ALSO, CHANGE:
 %   - LINE 40 OF THIS SCRIPT - 'INCLUDE' DATE
@@ -72,10 +72,10 @@ python('reportgenerator.py', path.images, path.reports); % run python code
 %% Send email
 cd(path.reports)
 pdf_name = [date '_report.pdf'];
-message_body = {['Hot off the press: Check out the latest ' batch_name ' results, ' ...
-    'now featuring new and improved summary plots!']; path.message; ''; ''};
+message_body = {['Hot off the press: Check out the latest ' batch_name ' results!']; ...
+    path.message; ''; ''};
 email_list = {'chueh-ermon-bms@lists.stanford.edu'};
-if email
+if email_group
     sendemail(email_list,'BMS project: Updated results', ...
         message_body, char(pdf_name));
     disp('Email sent - success!')
