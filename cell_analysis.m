@@ -8,7 +8,7 @@ battery = struct('policy', ' ', 'policy_readable', ' ', 'barcode', ...
     'V', [], 'T', [], 'Qd', [], 'Q', [],'Qdlin',[]), ...
     'summary', struct('cycle', [], 'QDischarge', [], 'QCharge', [], ...
     'IR', [], 'Tmax', [], 'Tavg', [], 'Tmin', [], 'chargetime', []), ...
-    'dQdV_V',[],'Vdlin',[]);
+    'Vdlin',[]);
 
 cd(csvpath)
 
@@ -117,7 +117,6 @@ for j = start:max(Cycle_Index) - 1
 end
 
 % Update static voltage variables
-battery.dQdV_V = xVoltage2';
 battery.Vdlin = Vdlin';
 
 % Export charge capacity and correct if errant charge

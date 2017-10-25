@@ -15,7 +15,7 @@ clear, close all
 init_tic = tic; % time entire script
 
 %%%%%%% CHANGE THESE SETTINGS %%%%%%%
-email_group = true;
+email_group = false;
 batch_name = 'batch3';
 % ALSO, CHANGE:
 %   - LINE 40 OF THIS SCRIPT - 'INCLUDE' DATE

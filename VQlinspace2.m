@@ -7,30 +7,32 @@ function [ Qlin, Vlin ] = VQlinspace2( cycle )
 %physically meaningful discharge curve
 % Last modified October 24, 2017
 
-% 1. Create Vlin
+%% 1. Create Vlin
 n_points = 1000; % number of points to linearly interpolate between
 V1 = 2.0;
 V2 = 3.5;
 
-spacing = (V2 - V1) / n_points;
-Vlin = V1:spacing:V2; % voltage range for interpolation
+% Old code below - use Vlin to keep consistent with IDCA (only one vector)
+% spacing = (V2 - V1) / (n_points - 1);
+% Vlin = V1:spacing:V2; % voltage range for interpolation
+Vlin=linspace(V2,V1,n_points);
 
-% 2. Get the indices of all currents ~ -4 C, i.e. discharge indices.
+%% 2. Get the indices of all currents ~ -4 C, i.e. discharge indices.
 % For all policies, we discharge at 4C (= -4.4A)
 indices = find(abs(cycle.I+4) < 0.05);
 % Remove trailing data points
 [~, index2] = min(cycle.V(indices(1:end-2)));
 indices = indices(1:index2);
 
-% 3. Extract Q_dis (from t_dis) and V_dis:
+%% 3. Extract Q_dis (from t_dis) and V_dis:
 V_dis_raw = cycle.V(indices);
 try % Q_dis_raw occasionally gives errors
     Q_dis_raw = -(cycle.t(indices)-cycle.t(indices(1)))./60.*cycle.I(indices).*1.1;
     
-    % 4. Fit to function. Ensure data is nearly untransformed
+    %% 4. Fit to function. Ensure data is nearly untransformed
     VQfit = fit(V_dis_raw,Q_dis_raw, 'smoothingspline');
     
-    % 5. Linearly interpolate
+    %% 5. Linearly interpolate
     Qlin = VQfit(Vlin);
 catch
     warning('VQlinspace2 failed')

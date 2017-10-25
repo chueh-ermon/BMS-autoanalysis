@@ -171,7 +171,7 @@ for i = 1:num_cells
             [0 0 1 1]) % makes figure fullscreen
         set(gcf,'color','w') % make figures white
         subplot(2,4,8)
-        plot(batch(i).dQdV_V, batch(i).cycles(j).discharge_dQdV,...
+        plot(batch(i).Vdlin, batch(i).cycles(j).discharge_dQdV,...
             'Color', color_array_red{fix(j/n)+1}, 'LineWidth',1.5);
         hold on
         xlabel('Voltage (Volts)')
