@@ -14,14 +14,15 @@ batch = struct('policy', ' ', 'policy_readable', ' ', 'barcode', ...
 %% Load path names
 load path.mat
 
-%% Initialize Summary Arrays and values
-% An Array of Charging Algorithm names
+%% Initialize arrays
+% array of charging algorithm names
 CA_array = {};
-%List of all file names including Metadata
+% List of all file names including metadata
 test_files = {};
 % An array of barcodes for each cell pulled from metadata 
 barcodes = {};
 channel_ids = {};
+
 %% Find CSVs from this batch
 cd(path.csv_data)
 
@@ -46,9 +47,9 @@ end
 
 %% Extract metadata and then remove from filename array
 for i = 1:numel(filenames)
-    % Finds if .csv is a metadata
-    if contains(filenames{i}, 'Meta') == 1
-        % If so then read the cell barcode from the metadata
+    % Finds if .csv is a metadata csv
+    if contains(filenames{i}, 'Meta')
+        % If so, read the cell barcode from the metadata
         [~, ~, text_data] = xlsread(filenames{i});
         cell_ID = string(text_data{2, 11});
         channel_id = string((text_data{2, 4} + 1));
@@ -57,11 +58,10 @@ for i = 1:numel(filenames)
 
         channel_ids = [channel_ids, channel_id];
         continue
-    else 
+    else
         % File is a result csv 
         test_files = [test_files, filenames{i}];
         test_name = filenames{i};
-        
 
         if strcmp(batch_date,'20170412')
             underscore_i = strfind(test_name, '_');
@@ -84,7 +84,7 @@ if strcmp(batch_date,'20170412')
     test_files = test_files([1:29 42:end]);
 end
 
-%% Load each file sequentially, save data into struct 
+%% Load each file sequentially and save data into struct 
 for j = 1:numel(CA_array)
     charging_algorithm = CA_array{j};
     
@@ -121,10 +121,12 @@ for j = 1:numel(CA_array)
         toc
     end
 end
+
+%% Save batch as struct
 cd(path.batch_struct)
 disp(['Saving batch information to directory ', cd])
 tic
-save(strcat(batch_date, '_batchdata'), 'batch_date', 'batch')
+save(strcat(batch_date, '_batchdata','_updated_struct'), 'batch_date', 'batch')
 toc
 cd(path.code)
 

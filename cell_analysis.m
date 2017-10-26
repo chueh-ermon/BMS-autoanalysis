@@ -85,7 +85,7 @@ for j = start:max(Cycle_Index) - 1
         discharge_end = discharge_indices(end);
     end
     
-    [IDC,xVoltage2] = IDCA( battery.cycles(j).Qd(discharge_start:discharge_end), ...
+    [IDC,~] = IDCA( battery.cycles(j).Qd(discharge_start:discharge_end), ...
         battery.cycles(j).V(discharge_start:discharge_end) );
     battery.cycles(j).discharge_dQdV = IDC';
     
@@ -140,7 +140,11 @@ battery.summary.chargetime = tt_80./60; % Convert to minutes
 
 % Update cycle life, if applicable
 if battery.summary.QDischarge(end) < 0.88
-    battery.cycle_life = find(battery.summary.QDischarge<0.88, 1) - 1;
+    battery.cycle_life = find(battery.summary.QDischarge<0.88, 1);
+elseif strcmp(batch_date,'2017-05-12') || strcmp(batch_date,'2017-06-30') && ...
+        battery.summary.QDischarge(end) - 0.88 < 0.1
+    % Special case for batches 1 and 2, where we don't cycle past failure
+    battery.cycle_life = j + 1;
 end
 
 cd(thisdir)
