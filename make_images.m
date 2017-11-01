@@ -125,6 +125,12 @@ for i = 1:num_cells
     
     %% plot every n cycles
     for j = [1 n:n:num_cycles] % plot every n cycles
+        
+        % We skip the first cycle for batch1
+        if j==1 && strcmp(batch_date, '2017-05-12')
+            j = 2;
+        end
+        
         % Plot 5: current profiles
         figure(cell_id)
         subplot(2,4,5)
@@ -137,7 +143,7 @@ for i = 1:num_cells
         hold on
         yyaxis right
         % plot Qc-Qd
-        plot(batch(i).cycles(j).t,batch(i).cycles(j).Q,'-', ...
+        plot(batch(i).cycles(j).t,batch(i).cycles(j).Qc - batch(i).cycles(j).Qd,'-', ...
             'Color', color_array_red{fix(j/n)+1},'LineWidth',1.5);
         ylabel('Charge Capacity (Ah)')
         xlim([0,70]), ylim([0 1.2])

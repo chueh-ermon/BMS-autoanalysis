@@ -5,7 +5,7 @@ function battery = cell_analysis(result_data, charging_algorithm, ...
 battery = struct('policy', ' ', 'policy_readable', ' ', 'barcode', ...
     ' ', 'channel_id', ' ','cycle_life', NaN,...
     'cycles', struct('discharge_dQdV', [], 't', [], 'Qc', [], 'I', [], ...
-    'V', [], 'T', [], 'Qd', [], 'Q', [],'Qdlin',[]), ...
+    'V', [], 'T', [], 'Qd', [], 'Qdlin', [], 'Tdlin',[]), ...
     'summary', struct('cycle', [], 'QDischarge', [], 'QCharge', [], ...
     'IR', [], 'Tmax', [], 'Tavg', [], 'Tmin', [], 'chargetime', []), ...
     'Vdlin',[]);
@@ -72,7 +72,6 @@ for j = start:max(Cycle_Index) - 1
     battery.cycles(j).T = Temperature(cycle_indices);
     battery.cycles(j).t = (Total_time(cycle_indices) - Total_time(cycle_start))./60;
     battery.cycles(j).I = Current(cycle_indices)/1.1;
-    battery.cycles(j).Q = battery.cycles(j).Qd - battery.cycles(j).Qc;
     
     %% dQdV vs V for discharge
     % Indices of discharging portion of the cycle
@@ -89,9 +88,10 @@ for j = start:max(Cycle_Index) - 1
         battery.cycles(j).V(discharge_start:discharge_end) );
     battery.cycles(j).discharge_dQdV = IDC';
     
-    %% Apply VQlinspace2 function to obtain Qdlin and Vdlin
-    [Qdlin,Vdlin] = VQlinspace2(battery.cycles(j));
+    %% Apply VQlinspace3 function to obtain Qdlin, Vdlin, and Tdlin
+    [Qdlin,Vdlin,Tdlin] = VQlinspace3(battery.cycles(j));
     battery.cycles(j).Qdlin = Qdlin;
+    battery.cycles(j).Tdlin = Tdlin;
     
     %% Update summary information
     C_in(j) = max(battery.cycles(j).Qc);
