@@ -11,14 +11,13 @@
 %   - Also, ensure the required Python libraries are installed (see
 %   reportgenerator.py)
 
-clear, close all
+%clear, close all
 init_tic = tic; % time entire script
 
 %%%%%%% CHANGE THESE SETTINGS %%%%%%%
-email_group = true;
-batch_name = 'batch3';
+email_group = false;
+batch_name = 'batch4';
 % ALSO, CHANGE:
-%   - LINE 40 OF THIS SCRIPT - 'INCLUDE' DATE
 %   - LINE 21 OF REPORTGENERATOR.PY
 % IF ADDING A NEW BATCH, ADD batch_date TO THE SWITCH/CASE STATEMENT BELOW
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -33,16 +32,20 @@ switch batch_name % Format as 'yyyy-mm-dd'
         batch_date = '2017-06-30';
     case 'batch3'
         batch_date = '2017-08-14';
+    case 'batch4'
+        batch_date = '2017-12-04';
     otherwise
         warning('batch_date not recognized')
 end
 
 %% Load path names
 load path.mat
+cd(path.code)
 
 %% Pull CSVs if program is running on Amazon Workspace
 if path.whichcomp == 'amazonws'
-    system('aws s3 sync s3://matr.io/experiment/d3batt D:\Data --exclude "*" --include "2017-08*"')
+    aws_pulldata = ['aws s3 sync s3://matr.io/experiment/d3batt D:\Data --exclude "*" --include "' batch_date(1:7) '*"'];
+    system(aws_pulldata)
 end
 
 %% Workaround for bad csvs %%%%%%%
@@ -52,6 +55,20 @@ if strcmp(batch_name, 'batch2')
 elseif strcmp(batch_name, 'batch3')
     delete([path.csv_data '\' '2017-08-14_2C-5per_3_8C_CH4.csv'])
     delete([path.csv_data '\' '2017-08-14_2C-5per_3_8C_CH4_Metadata.csv']')
+elseif strcmp(batch_name, 'batch4')
+    delete([path.csv_data '\' '2017-12-04_4_65C-44per_5C_CH4.csv']);
+    delete([path.csv_data '\' '2017-12-04_4_65C-44per_5C_CH4_Metadata.csv']);
+    delete([path.csv_data '\' '2017-12-04_6C-10per_5c-76_7per_2C_CH25.csv']);
+    delete([path.csv_data '\' '2017-12-04_6C-10per_5c-76_7per_2C_CH25_Metadata.csv']);
+    % Error with sql2csv converter
+    delete([path.csv_data '\' '2017-12-04_4_65C-44per_5C_CH14.csv']);
+    delete([path.csv_data '\' '2017-12-04_4_65C-44per_5C_CH14_Metadata.csv']);
+    delete([path.csv_data '\' '2017-12-04_4_65C-44per_5C_CH24.csv']);
+    delete([path.csv_data '\' '2017-12-04_4_65C-44per_5C_CH24_Metadata.csv']);
+    delete([path.csv_data '\' '2017-12-04_4_65C-44per_5C_CH36.csv']);
+    delete([path.csv_data '\' '2017-12-04_4_65C-44per_5C_CH36_Metadata.csv']);
+    delete([path.csv_data '\' '2017-12-04_4_65C-44per_5C_CH42.csv']);
+    delete([path.csv_data '\' '2017-12-04_4_65C-44per_5C_CH42_Metadata.csv']);
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

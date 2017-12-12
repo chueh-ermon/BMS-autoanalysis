@@ -31,8 +31,8 @@ Temperature = result_data(:,14);
 %TemperatureT1 = ones(length(result_data(:,1)),1);
 % Cell temp is 14, Shelf is 15 and 16
 
-% if batch1, skip cycle 1 data
-if strcmp(batch_date, '2017-05-12')
+% if batch1 or batch4, skip cycle 1 data
+if strcmp(batch_date, '2017-05-12') || strcmp(batch_date, '2017-12-04')
     start = 2;
 else
     start = 1;

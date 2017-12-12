@@ -33,7 +33,7 @@ for i = 1:numel(batch)
     policies{i} = policy;
     experimental = ['discharge','dod','restattop','ratetest'];
     TF = contains(policy,experimental); % logical to check if the tests are experimental
-    if TF == 1
+    if TF || count(policy,'%') == 2
         continue % skip if test is experimental
     else
         %% Identify CC1, CC2, Q1
@@ -62,8 +62,9 @@ for i = 1:numel(batch)
         end
         
         %% Cycles. Cycle life, or number of cycles completed
-        if batch(i).summary.QDischarge(end) < 0.88
-            cycles(i) = find(batch(i).summary.QDischarge < 0.88,1);
+        cutoff_Q = 0.8*1.1;
+        if batch(i).summary.QDischarge(end) < cutoff_Q
+            cycles(i) = find(batch(i).summary.QDischarge < cutoff_Q,1);
         else
             cycles(i) = max(batch(i).summary.cycle);
         end

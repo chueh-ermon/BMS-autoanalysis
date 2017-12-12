@@ -18,7 +18,7 @@ import sys
 """
 CHANGE BATCH NAME HERE
 """
-batch_name = 'batch3'
+batch_name = 'batch4'
 
 def PPTtoPDF(inputFileName, outputFileName, formatType = 32):
     """

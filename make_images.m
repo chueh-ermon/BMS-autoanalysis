@@ -9,11 +9,25 @@ close all;
 disp('Starting make_images'), tic
 
 %% Plotting initialization
+% Find max cycles
+min_max_cycle = 0; % Number of cells that the cell with the least
+                   % # of cycles has reached
+for i = 1:length(batch)
+    if length(batch(i).summary.cycle) > min_max_cycle
+        min_max_cycle = length(batch(i).summary.cycle);
+    end
+end
+
+max_cycles = floor(min_max_cycle/100).*100;
+if mod(max_cycles, 100)
+    max_cycles = max_cycles - 100;
+end
+
 % max_cycles MUST be divisible by n, and max_cycles/n MUST be odd.
 % e.g. 1700, 2300 for n=100. TODO
 %%%%%%%%%%%%%%%%%
 n = 100;
-max_cycles = 2700; % max number of cycles in the batch - manually adjust
+%max_cycles = 4100; % max number of cycles in the batch - manually adjust
 %%%%%%%%%%%%%%%%%%
 num_colors = max_cycles/n + 1; % number of colors to plot
 step_size = 256/num_colors*2-1;
@@ -31,8 +45,15 @@ for i = 1:num_colors/2
     color_array_blue{i+num_colors/2} = [0,0,255-i*step_size]./256;
 end
 
+% if batch1 or batch4, skip cycle 1 data
+if strcmp(batch_date, '2017-05-12') || strcmp(batch_date, '2017-12-04')
+    start = 2;
+else
+    start = 1;
+end
+
 % Cycle legends
-legend_array = {'1'}; % for n=100, legend_array={'1','100','200','300',...}
+legend_array = {num2str(start)}; % for n=100, legend_array={'1','100','200','300',...}
 idx = 2;
 for j = n:n:max_cycles
     legend_array{idx} = num2str(j);
@@ -124,12 +145,7 @@ for i = 1:num_cells
     end
     
     %% plot every n cycles
-    for j = [1 n:n:num_cycles] % plot every n cycles
-        
-        % We skip the first cycle for batch1
-        if j==1 && strcmp(batch_date, '2017-05-12')
-            j = 2;
-        end
+    for j = [start n:n:num_cycles] % plot every n cycles
         
         % Plot 5: current profiles
         figure(cell_id)

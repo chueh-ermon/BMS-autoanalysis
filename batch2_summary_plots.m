@@ -32,11 +32,13 @@ for i = 1:T_size(1)
     if T_policies(i,2) == 80
         if T_policies(i,1) == 4.8
             figure(contour1)
-            scatter(T_policies(i,1),T_policies(i,2),'rsquare','CData',T_policies(i,8)*scalefactor,'SizeData',250,'LineWidth',5)
+            scatter(T_policies.CC1(i),T_policies.CC2(i),'rsquare', 'filled', ...
+                'CData',[0 0 0],'SizeData',250)        
         end
     else
         figure(contour1)
-        scatter(T_policies(i,1),T_policies(i,2),'ro','CData',T_policies(i,8)*scalefactor,'SizeData',250,'LineWidth',5)
+        scatter(T_policies.CC1(i),T_policies.CC2(i),'ro', 'filled', ...
+            'CData',[0 0 0],'SizeData',250)
     end
     caxis([0 maxvalue])
 end

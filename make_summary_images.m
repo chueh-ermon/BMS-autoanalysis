@@ -58,7 +58,7 @@ end
 figure(figAbsolute);
 xlabel('Cycle number')
 ylabel('Remaining discharge capacity (Ah)')
-if strcmp(batch_name, 'batch1') || strcmp(batch_name, 'batch2')
+if strcmp(batch_name, 'batch1') || strcmp(batch_name, 'batch2') || strcmp(batch_name, 'batch4')
     ylim([0.85 1.1])
 else
     ylim([0.85 1.25])
@@ -79,13 +79,14 @@ savefig(gcf,'summary2_Q_vs_n_norm')
 
 %% Make different summary plots for each batch
 % Batch 1 (2017-05-12)
-if batch_name == 'batch1'
+if strcmp(batch_name, 'batch1')
     batch1_summary_plots(batch, batch_name, T_cells, T_policies)
-% Batch 2 (2017-06-30)
-elseif batch_name == 'batch2'
-    batch2_summary_plots(batch, batch_name, T_cells, T_policies)
-% Batch 3 (2017-8-14)
-elseif batch_name == 'batch3'
+% Batch 2 (2017-06-30) and Batch 4 (2017-12-04)s
+elseif strcmp(batch_name, 'batch2') || strcmp(batch_name, 'batch4')
+    %batch2_summary_plots2(batch, batch_name, T_cells, T_policies)
+    batch2_summary_plots2(T_policies)
+% Batch 3 (2017-08-14)
+elseif strcmp(batch_name,'batch3')
     batch3_summary_plots(T_policies)
 else
     warning('Batch name not recognized. No summary figures generated')
