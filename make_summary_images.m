@@ -40,7 +40,6 @@ for i = 1:length(unique_policies)
     y=double.empty;
     for j = 1:numel(batch)
         if strcmp(unique_policies{i}, batch(j).policy)
-            unique_policies{i},disp(i)
             disp(size(x)),disp(size(y))
             x = cat(2,x,batch(j).summary.cycle');
             y = cat(2,y,batch(j).summary.QDischarge');
@@ -81,10 +80,12 @@ savefig(gcf,'summary2_Q_vs_n_norm')
 % Batch 1 (2017-05-12)
 if strcmp(batch_name, 'batch1')
     batch1_summary_plots(batch, batch_name, T_cells, T_policies)
-% Batch 2 (2017-06-30) and Batch 4 (2017-12-04)s
+% Batch 2 (2017-06-30) and Batch 4 (2017-12-04)
 elseif strcmp(batch_name, 'batch2') || strcmp(batch_name, 'batch4')
-    %batch2_summary_plots2(batch, batch_name, T_cells, T_policies)
     batch2_summary_plots2(T_policies)
+    if strcmp(batch_name, 'batch4')
+        batch4_summary_plots(batch);
+    end
 % Batch 3 (2017-08-14)
 elseif strcmp(batch_name,'batch3')
     batch3_summary_plots(T_policies)

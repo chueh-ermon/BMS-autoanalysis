@@ -1,4 +1,4 @@
-function Q1 = batch2_summary_plots2(T_policies)
+function batch2_summary_plots2(T_policies)
 %% Function: takes in tabular data to generate contour plots of results
 % Usage: batch3_summary_plots(batteries [struct],'batch_2' [str], T_cells [table],T_policies [table])
 % August 2017 Michael Chen & Peter Attia
