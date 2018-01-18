@@ -80,10 +80,10 @@ savefig(gcf,'summary2_Q_vs_n_norm')
 % Batch 1 (2017-05-12)
 if strcmp(batch_name, 'batch1')
     batch1_summary_plots(batch, batch_name, T_cells, T_policies)
-% Batch 2 (2017-06-30) and Batch 4 (2017-12-04)
-elseif strcmp(batch_name, 'batch2') || strcmp(batch_name, 'batch4')
+% Batch 2 (2017-06-30), Batch 4 (2017-12-04), Batch 5 (2018-01-18)
+elseif strcmp(batch_name, 'batch2') || strcmp(batch_name, 'batch4') || strcmp(batch_name, 'batch5')
     batch2_summary_plots2(T_policies)
-    if strcmp(batch_name, 'batch4')
+    if strcmp(batch_name, 'batch4') || strcmp(batch_name, 'batch5')
         batch4_summary_plots(batch);
     end
 % Batch 3 (2017-08-14)

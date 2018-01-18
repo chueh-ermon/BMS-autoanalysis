@@ -17,8 +17,7 @@ init_tic = tic; % time entire script
 %%%%%%% CHANGE THESE SETTINGS %%%%%%%
 email_group = false;
 batch_name = 'batch4';
-% ALSO, CHANGE:
-%   - LINE 21 OF REPORTGENERATOR.PY
+% ALSO, CHANGE LINE 21 OF REPORTGENERATOR.PY
 % IF ADDING A NEW BATCH, ADD batch_date TO THE SWITCH/CASE STATEMENT BELOW
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -34,6 +33,8 @@ switch batch_name % Format as 'yyyy-mm-dd'
         batch_date = '2017-08-14';
     case 'batch4'
         batch_date = '2017-12-04';
+    case 'batch5'
+        batch_date = '2018-01-18';
     otherwise
         warning('batch_date not recognized')
 end
@@ -97,7 +98,9 @@ if email_group
         message_body, char(pdf_name));
     disp('Email sent - success!')
 else
-    sendemail({'pattia@stanford.edu'},'BMS project: Updated results', ...
+    email_list_debugging = {'pattia@stanford.edu','normanj@stanford.edu',...
+        'pkherring@gmail.com','kseverso@mit.edu','murat.aykol@tri.global'};
+    sendemail(email_list_debugging,'BMS project: Updated results', ...
         message_body, char(pdf_name));
     disp('Email sent - success!')
 end
