@@ -83,9 +83,6 @@ if strcmp(batch_name, 'batch1')
 % Batch 2 (2017-06-30), Batch 4 (2017-12-04), Batch 5 (2018-01-18)
 elseif strcmp(batch_name, 'batch2') || strcmp(batch_name, 'batch4') || strcmp(batch_name, 'batch5')
     batch2_summary_plots2(T_policies)
-    if strcmp(batch_name, 'batch4') || strcmp(batch_name, 'batch5')
-        batch4_summary_plots(batch);
-    end
 % Batch 3 (2017-08-14)
 elseif strcmp(batch_name,'batch3')
     batch3_summary_plots(T_policies)

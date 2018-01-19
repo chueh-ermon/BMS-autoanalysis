@@ -1,10 +1,12 @@
 %% auto_analysis.m...
+%   - Pulls latest CSVs from AWS S3 bucket to this Workspace
 %   - Runs batch_analysis (converts to struct and saves data to .mat)
 %   - Runs makes images (cell summary info)
 %   - Runs make_result_tables and make_summary_images (batch summary info)
 %   - Runs reportgenerator.py (creates PDF report)
 %   - Emails results
-% Nick Perkins, Zi Yang, Michael Chen, Peter Attia
+%   - Syncs results to AWS
+% Nick Perkins, Zi Yang, Michael Chen, Norman Jin, Peter Attia
 
 % For this file to successfully run, you must do the following:
 %   - Ensure 'python.m' is in the same folder
@@ -16,9 +18,11 @@ init_tic = tic; % time entire script
 
 %%%%%%% CHANGE THESE SETTINGS %%%%%%%
 email_group = false;
-batch_name = 'batch4';
-% ALSO, CHANGE LINE 21 OF REPORTGENERATOR.PY
-% IF ADDING A NEW BATCH, ADD batch_date TO THE SWITCH/CASE STATEMENT BELOW
+batch_name = 'batch5';
+% IF ADDING A NEW BATCH...
+%   - ADD batch_date TO THE SWITCH/CASE STATEMENT BELOW
+%   - CHANGE LINE 21 OF REPORTGENERATOR.PY
+%   - CREATE batchx_summary_plots.m AND MODIFY make_summary_images AS NEEDED 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Get batch_date from batch_name
@@ -73,8 +77,12 @@ elseif strcmp(batch_name, 'batch4')
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% Run Batch Analysis for all cells
-batch = batch_analysis(batch_date);
+%% Run batch_analysis for all cells
+if str2num(batch_name(6)) < 5
+    batch = batch_analysis(batch_date);
+else
+    batch = batch_analysis(batch_date);
+end
 
 %% Generate images & results for all cells
 make_images(batch, batch_name, batch_date, path.images);
