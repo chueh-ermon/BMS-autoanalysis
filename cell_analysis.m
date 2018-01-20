@@ -52,9 +52,17 @@ tt_80 = zeros(max(Cycle_Index) - start - 1,1);
 % Parse battery.policy into a "readable" policy, battery.policy_readable
 t = charging_algorithm;
 battery.policy = t;
+t = strrep(t, 'C_','C(');
 t = strrep(t, '_' , '.' );
-t = strrep(t, '-' , '(' );
 t = strrep(t, 'per.' , '%)-' );
+% For 3-step policies:
+%   Replace '6C(20%)-0.1C20.1%)-5C' with '6C(20%)-0.1C(20.1%)-5C'
+matchStr = regexp(t,'C\d','match');
+if ~isempty(matchStr)
+    matchStr = matchStr{1};
+    c2 = matchStr(2:end);
+    t = regexprep(t,'C\d',['C(' c2]);
+end
 battery.policy_readable = t;
 
 thisdir = cd;

@@ -16,12 +16,16 @@
 %clear, close all
 init_tic = tic; % time entire script
 
+%% Load path names
+load path.mat
+cd(path.code)
+
 %%%%%%% CHANGE THESE SETTINGS %%%%%%%
 email_group = false;
-batch_name = 'batch5';
+batch_name = 'batch4';
+%   ALSO, CHANGE LINE 21 OF REPORTGENERATOR.PY
 % IF ADDING A NEW BATCH...
 %   - ADD batch_date TO THE SWITCH/CASE STATEMENT BELOW
-%   - CHANGE LINE 21 OF REPORTGENERATOR.PY
 %   - CREATE batchx_summary_plots.m AND MODIFY make_summary_images AS NEEDED 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -42,10 +46,6 @@ switch batch_name % Format as 'yyyy-mm-dd'
     otherwise
         warning('batch_date not recognized')
 end
-
-%% Load path names
-load path.mat
-cd(path.code)
 
 %% Pull CSVs if program is running on Amazon Workspace
 if path.whichcomp == 'amazonws'
@@ -106,8 +106,9 @@ if email_group
         message_body, char(pdf_name));
     disp('Email sent - success!')
 else
-    email_list_debugging = {'pattia@stanford.edu','normanj@stanford.edu',...
-        'pkherring@gmail.com','kseverso@mit.edu','murat.aykol@tri.global'};
+    email_list_debugging = {'pattia@stanford.edu'};
+    %email_list_debugging = {'pattia@stanford.edu','normanj@stanford.edu',...
+    %    'pkherring@gmail.com','kseverso@mit.edu','murat.aykol@tri.global'};
     sendemail(email_list_debugging,'BMS project: Updated results', ...
         message_body, char(pdf_name));
     disp('Email sent - success!')
