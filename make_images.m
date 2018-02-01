@@ -107,14 +107,14 @@ for i = 1:num_cells
     % max_cycles MUST be divisible by n, and max_cycles/n MUST be odd.
     % e.g. 1700, 2300 for n=100.
     %%%%%%%%%%%%%%%%%
-    cycles_for_plotting = [start n:n:num_cycles] % plot every n cycles
+    cycles_for_plotting = [start n:n:num_cycles]; % plot every n cycles
     %%%%%%%%%%%%%%%%%%
     max_cycles = max(cycles_for_plotting);
     if ~mod(max_cycles, 200)
         max_cycles = max_cycles + 100;
     end
     
-    if max_cycles == 2 % <100 cycles completed
+    if max_cycles <= 2 % <100 cycles completed
         num_colors = 2;
         max_cycles = start;
         step_size = 255;

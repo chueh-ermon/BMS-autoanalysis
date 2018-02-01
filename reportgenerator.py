@@ -16,9 +16,15 @@ import comtypes.client # for opening PowerPoint from python
 import sys
 
 """
-CHANGE BATCH NAME HERE
+Assign variable names to arguments from MATLAB
 """
-batch_name = 'batch4'
+path_images = sys.argv[1]
+path_reports = sys.argv[2]
+batch_name = sys.argv[3]
+
+# path_images = 'D:\Data_Matlab\Batch_images'
+# path_reports = 'D:\Data_Matlab\Reports'
+# batch_name = 'batch5'
 
 def PPTtoPDF(inputFileName, outputFileName, formatType = 32):
     """
@@ -62,7 +68,7 @@ title.text = "Current Cycling Progress"
 subtitle.text = today
 
 # CD to directory with most recent images
-os.chdir(sys.argv[1] + '\\' + batch_name + '\\')
+os.chdir(path_images + '\\' + batch_name + '\\')
 
 # Add .png files in this directory. Start with summary figures
 all_images = glob.glob('*.png')
@@ -75,9 +81,8 @@ for file in all_images:
     if "summary" not in file:
         addImageSlide(file)
 
-# Directory for saving reports
-saveDir = sys.argv[2]
-os.chdir(saveDir)
+# Change to directory for saving reports
+os.chdir(path_reports)
 
 # Create file names
 reportFileFull = saveDir + '\\' + reportFile

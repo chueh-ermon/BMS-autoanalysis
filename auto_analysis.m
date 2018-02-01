@@ -21,9 +21,8 @@ load path.mat
 cd(path.code)
 
 %%%%%%% CHANGE THESE SETTINGS %%%%%%%
-email_group = false;
-batch_name = 'batch4';
-%   ALSO, CHANGE LINE 21 OF REPORTGENERATOR.PY
+email_group = true;
+batch_name = 'batch6';
 % IF ADDING A NEW BATCH...
 %   - ADD batch_date TO THE SWITCH/CASE STATEMENT BELOW
 %   - CREATE batchx_summary_plots.m AND MODIFY make_summary_images AS NEEDED 
@@ -43,6 +42,8 @@ switch batch_name % Format as 'yyyy-mm-dd'
         batch_date = '2017-12-04';
     case 'batch5'
         batch_date = '2018-01-18';
+    case 'batch6'
+        batch_date = '2018-02-01';
     otherwise
         warning('batch_date not recognized')
 end
@@ -74,15 +75,14 @@ elseif strcmp(batch_name, 'batch4')
     delete([path.csv_data '\' '2017-12-04_4_65C-44per_5C_CH36_Metadata.csv']);
     delete([path.csv_data '\' '2017-12-04_4_65C-44per_5C_CH42.csv']);
     delete([path.csv_data '\' '2017-12-04_4_65C-44per_5C_CH42_Metadata.csv']);
+elseif strcmp(batch_name, 'batch5')
+    delete([path.csv_data '\' '2018-01-18_batch5_CH41.csv']);
+    delete([path.csv_data '\' '2018-01-18_batch5_CH41_Metadata.csv']);
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Run batch_analysis for all cells
-if str2num(batch_name(6)) < 5
-    batch = batch_analysis(batch_date);
-else
-    batch = batch_analysis(batch_date);
-end
+batch = batch_analysis(batch_date);
 
 %% Generate images & results for all cells
 make_images(batch, batch_name, batch_date, path.images);
@@ -93,7 +93,7 @@ make_summary_images(batch, batch_name, T_cells, T_policies);
 %% Run the report generator (in Python)
 % This will create the PPT and convert to PDF. It saves in the Box Sync
 % folder
-python('reportgenerator.py', path.images, path.reports); % run python code
+python('reportgenerator.py', path.images, path.reports, batch_name); % run python code
 
 %% Send email
 cd(path.reports)

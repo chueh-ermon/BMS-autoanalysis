@@ -97,6 +97,8 @@ if strcmp(batch_date,'20170412')
     test_files = test_files([1:29 42:end]);
 end
 
+k = 1;
+
 %% Load each file sequentially and save data into struct 
 for j = 1:numel(CA_array)
     charging_algorithm = CA_array{j};
@@ -116,8 +118,9 @@ for j = 1:numel(CA_array)
         if strcmp(CA,charging_algorithm)
             % Update user on progress 
             tic
-            disp(['Starting processing of file ' num2str(i) ' of ' ...
+            disp(['Starting processing of file ' num2str(k) ' of ' ...
                 num2str(numel(test_files)) ': ' filename])
+            k = k + 1;
             
             %% Run cell_analysis for this file
             result_data = csvread(strcat(path.csv_data, '\', test_files{i}),1,1);
