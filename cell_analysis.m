@@ -54,7 +54,10 @@ t = charging_algorithm;
 battery.policy = t;
 t = strrep(t, 'C_','C(');
 t = strrep(t, '_' , '.' );
-t = strrep(t, 'per.' , '%)-' );
+t = strrep(t, 'PER.' , '%)-' );
+t = strrep(t, '(NEWSTRUCTURE','-newstructure'); % new to batch6
+t = strrep(t, 'VARCHARGE.','VarCharge-'); % new to batch6
+t = strrep(t, '(100CYCLES','-100cycles'); % new to batch6
 % For 3-step policies:
 %   Replace '6C(20%)-0.1C20.1%)-5C' with '6C(20%)-0.1C(20.1%)-5C'
 matchStr = regexp(t,'C\d','match');
@@ -80,6 +83,13 @@ for j = start:max(Cycle_Index) - 1
     battery.cycles(j).T = Temperature(cycle_indices);
     battery.cycles(j).t = (Total_time(cycle_indices) - Total_time(cycle_start))./60;
     battery.cycles(j).I = Current(cycle_indices)/1.1;
+    
+    %% Correct for negative times from Patrick's script
+    if battery.cycles(j).t(end) < 0
+        negidx = find(battery.cycles(j).t < 0, 1);
+        constant = battery.cycles(j).t(negidx - 1) - battery.cycles(j).t(negidx);
+        battery.cycles(j).t(negidx:end) = battery.cycles(j).t(negidx:end) + constant;
+    end
     
     %% dQdV vs V for discharge
     % Indices of discharging portion of the cycle

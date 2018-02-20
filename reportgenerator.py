@@ -15,16 +15,15 @@ from pptx.util import Inches
 import comtypes.client # for opening PowerPoint from python
 import sys
 
-"""
-Assign variable names to arguments from MATLAB
-"""
+""" Assign variable names to arguments from MATLAB  """
 path_images = sys.argv[1]
 path_reports = sys.argv[2]
 batch_name = sys.argv[3]
 
-# path_images = 'D:\Data_Matlab\Batch_images'
-# path_reports = 'D:\Data_Matlab\Reports'
-# batch_name = 'batch5'
+""" Use lines 26-28 for debugging """
+#path_images = 'D:\Data_Matlab\Batch_images'
+#path_reports = 'D:\Data_Matlab\Reports'
+#batch_name = 'batch6'
 
 def PPTtoPDF(inputFileName, outputFileName, formatType = 32):
     """
@@ -85,8 +84,8 @@ for file in all_images:
 os.chdir(path_reports)
 
 # Create file names
-reportFileFull = saveDir + '\\' + reportFile
-reportFileFullPDF = saveDir + '\\' + reportFile.replace('pptx','pdf')
+reportFileFull = path_reports + '\\' + reportFile
+reportFileFullPDF = path_reports + '\\' + reportFile.replace('pptx','pdf')
 
 # Save powerpoint
 prs.save(reportFileFull)

@@ -21,8 +21,8 @@ load path.mat
 cd(path.code)
 
 %%%%%%% CHANGE THESE SETTINGS %%%%%%%
-email_group = true;
-batch_name = 'batch6';
+email_group = false;
+batch_name = 'batch2';
 % IF ADDING A NEW BATCH...
 %   - ADD batch_date TO THE SWITCH/CASE STATEMENT BELOW
 %   - CREATE batchx_summary_plots.m AND MODIFY make_summary_images AS NEEDED 
@@ -117,9 +117,21 @@ cd(path.code)
 
 %% Sync Data_Matlab folder to AWS
 if path.whichcomp == 'amazonws'
-    disp('Syncing Data_Matlab from Amazon WS to Amazon s3')
+    disp('Syncing Data_Matlab from Amazon WS to Amazon S3')
     system('aws s3 sync D:\Data_Matlab s3://matr.io/experiment/d3batt_matlab')
     disp('Sync complete!')
+end
+
+%% Clear contents of D:\Data folder
+if path.whichcomp == 'amazonws'
+    disp('Deleting ')
+    cd('D:\')
+    if exist('Data','dir')
+        rmdir('Data','s')
+    end
+    mkdir('Data')
+    cd(path.code)
+    disp('Delete complete!')
 end
 toc(init_tic)
 

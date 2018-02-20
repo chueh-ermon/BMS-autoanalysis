@@ -61,7 +61,7 @@ for i = 1:numel(filenames)
         channel_ids = [channel_ids, channel_id];
         
         % Extract charging algorithm
-        schedule_file = text_data{2, 9};
+        schedule_file = upper(text_data{2, 9});
         % Find hyphen before charging algorithm
         % Example schedule file:
         % '2017-12-04_tests\20170630-3_6C_30per_6C.sdu'
@@ -151,7 +151,7 @@ end
 cd(path.batch_struct)
 disp(['Saving batch information to directory ', cd])
 tic
-save(strcat(batch_date, '_batchdata','_updated_struct'), 'batch_date', 'batch')
+save(strcat(batch_date, '_batchdata','_updated_struct_errorcorrect'), 'batch_date', 'batch')
 toc
 cd(path.code)
 
