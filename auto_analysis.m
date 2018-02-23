@@ -22,7 +22,7 @@ cd(path.code)
 
 %%%%%%% CHANGE THESE SETTINGS %%%%%%%
 email_group = false;
-batch_name = 'batch2';
+batch_name = 'batch7';
 % IF ADDING A NEW BATCH...
 %   - ADD batch_date TO THE SWITCH/CASE STATEMENT BELOW
 %   - CREATE batchx_summary_plots.m AND MODIFY make_summary_images AS NEEDED 
@@ -44,6 +44,8 @@ switch batch_name % Format as 'yyyy-mm-dd'
         batch_date = '2018-01-18';
     case 'batch6'
         batch_date = '2018-02-01';
+    case 'batch7'
+        batch_date = '2018-02-01';
     otherwise
         warning('batch_date not recognized')
 end
@@ -55,7 +57,12 @@ if path.whichcomp == 'amazonws'
 end
 
 %% Workaround for bad csvs %%%%%%%
-if strcmp(batch_name, 'batch2')
+if strcmp(batch_name, 'batch1')
+    delete([path.csv_data '\' '2017-05-12_3_6C-80per_3_6C_CH4.csv'])
+    delete([path.csv_data '\' '2017-05-12_3_6C-80per_3_6C_CH4_Metadata.csv']')
+    delete([path.csv_data '\' '2017-05-12_4_4C-80per_4_4C_CH8.csv'])
+    delete([path.csv_data '\' '2017-05-12_4_4C-80per_4_4C_CH8_Metadata.csv']')
+elseif strcmp(batch_name, 'batch2')
     delete([path.csv_data '\' '2017-06-30_CH14.csv'])
     delete([path.csv_data '\' '2017-06-30_CH14_Metadata.csv']')
 elseif strcmp(batch_name, 'batch3')
@@ -78,6 +85,9 @@ elseif strcmp(batch_name, 'batch4')
 elseif strcmp(batch_name, 'batch5')
     delete([path.csv_data '\' '2018-01-18_batch5_CH41.csv']);
     delete([path.csv_data '\' '2018-01-18_batch5_CH41_Metadata.csv']);
+elseif strcmp(batch_name, 'batch7')
+    delete([path.csv_data '\' '2018-01-18_batch5_CH26.csv']);
+    delete([path.csv_data '\' '2018-01-18_batch5_CH26_Metadata.csv']);
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -124,7 +134,7 @@ end
 
 %% Clear contents of D:\Data folder
 if path.whichcomp == 'amazonws'
-    disp('Deleting ')
+    disp('Deleting D:\Data')
     cd('D:\')
     if exist('Data','dir')
         rmdir('Data','s')
