@@ -45,14 +45,14 @@ switch batch_name % Format as 'yyyy-mm-dd'
     case 'batch6'
         batch_date = '2018-02-01';
     case 'batch7'
-        batch_date = '2018-02-01';
+        batch_date = '2018-02-20';
     otherwise
         warning('batch_date not recognized')
 end
 
 %% Pull CSVs if program is running on Amazon Workspace
 if path.whichcomp == 'amazonws'
-    aws_pulldata = ['aws s3 sync s3://matr.io/experiment/d3batt D:\Data --exclude "*" --include "' batch_date(1:7) '*"'];
+    aws_pulldata = ['aws s3 sync s3://matr.io/experiment/d3batt D:\Data --exclude "*" --include "' batch_date '*"'];
     system(aws_pulldata)
 end
 
@@ -86,13 +86,13 @@ elseif strcmp(batch_name, 'batch5')
     delete([path.csv_data '\' '2018-01-18_batch5_CH41.csv']);
     delete([path.csv_data '\' '2018-01-18_batch5_CH41_Metadata.csv']);
 elseif strcmp(batch_name, 'batch7')
-    delete([path.csv_data '\' '2018-01-18_batch5_CH26.csv']);
-    delete([path.csv_data '\' '2018-01-18_batch5_CH26_Metadata.csv']);
+    delete([path.csv_data '\' '2018-02-20_batch7_CH26.csv']);
+    delete([path.csv_data '\' '2018-02-20_batch7_CH26_Metadata.csv']);
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Run batch_analysis for all cells
-batch = batch_analysis(batch_date);
+batch = batch_analysis2(batch_date);
 
 %% Generate images & results for all cells
 make_images(batch, batch_name, batch_date, path.images);
@@ -116,7 +116,7 @@ if email_group
         message_body, char(pdf_name));
     disp('Email sent - success!')
 else
-    email_list_debugging = {'pattia@stanford.edu'};
+    email_list_debugging = {'pattia@stanford.edu', 'kseverso@mit.edu'};
     %email_list_debugging = {'pattia@stanford.edu','normanj@stanford.edu',...
     %    'pkherring@gmail.com','kseverso@mit.edu','murat.aykol@tri.global'};
     sendemail(email_list_debugging,'BMS project: Updated results', ...

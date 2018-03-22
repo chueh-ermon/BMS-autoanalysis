@@ -75,23 +75,12 @@ for i = 1:numel(filenames)
         % Store charging algorithm name
         CA_array = [CA_array, charging_algorithm];
         
-        % Create 'container' (aka dictionary) to map charging algorithms to
-        % channels
-        keySet{end+1} = char(channel_id);
-        valueSet{end+1} = charging_algorithm;
-        
         continue
     else
         % File is a result csv 
         test_files = [test_files, filenames{i}];
     end
 end
-
-% Remove any duplicates
-CA_array = unique(CA_array);
-
-% Create map object
-mapObj = containers.Map(keySet,valueSet);
 
 if strcmp(batch_date,'20170412')
     test_files = test_files([1:29 42:end]);
@@ -100,51 +89,29 @@ end
 k = 1;
 
 %% Load each file sequentially and save data into struct 
-for j = 1:numel(CA_array)
-    charging_algorithm = CA_array{j};
+n_cells = numel(test_files);
+for i = 1:n_cells
+    % Find metadata
+    filename = test_files{i};
+    CA = CA_array{i};
     
-    for i = 1:numel(test_files)
-        % Find tests that are within that charging algorithm
-        filename = test_files{i};
-        
-        underscore_i = strfind(filename, '_');
-        underscore_i = underscore_i(end);
-        % We also want the '.' in '.sdu'
-        dot_i = strfind(filename, '.');
-        channel = char(filename(underscore_i + 3:dot_i - 1));
-        
-        CA = mapObj(channel);
-        
-        if strcmp(CA,charging_algorithm)
-            % Update user on progress 
-            tic
-            disp(['Starting processing of file ' num2str(k) ' of ' ...
-                num2str(numel(test_files)) ': ' filename])
-            k = k + 1;
-            
-            %% Run cell_analysis for this file
-            result_data = csvread(strcat(path.csv_data, '\', test_files{i}),1,1);
-            cd(path.code)
-            
-            if strcmp(batch_date,'20170412')
-                battery = cell_analysis_batch0(result_data, charging_algorithm, ...
-                    batch_date, path.csv_data);
-                battery.barcode = barcodes(i); 
-                battery.channel_id = channel_ids(i);
-                batch(i) = battery;
-            else
-                battery = cell_analysis(result_data, charging_algorithm, ...
-                    batch_date, path.csv_data);
-                battery.barcode = barcodes(i); %% THIS IS LIKELY WRONG
-                battery.channel_id = channel;
-                batch(i) = battery;
-            end
-            cd(path.csv_data)
-        else 
-            continue
-        end
-        toc
-    end
+    % Update user on progress
+    tic
+    disp(['Starting processing of file ' num2str(k) ' of ' ...
+        num2str(n_cells) ': ' filename])
+    k = k + 1;
+    
+    %% Run cell_analysis for this file
+    result_data = csvread(strcat(path.csv_data, '\', filename),1,1);
+    cd(path.code)
+    
+    battery = cell_analysis(result_data, CA, batch_date, path.csv_data);
+    battery.barcode = barcodes(i);
+    battery.channel_id = channel_ids(i);
+    batch(i) = battery;
+    
+    cd(path.csv_data)
+    toc
 end
 
 %% Save batch as struct
