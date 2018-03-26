@@ -1,4 +1,4 @@
-function batch = batch_analysis(batch_date)
+function batch = batch_analysis2(batch_date)
 
 disp('Starting batch_analysis'), batch_tic = tic;
 
@@ -75,10 +75,7 @@ for i = 1:numel(filenames)
         % Store charging algorithm name
         CA_array = [CA_array, charging_algorithm];
         
-        continue
-    else
-        % File is a result csv 
-        test_files = [test_files, filenames{i}];
+        test_files = [test_files, filenames{i}([1:end-13 end-3:end])];
     end
 end
 
