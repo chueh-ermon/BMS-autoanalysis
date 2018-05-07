@@ -6,7 +6,7 @@
 %   - Runs reportgenerator.py (creates PDF report)
 %   - Emails results
 %   - Syncs results to AWS
-% Nick Perkins, Zi Yang, Michael Chen, Norman Jin, Peter Attia
+% Peter Attia, Nick Perkins, Zi Yang, Michael Chen, Norman Jin
 
 % For this file to successfully run, you must do the following:
 %   - Ensure 'python.m' is in the same folder
@@ -22,7 +22,7 @@ cd(path.code)
 
 %%%%%%% CHANGE THESE SETTINGS %%%%%%%
 email_group = false;
-batch_name = 'batch7';
+batch_name = 'batch8';
 % IF ADDING A NEW BATCH...
 %   - ADD batch_date TO THE SWITCH/CASE STATEMENT BELOW
 %   - CREATE batchx_summary_plots.m AND MODIFY make_summary_images AS NEEDED 
@@ -46,6 +46,10 @@ switch batch_name % Format as 'yyyy-mm-dd'
         batch_date = '2018-02-01';
     case 'batch7'
         batch_date = '2018-02-20';
+    case 'batch7pt5'
+        batch_date = '2018-04-03_varcharge';
+    case 'batch8'
+        batch_date = '2018-04-12';
     otherwise
         warning('batch_date not recognized')
 end
@@ -88,6 +92,9 @@ elseif strcmp(batch_name, 'batch5')
 elseif strcmp(batch_name, 'batch7')
     delete([path.csv_data '\' '2018-02-20_batch7_CH26.csv']);
     delete([path.csv_data '\' '2018-02-20_batch7_CH26_Metadata.csv']);
+elseif strcmp(batch_name, 'batch8')
+    delete([path.csv_data '\' '2018-04-12_batch8_CH26.csv']);
+    delete([path.csv_data '\' '2018-04-12_batch8_CH26_Metadata.csv']);
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -99,6 +106,9 @@ make_images(batch, batch_name, batch_date, path.images);
 [T_cells, T_policies] = make_result_tables(batch, batch_name, ...
     path.result_tables, path.code);
 make_summary_images(batch, batch_name, T_cells, T_policies);
+
+%% Run predictions
+apply_model(batch, batch_name, path)
 
 %% Run the report generator (in Python)
 % This will create the PPT and convert to PDF. It saves in the Box Sync
@@ -116,9 +126,7 @@ if email_group
         message_body, char(pdf_name));
     disp('Email sent - success!')
 else
-    email_list_debugging = {'pattia@stanford.edu', 'kseverso@mit.edu'};
-    %email_list_debugging = {'pattia@stanford.edu','normanj@stanford.edu',...
-    %    'pkherring@gmail.com','kseverso@mit.edu','murat.aykol@tri.global'};
+    email_list_debugging = {'pattia@stanford.edu'};
     sendemail(email_list_debugging,'BMS project: Updated results', ...
         message_body, char(pdf_name));
     disp('Email sent - success!')
