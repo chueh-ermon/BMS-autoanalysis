@@ -3,6 +3,7 @@
 %   - Runs batch_analysis (converts to struct and saves data to .mat)
 %   - Runs makes images (cell summary info)
 %   - Runs make_result_tables and make_summary_images (batch summary info)
+%   - Runs apply_model (generates predictions)
 %   - Runs reportgenerator.py (creates PDF report)
 %   - Emails results
 %   - Syncs results to AWS

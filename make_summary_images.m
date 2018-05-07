@@ -32,7 +32,7 @@ set(gca, 'FontSize', 16)
 % Loop through
 for i = 1:length(unique_policies)
     % Keep consistent color
-    [col, mark] = random_color('y','y');
+    [col, ~] = random_color('y','y');
     %All the markers we want to use
     markers = {'+','o','*','.','x','s','d','^','v','>','<','p','h'};
     % Find all cells with policy i, generate combined x,y
@@ -63,7 +63,7 @@ else
     ylim([0.85 1.25])
 end
 %2-column legend via custom function. Not perfect but workable
-leg = columnlegend(2,unique_readable_policies,'Location','NortheastOutside','boxoff');
+columnlegend(2,unique_readable_policies,'Location','NortheastOutside','boxoff');
 print('summary1_Q_vs_n','-dpng')
 savefig(gcf,'summary1_Q_vs_n')
 
@@ -72,7 +72,7 @@ xlabel('Cycle number')
 ylabel('Remaining discharge capacity (normalized)')
 ylim([0.80 1.0])
 %2-column legend via custom function. Not perfect but workable
-leg = columnlegend(2,unique_readable_policies,'Location','NortheastOutside','boxoff');
+columnlegend(2,unique_readable_policies,'Location','NortheastOutside','boxoff');
 print('summary2_Q_vs_n_norm','-dpng')
 savefig(gcf,'summary2_Q_vs_n_norm')
 
@@ -83,7 +83,7 @@ if strcmp(batch_name, 'batch1')
 % Batch 2 (2017-06-30), Batch 4 (2017-12-04), Batch 5 (2018-01-18)
 elseif strcmp(batch_name, 'batch2') || strcmp(batch_name, 'batch4') || ...
         strcmp(batch_name, 'batch5') || strcmp(batch_name, 'batch6') || ...
-        strcmp(batch_name, 'batch7') ++ strcmp(batch_name, 'batch8')
+        strcmp(batch_name, 'batch7') || strcmp(batch_name, 'batch8')
     batch2_summary_plots2(T_policies)
 % Batch 3 (2017-08-14)
 elseif strcmp(batch_name,'batch3')

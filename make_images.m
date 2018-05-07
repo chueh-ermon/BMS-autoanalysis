@@ -56,6 +56,7 @@ for i = 1:num_cells
     hold on
     plot(batch(i).summary.cycle, batch(i).summary.QCharge, 'Color', ...
         'b','LineWidth',1.5)
+    ylim([0.88 1.12])
     hold on
     title(['Batch started ', batch_date])
     legend('Discharge', 'Charge', 'Location','best')

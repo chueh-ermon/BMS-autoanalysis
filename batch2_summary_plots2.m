@@ -35,7 +35,7 @@ contour(X,Y,Q1,Q1_values,'LineWidth',2,'ShowText','on')
 
 title(['Time to 80% = ' num2str(time) ' minutes'],'FontSize',20)
 set(gca,'FontSize',18)
-xlabel('CC1','FontSize',20),ylabel('CC2','FontSize',20)
+xlabel('C1','FontSize',20),ylabel('C2','FontSize',20)
 h = colorbar; title(h, 'Q1 (%)','FontWeight','bold')
 caxis([0 80])
 
@@ -43,11 +43,11 @@ for i = 1:T_size
     if T_policies.Q1(i) == 80
         if T_policies.CC1(i) == 4.8
             scatter(T_policies.CC1(i),T_policies.CC2(i),'rsquare', 'filled', ...
-                'CData',[0 0 0],'SizeData',250)
+                'CData',[0 0 0],'SizeData',64)
         end
     else
         scatter(T_policies.CC1(i),T_policies.CC2(i),'ro', 'filled', ...
-            'CData',[0 0 0],'SizeData',250)
+            'CData',[0 0 0],'SizeData',64)
     end
 end
 

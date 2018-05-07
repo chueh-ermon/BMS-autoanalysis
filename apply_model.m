@@ -91,8 +91,8 @@ end
 
 %for contour lines
 time = 10; % target time of policies, in minutes
-CC1 = 3:0.05:6;
-CC2 = 3:0.05:6;
+CC1 = 2.9:0.01:6.1;
+CC2 = 2.9:0.01:6.1;
 [X,Y] = meshgrid(CC1,CC2);
 Q1 = (100).*(time - ((60*0.8)./Y))./((60./X)-(60./Y));
 Q1(Q1<0) = NaN;
@@ -104,41 +104,32 @@ plot_ind(skip_ind) = [];
 max_Q = max(ypred(plot_ind)) + 1;
 min_Q = min(ypred(plot_ind)) - 1;
 
-figure('units','normalized','outerposition',[0 0 1 1]); hold on, box on
+figure('units','normalized','outerposition',[0 0 1 1]);
+hold on, box on, axis square
 for i = 1:numBat
     if i == 1
         colormap 'jet'
         contour(X,Y,Q1,Q1_values,'k','LineWidth',2,'ShowText','on')
         axis([2.9 6.1 2.9 6.1])
-        %line([8 3.6],[7.9 3.6], 'LineWidth',22.5,'color','w');
-        %line([3.6 1],[3.6 1], 'LineWidth',22.5,'color','w');
     end
     if sum(i == skip_ind)
     else
         color_ind = ceil((ypred(i) - min_Q)./(max_Q - min_Q)*64);
-        plot(p1(i),p2(i),'.','Color',CM(color_ind,:),'MarkerSize',30)
+        plot(p1(i),p2(i),'.','Color',CM(color_ind,:),'MarkerSize',100)
     end
     
 end
-scale = 0.1;
-pos = get(gca, 'Position');
-pos(2) = pos(2)+scale*pos(4);
-pos(3) = (1-scale)*pos(3);
-pos(4) = (1-scale)*pos(4);
-set(gca, 'Position', pos)
-xlabel('CC1'), ylabel('CC2'), title('Prediction')
+xlabel('C1','FontSize',20), ylabel('C2','FontSize',20)
+title('Predictions (points jittered)')
 h = colorbar;
-set(h,'Position',[0.85, 0.2 0.02 0.7])
-%over-write the legend to have the correct relative capacity range
-set(gcf,'Position',[0 0 715 715])
-h.Label.String = 'Cycle life';
+title(h, {'Predicted','cycle life'},'FontWeight','bold')
 tl = linspace(round(min_Q),round(max_Q),71);
 h.TickLabels = tl(10:10:70);
-set(gca,'fontsize',16)
+set(gca,'fontsize',18)
 
 cd(path.images), cd(batch_name)
-print('summary5_predictions', '-dpng')
-savefig(gcf,'summary5_predictions.fig')
+print('summary6_predictions', '-dpng')
+savefig(gcf,'summary6_predictions.fig')
 cd(path.code)
 
 close all
