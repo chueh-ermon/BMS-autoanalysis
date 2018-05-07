@@ -4,8 +4,8 @@
 attachments = cell(2,1);
 attachments{1} = [path.reports '\' date '_report.pdf'];
 attachments{2} = [path.result_tables '\' date '_' batch_name '_predictions.csv'];
-message_body = {['Hot off the press: Check out the latest ' batch_name ' results!']; ...
-    path.message; 'Now including predictions'; ''; ''};
+message_body = {['Hot off the press: Check out the latest ' batch_name ...
+    ' results, now including predictions!']; path.message; ''; ''};
 email_list = {'chueh-ermon-bms@lists.stanford.edu'};
 if email_group
     sendemail(email_list,'BMS project: Updated results', ...

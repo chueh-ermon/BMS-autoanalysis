@@ -104,7 +104,7 @@ plot_ind(skip_ind) = [];
 max_Q = max(ypred(plot_ind)) + 1;
 min_Q = min(ypred(plot_ind)) - 1;
 
-figure, hold on, box on
+figure('units','normalized','outerposition',[0 0 1 1]); hold on, box on
 for i = 1:numBat
     if i == 1
         colormap 'jet'
@@ -137,8 +137,8 @@ h.TickLabels = tl(10:10:70);
 set(gca,'fontsize',16)
 
 cd(path.images), cd(batch_name)
-saveas(gcf, 'summary3_predictions.png')
-savefig(gcf,'summary3_predictions.fig')
+print('summary5_predictions', '-dpng')
+savefig(gcf,'summary5_predictions.fig')
 cd(path.code)
 
 close all
