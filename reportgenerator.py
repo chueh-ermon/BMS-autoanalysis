@@ -11,7 +11,7 @@ import os # file i/o operations
 import glob # file i/o operations
 from datetime import date# finding today's date
 from pptx import Presentation # creating the PPT
-from pptx.util import Inches
+#from pptx.util import Inches
 import comtypes.client # for opening PowerPoint from python
 import sys
 
@@ -23,7 +23,7 @@ batch_name = sys.argv[3]
 """ Use lines 26-28 for debugging """
 #path_images = 'D:\Data_Matlab\Batch_images'
 #path_reports = 'D:\Data_Matlab\Reports'
-#batch_name = 'batch6'
+#batch_name = 'batch8'
 
 def PPTtoPDF(inputFileName, outputFileName, formatType = 32):
     """

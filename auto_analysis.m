@@ -116,22 +116,7 @@ apply_model(batch, batch_name, path)
 python('reportgenerator.py', path.images, path.reports, batch_name); % run python code
 
 %% Send email
-cd(path.reports)
-pdf_name = [date '_report.pdf'];
-message_body = {['Hot off the press: Check out the latest ' batch_name ' results!']; ...
-    path.message; ''; ''};
-email_list = {'chueh-ermon-bms@lists.stanford.edu'};
-if email_group
-    sendemail(email_list,'BMS project: Updated results', ...
-        message_body, char(pdf_name));
-    disp('Email sent - success!')
-else
-    email_list_debugging = {'pattia@stanford.edu'};
-    sendemail(email_list_debugging,'BMS project: Updated results', ...
-        message_body, char(pdf_name));
-    disp('Email sent - success!')
-end
-cd(path.code)
+email_results
 
 %% Sync Data_Matlab folder to AWS
 if path.whichcomp == 'amazonws'

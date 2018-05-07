@@ -137,8 +137,8 @@ h.TickLabels = tl(10:10:70);
 set(gca,'fontsize',16)
 
 cd(path.images), cd(batch_name)
-print(gcf, 'summary5_predictions.png')
-savefig(gcf,'summary5_predictions.fig')
+saveas(gcf, 'summary3_predictions.png')
+savefig(gcf,'summary3_predictions.fig')
 cd(path.code)
 
 close all
