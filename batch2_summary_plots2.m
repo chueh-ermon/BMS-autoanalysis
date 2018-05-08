@@ -43,11 +43,11 @@ for i = 1:T_size
     if T_policies.Q1(i) == 80
         if T_policies.CC1(i) == 4.8
             scatter(T_policies.CC1(i),T_policies.CC2(i),'rsquare', 'filled', ...
-                'CData',[0 0 0],'SizeData',64)
+                'CData',[0 0 0],'SizeData',250)
         end
     else
         scatter(T_policies.CC1(i),T_policies.CC2(i),'ro', 'filled', ...
-            'CData',[0 0 0],'SizeData',64)
+            'CData',[0 0 0],'SizeData',250)
     end
 end
 

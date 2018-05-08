@@ -115,7 +115,7 @@ for i = 1:numBat
     if sum(i == skip_ind)
     else
         color_ind = ceil((ypred(i) - min_Q)./(max_Q - min_Q)*64);
-        plot(p1(i),p2(i),'.','Color',CM(color_ind,:),'MarkerSize',100)
+        scatter(p1(i),p2(i),'ro','filled','CData',CM(color_ind,:),'SizeData',170)
     end
     
 end
