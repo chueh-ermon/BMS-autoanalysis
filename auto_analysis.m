@@ -22,7 +22,7 @@ load path.mat
 cd(path.code)
 
 %%%%%%% CHANGE THESE SETTINGS %%%%%%%
-email_group = true;
+email_group = false;
 batch_name = 'batch8';
 % IF ADDING A NEW BATCH...
 %   - ADD batch_date TO THE SWITCH/CASE STATEMENT BELOW

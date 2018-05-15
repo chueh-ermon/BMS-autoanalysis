@@ -77,13 +77,12 @@ print('summary2_Q_vs_n_norm','-dpng')
 savefig(gcf,'summary2_Q_vs_n_norm')
 
 %% Make different summary plots for each batch
+batches_likebatch2 = {'batch2','batch4','batch5','batch6','batch7','batch8'};
 % Batch 1 (2017-05-12)
 if strcmp(batch_name, 'batch1')
     batch1_summary_plots(batch, batch_name, T_cells, T_policies)
-% Batch 2 (2017-06-30), Batch 4 (2017-12-04), Batch 5 (2018-01-18)
-elseif strcmp(batch_name, 'batch2') || strcmp(batch_name, 'batch4') || ...
-        strcmp(batch_name, 'batch5') || strcmp(batch_name, 'batch6') || ...
-        strcmp(batch_name, 'batch7') || strcmp(batch_name, 'batch8')
+% Batch 2 and similar
+elseif sum(strcmp(batch_name, batches_likebatch2))
     batch2_summary_plots2(T_policies)
 % Batch 3 (2017-08-14)
 elseif strcmp(batch_name,'batch3')

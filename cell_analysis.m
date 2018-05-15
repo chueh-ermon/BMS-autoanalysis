@@ -157,9 +157,10 @@ battery.summary.Tmin = T_min;
 battery.summary.chargetime = tt_80./60; % Convert to minutes
 
 % Update cycle life, if applicable
+batches_cycleto80 = {'2017-05-12', '2017-06-30', '2018-04-12'};
 if battery.summary.QDischarge(end) < 0.88
     battery.cycle_life = find(battery.summary.QDischarge<0.88, 1);
-elseif strcmp(batch_date,'2017-05-12') || strcmp(batch_date,'2017-06-30') && ...
+elseif sum(strcmp(batch_date,batches_cycleto80)) && ...
         battery.summary.QDischarge(end) - 0.88 < 0.1
     % Special case for batches 1 and 2, where we don't cycle past failure
     battery.cycle_life = j + 1;
