@@ -49,17 +49,20 @@ ylabel('Cycle Life')
 %export the result to a csv
 barcode = zeros(numBat,1);
 channels = zeros(numBat,1);
+lifetimes = zeros(numBat,1);
 policies = cell(numBat,1);
 for i = 1:numBat
     barcode(i) = str2num(batch(i).barcode{1}(3:end));
     channels(i) = str2num(batch(i).channel_id{1});
+    lifetimes(i) = batch(i).cycle_life;
     policies{i} = batch(i).policy_readable;
 end
 
-M = [channels, barcode, round(ypred), round(ypred_l), round(ypred_h)];
-T = array2table(M,'VariableNames',{'Channel','Barcode','Prediction','CI_Lo','CI_Hi'});
+M = [channels, barcode, lifetimes, round(ypred), round(ypred_l), round(ypred_h)];
+T = array2table(M,'VariableNames', ...
+    {'Channel','Barcode','Lifetime','Prediction','CI_Lo','CI_Hi'});
 T.Policy = policies;
-T = sortrows(T,6);
+T = sortrows(T,7);
 filename = [date '_' batch_name '_predictions.csv'];
 cd(path.result_tables)
 writetable(T, filename);
