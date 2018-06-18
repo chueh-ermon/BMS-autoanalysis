@@ -202,6 +202,19 @@ for i = 1:num_cells
         ylabel('dQ/dV (Ah/V)')
     end
     
+    % Add number of cycles completed/still running
+    if isnan(batch(i).cycle_life)
+        subplot(2,4,5)
+        title('Cycling in progress')
+        subplot(2,4,6)
+        title(['Cycles completed: ' num2str(length(batch(i).cycles))])
+    else
+        subplot(2,4,5)
+        title('Cycling completed')
+        subplot(2,4,6)
+        title(['Cycle life: ' num2str(batch(i).cycle_life)])
+    end
+    
     % Add cycle number legend
     figure(cell_id)
     subplot(2,4,8)
