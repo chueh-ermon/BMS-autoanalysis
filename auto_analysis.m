@@ -23,7 +23,7 @@ cd(path.code)
 
 %%%%%%% CHANGE THESE SETTINGS %%%%%%%
 email_group = false;
-batch_name = 'batch8';
+batch_name = 'oed1';
 % IF ADDING A NEW BATCH...
 %   - ADD batch_date TO THE SWITCH/CASE STATEMENT BELOW
 %   - CREATE batchx_summary_plots.m AND MODIFY make_summary_images AS NEEDED 
@@ -51,6 +51,8 @@ switch batch_name % Format as 'yyyy-mm-dd'
         batch_date = '2018-04-03_varcharge';
     case 'batch8'
         batch_date = '2018-04-12';
+    case 'oed1'
+        batch_date = '2018-06-20';
     otherwise
         warning('batch_date not recognized')
 end
