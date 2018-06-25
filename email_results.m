@@ -9,6 +9,7 @@ for k = 1:batch_size
     end
 end
 
+%attachments = [path.reports '\' date '_report.pdf'];
 attachments = cell(2,1);
 attachments{1} = [path.reports '\' date '_report.pdf'];
 attachments{2} = [path.result_tables '\' date '_' batch_name '_predictions.csv'];

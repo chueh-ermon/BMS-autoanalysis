@@ -1,6 +1,5 @@
 function battery = cell_analysis(result_data, charging_algorithm, ...
     batch_date, csvpath)
-
 %% Initialize battery struct
 battery = struct('policy', ' ', 'policy_readable', ' ', 'barcode', ...
     ' ', 'channel_id', ' ','cycle_life', NaN,...
@@ -144,13 +143,13 @@ end
 battery.Vdlin = Vdlin';
 
 % Export charge capacity and correct if errant charge
-if j > 5
+%if j > 5
     %[~, ind] = sort(C_in,'descend');
     %maxValueIndices = ind(1:5);
     %median(C_in(maxValueIndices));
     CQ = C_in;
     DQ = C_out;
-end
+%end
 
 % Add vectors to battery.summary
 battery.summary.cycle = (1:j)';

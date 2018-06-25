@@ -52,7 +52,7 @@ switch batch_name % Format as 'yyyy-mm-dd'
     case 'batch8'
         batch_date = '2018-04-12';
     case 'oed1'
-        batch_date = '2018-06-20';
+        batch_date = '2018-06-21';
     otherwise
         warning('batch_date not recognized')
 end
@@ -106,12 +106,12 @@ batch = batch_analysis2(batch_date);
 
 %% Generate images & results for all cells
 make_images(batch, batch_name, batch_date, path.images);
-[T_cells, T_policies] = make_result_tables(batch, batch_name, ...
-    path.result_tables, path.code);
-make_summary_images(batch, batch_name, T_cells, T_policies);
+%[T_cells, T_policies] = make_result_tables(batch, batch_name, ...
+%    path.result_tables, path.code);
+%make_summary_images(batch, batch_name, T_cells, T_policies);
 
 %% Run predictions
-apply_model(batch, batch_name, path)
+apply_model2(batch, batch_name, path)
 
 %% Run the report generator (in Python)
 % This will create the PPT and convert to PDF. It saves in the Box Sync
