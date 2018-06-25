@@ -59,6 +59,8 @@ xlabel('Cycle number')
 ylabel('Remaining discharge capacity (Ah)')
 if strcmp(batch_name, 'batch1') || strcmp(batch_name, 'batch2') || strcmp(batch_name, 'batch4')
     ylim([0.85 1.1])
+elseif contains(batch_name,'oed')
+    ylim([1.0 1.1])
 else
     ylim([0.85 1.25])
 end
@@ -87,6 +89,10 @@ elseif sum(strcmp(batch_name, batches_likebatch2))
 % Batch 3 (2017-08-14)
 elseif strcmp(batch_name,'batch3')
     batch3_summary_plots(T_policies)
+% OED batches
+elseif contains(batch_name,'oed')
+    table_path = [path.result_tables '\' date '_' batch_name '_predictions.csv'];
+    python('oed_plots.py',table_path,path.images,batch_name);
 else
     warning('Batch name not recognized. No summary figures generated')
 end

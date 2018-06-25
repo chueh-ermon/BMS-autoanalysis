@@ -1,5 +1,5 @@
 %% email_results sends the report and the predictions to the mailing list
-% Peter Attia, last updated May 15, 2018
+% Peter Attia, last updated June 25, 2018
 
 batch_size = length(batch);
 num_complete = 0;
