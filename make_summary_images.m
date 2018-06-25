@@ -72,7 +72,11 @@ savefig(gcf,'summary1_Q_vs_n')
 figure(figNormalized);
 xlabel('Cycle number')
 ylabel('Remaining discharge capacity (normalized)')
-ylim([0.80 1.0])
+if strcmp(batch_name, 'batch1') || strcmp(batch_name, 'batch2') || strcmp(batch_name, 'batch4')
+    ylim([0.8 1])
+elseif contains(batch_name,'oed')
+    ylim([0.99 1])
+end
 %2-column legend via custom function. Not perfect but workable
 columnlegend(2,unique_readable_policies,'Location','NortheastOutside','boxoff');
 print('summary2_Q_vs_n_norm','-dpng')

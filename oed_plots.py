@@ -81,7 +81,7 @@ for k, c3 in enumerate(C3list):
     plt.ylim((min(C1list)-margin, max(C1list)+margin))
 
 # Add colorbar
-fig.set_size_inches((11,8.5), forward=False)
+fig.set_size_inches((15,8.91), forward=False)
 plt.tight_layout()
 
 fig.subplots_adjust(right=0.8)

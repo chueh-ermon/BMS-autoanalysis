@@ -4,7 +4,7 @@
 batch_size = length(batch);
 num_complete = 0;
 for k = 1:batch_size
-    if ~isnan(batch(k).cycle_life)
+    if length(batch(k).cycles) > 99
         num_complete = num_complete + 1;
     end
 end
