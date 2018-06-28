@@ -94,4 +94,4 @@ cbar = fig.colorbar(m, cax=cbar_ax)
 cbar.ax.set_title('Cycle life')
 
 ## SAVE FIGURE
-plt.savefig(path_images + '\\' + batch_name + '\\' + 'summary3_predictions.png', bbox_inches='tight')
+plt.savefig(path_images + '\\' + batch_name + '\\' + 'summary4_predictions.png', bbox_inches='tight')

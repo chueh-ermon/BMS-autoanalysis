@@ -2,7 +2,7 @@ function apply_model2(batch, batch_name, path)
 % This function applies the predictions based on the model stored in
 %   MyModel.mat
 % Peter Attia, Kristen Severson
-% Last updated June 25, 2018
+% Last updated June 28, 2018
 
 %% TO DO:
 %   Update model/build_battery_features
@@ -15,16 +15,25 @@ disp('Starting apply_model'),tic
 numBat = size(batch,2);
 
 % Load the model you would like to use
-load('MyModel.mat')
+if strcmp(batch_name,'oed1')
+    load('oed_model_batch1.mat')
+else
+    load('oed_model.mat')
+end
 
 %% Remove cells that did not reach 100 cycles
 idx_running_cells = zeros(numBat,1);
+if strcmp(batch_name,'oed1')
+    cycle_cutoff = 98;
+else
+    cycle_cutoff = 100;
+end
 for k = 1:numBat
-    if length(batch(k).cycles) < 100
+    if length(batch(k).cycles) < cycle_cutoff
         idx_running_cells(k) = 1;
     end
 end
-batch2 = batch(~idx_running_cells);
+batch2 = batch(~idx_running_cells); % batch2 only contains running cells
 
 %% Initialize
 ypred = NaN(numBat,1);
@@ -33,7 +42,11 @@ ypred_h = NaN(numBat,1);
 
 if ~isempty(batch2)
     %% Build features
-    feat = build_battery_features(batch2);
+    if strcmp(batch_name,'oed1')
+        feat = build_battery_features98(batch2);
+    else
+        feat = build_battery_features(batch2);
+    end
     
     %% Make predictions
     feat_scaled = bsxfun(@minus,feat,mu);

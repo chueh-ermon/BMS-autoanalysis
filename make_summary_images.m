@@ -82,6 +82,19 @@ columnlegend(2,unique_readable_policies,'Location','NortheastOutside','boxoff');
 print('summary2_Q_vs_n_norm','-dpng')
 savefig(gcf,'summary2_Q_vs_n_norm')
 
+% Delta Q plot
+fig_deltaQ = figure('units','normalized','outerposition',[0 0 1 1]); hold on, box on
+for k = 1:length(batch)
+    plot(batch(k).cycles(98).Qdlin - batch(k).cycles(10).Qdlin, batch(k).Vdlin);
+end
+set(gca, 'FontSize', 16)
+xlabel('Q_{100} - Q_{10} (Ah)')
+ylabel('Voltage (V)')
+%2-column legend via custom function. Not perfect but workable
+columnlegend(2,unique_readable_policies,'Location','NortheastOutside','boxoff');
+print('summary3_DeltaQ','-dpng')
+savefig(gcf,'summary3_DeltaQ')
+
 %% Make different summary plots for each batch
 batches_likebatch2 = {'batch2','batch4','batch5','batch6','batch7','batch8'};
 % Batch 1 (2017-05-12)
