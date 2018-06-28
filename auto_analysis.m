@@ -49,8 +49,8 @@ apply_model2(batch, batch_name, path)
 
 %% Generate images & results for all cells
 make_images(batch, batch_name, batch_date, path.images);
-%[T_cells, T_policies] = make_result_tables(batch, batch_name, ...
-%    path.result_tables, path.code);
+[T_cells, T_policies] = make_result_tables(batch, batch_name, ...
+    path.result_tables, path.code);
 make_summary_images(batch, batch_name, T_cells, T_policies);
 
 %% Run the report generator (in Python)
@@ -80,6 +80,3 @@ if path.whichcomp == 'amazonws'
     disp('Delete complete!')
 end
 toc(init_tic)
-
-%% Make summary gifs (for presentations)
-%make_summary_gifs(batch, batch_name);

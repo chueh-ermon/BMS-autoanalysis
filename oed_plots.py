@@ -20,7 +20,7 @@ C2list = [3.6, 4.0, 4.4, 4.8, 5.2, 5.6, 6, 7]
 C3list = [3.6, 4.0, 4.4, 4.8, 5.2, 5.6]
 
 C4_LIMITS = [0.1, 4.81] # Lower and upper limits specifying valid C4s
-FILENAME = 'D:\Data_Matlab\Result_tables\\25-Jun-2018_oed1_predictions.csv'
+#FILENAME = 'D:\Data_Matlab\Result_tables\\25-Jun-2018_oed1_predictions.csv'
 
 ############################################################################## 
 plt.close('all')
@@ -34,7 +34,7 @@ one_step = 4.8
 margin = 0.2 # plotting margin
 
 ## IMPORT POLICIES
-data = np.genfromtxt(FILENAME, delimiter=',',skip_header=1)
+data = np.genfromtxt(path_table, delimiter=',',skip_header=1)
 policies = data[:,:4]
 lifetime = data[:,4]
 
