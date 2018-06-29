@@ -90,18 +90,35 @@ for i = 1:num_cells
     ylim([28 45])
     title(batch(i).barcode)
     
-    % Plot 4: Internal resistance
+    % Plot 4: Internal resistance OR deltaQ
     figure(cell_id)
     subplot(2,4,4)
-    plot(batch(i).summary.cycle,batch(i).summary.IR,'LineWidth',1.5)
-    hold on
-    title(strcat('Channel', {' '}, batch(i).channel_id))
-    xlabel('Cycle Index')
-    ylabel('Internal Resistance (Ohms)')
-    if strcmp(batch_name, 'batch3')
-        ylim([.012 .014])
+    if contains(batch_name,'oed')
+        if strcmp(batch_name,'oed1')
+            plot(batch(i).cycles(98).Qdlin-batch(i).cycles(10).Qdlin, ...
+                batch(i).Vdlin,'LineWidth',1.5)
+            vline_loc = mean(batch(i).cycles(98).Qdlin-batch(i).cycles(10).Qdlin);
+        else
+            plot(batch(i).cycles(100).Qdlin-batch(i).cycles(10).Qdlin, ...
+                batch(i).Vdlin,'LineWidth',1.5)
+            vline_loc = mean(batch(i).cycles(100).Qdlin-batch(i).cycles(10).Qdlin);
+        end
+        xlabel('Q_{100}(V)-Q{10}(V)')
+        ylabel('Voltage (V)')
+        vline(0,'k')
+        vline(vline_loc,'b-')
+        xlim([-0.07 0.03])
     else
-        ylim([.015 .024])
+        plot(batch(i).summary.cycle,batch(i).summary.IR,'LineWidth',1.5)
+        hold on
+        title(strcat('Channel', {' '}, batch(i).channel_id))
+        xlabel('Cycle Index')
+        ylabel('Internal Resistance (Ohms)')
+        if strcmp(batch_name, 'batch3')
+            ylim([.012 .014])
+        else
+            ylim([.015 .024])
+        end
     end
     
     %% Initialize colors for cycle-based plots

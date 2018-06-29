@@ -74,6 +74,9 @@ for k, c3 in enumerate(C3list):
     plt.scatter(policy_subset[:,0],policy_subset[:,1],vmin=minn,vmax=maxx,
                 c=lifetime_subset.ravel(),zorder=2,s=100)
     
+    if c3 == 4.8:
+        plt.scatter(4.8,4.8,c='k',zorder=2,s=100, marker='s')
+    
     plt.title('C3=' + str(c3) + ': ' + str(len(policy_subset)) + ' policies',fontsize=16)
     plt.xlabel('C1')
     plt.ylabel('C2')
