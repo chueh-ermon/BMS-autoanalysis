@@ -28,7 +28,8 @@ if email_group
         message_body, attachments);
     disp('Email sent - success!')
 else
-    email_list_debugging = {'pattia@stanford.edu','normanj@stanford.edu'};
+    email_list_debugging = {'pattia@stanford.edu','normanj@stanford.edu',...
+        'adityag@cs.stanford.edu','bcheong@stanford.edu'};
     sendemail(email_list_debugging,'BMS project: Updated results', ...
         message_body, attachments);
     disp('Email sent - success!')

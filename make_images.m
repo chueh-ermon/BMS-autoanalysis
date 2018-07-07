@@ -88,22 +88,34 @@ for i = 1:num_cells
     xlabel('Cycle Index')
     ylabel('Temperature (°C)')
     ylim([28 45])
-    title(batch(i).barcode)
+    try title(batch(i).barcode), end
     
     % Plot 4: Internal resistance OR deltaQ
     figure(cell_id)
     subplot(2,4,4)
+    completed_cycles = length(batch(i).cycles);
     if contains(batch_name,'oed')
         if strcmp(batch_name,'oed1')
             plot(batch(i).cycles(98).Qdlin-batch(i).cycles(10).Qdlin, ...
                 batch(i).Vdlin,'LineWidth',1.5)
             vline_loc = mean(batch(i).cycles(98).Qdlin-batch(i).cycles(10).Qdlin);
+            xlabel('Q_{98}(V)-Q_{10}(V)')
+        elseif completed_cycles < 10
+            plot(batch(i).cycles(completed_cycles).Qdlin-batch(i).cycles(2).Qdlin, ...
+                batch(i).Vdlin,'LineWidth',1.5)
+            vline_loc = mean(batch(i).cycles(completed_cycles).Qdlin-batch(i).cycles(2).Qdlin);
+            xlabel(['Q_{',num2str(completed_cycles),'}(V)-Q_{2}(V)'])
+        elseif completed_cycles < 100
+            plot(batch(i).cycles(completed_cycles).Qdlin-batch(i).cycles(10).Qdlin, ...
+                batch(i).Vdlin,'LineWidth',1.5)
+            vline_loc = mean(batch(i).cycles(completed_cycles).Qdlin-batch(i).cycles(10).Qdlin);
+            xlabel(['Q_{',num2str(completed_cycles),'}(V)-Q_{10}(V)'])
         else
             plot(batch(i).cycles(100).Qdlin-batch(i).cycles(10).Qdlin, ...
                 batch(i).Vdlin,'LineWidth',1.5)
             vline_loc = mean(batch(i).cycles(100).Qdlin-batch(i).cycles(10).Qdlin);
+            xlabel('Q_{100}(V)-Q_{10}(V)')
         end
-        xlabel('Q_{100}(V)-Q{10}(V)')
         ylabel('Voltage (V)')
         vline(0,'k')
         vline(vline_loc,'b-')
@@ -111,7 +123,6 @@ for i = 1:num_cells
     else
         plot(batch(i).summary.cycle,batch(i).summary.IR,'LineWidth',1.5)
         hold on
-        title(strcat('Channel', {' '}, batch(i).channel_id))
         xlabel('Cycle Index')
         ylabel('Internal Resistance (Ohms)')
         if strcmp(batch_name, 'batch3')
@@ -120,6 +131,7 @@ for i = 1:num_cells
             ylim([.015 .024])
         end
     end
+    title(strcat('Channel', {' '}, batch(i).channel_id))
     
     %% Initialize colors for cycle-based plots
     % max_cycles MUST be divisible by n, and max_cycles/n MUST be odd.
@@ -244,7 +256,11 @@ for i = 1:num_cells
     % save in folder
     charging_alg = batch(i).policy;
     barcode = batch(i).barcode;
-    file_name = char(strcat(charging_alg,'_',barcode));
+    try
+        file_name = char(strcat(charging_alg,'_',barcode));
+    catch
+        file_name = char(strcat(charging_alg,'_missing_barcode'));
+    end
     savefig(gcf,file_name)
     print(gcf,file_name,'-dpng')
     

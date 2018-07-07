@@ -95,7 +95,9 @@ lifetimes = zeros(numBat,1);
 policies = cell(numBat,1);
 
 for i = 1:numBat
-    barcode(i) = str2num(batch(i).barcode{1}(3:end));
+    try % Missing barcode
+        barcode(i) = str2num(batch(i).barcode{1}(3:end));
+    end
     channels(i) = str2num(batch(i).channel_id{1});
     lifetimes(i) = batch(i).cycle_life;
     policies{i} = batch(i).policy_readable;

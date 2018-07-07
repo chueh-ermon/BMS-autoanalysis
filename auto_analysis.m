@@ -23,7 +23,7 @@ cd(path.code)
 
 %%%%%%% CHANGE THESE SETTINGS %%%%%%%
 email_group = false;
-batch_name = 'oed1';
+batch_name = 'oed2';
 % IF ADDING A NEW BATCH...
 %   - ADD batch_date TO get_batch_date_from_batch_name
 %   - CREATE batchx_summary_plots.m AND MODIFY make_summary_images AS NEEDED 

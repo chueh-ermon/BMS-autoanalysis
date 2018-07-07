@@ -84,15 +84,20 @@ savefig(gcf,'summary2_Q_vs_n_norm')
 
 % Delta Q plot
 fig_deltaQ = figure('units','normalized','outerposition',[0 0 1 1]); hold on, box on
+min_cycles_completed = 1000;
 for k = 1:length(batch)
-    if strcmp(batch_name,'oed1')
-        plot(batch(k).cycles(98).Qdlin - batch(k).cycles(10).Qdlin, batch(k).Vdlin);
+    min_cycles_completed = min(length(batch(k).cycles),min_cycles_completed);
+end
+for k = 1:length(batch)
+    if min_cycles_completed < 10
+        plot(batch(k).cycles(min_cycles_completed).Qdlin - batch(k).cycles(2).Qdlin, batch(k).Vdlin);
+        xlabel(['Q_{',num2str(min_cycles_completed),'} - Q_{2} (Ah)'])
     else
-        plot(batch(k).cycles(100).Qdlin - batch(k).cycles(10).Qdlin, batch(k).Vdlin);
+        plot(batch(k).cycles(min_cycles_completed).Qdlin - batch(k).cycles(10).Qdlin, batch(k).Vdlin);
+        xlabel(['Q_{',num2str(min_cycles_completed),'} - Q_{10} (Ah)'])
     end
 end
 set(gca, 'FontSize', 16)
-xlabel('Q_{100} - Q_{10} (Ah)')
 ylabel('Voltage (V)')
 %2-column legend via custom function. Not perfect but workable
 columnlegend(2,unique_readable_policies,'Location','NortheastOutside','boxoff');
