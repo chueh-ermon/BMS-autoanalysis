@@ -22,11 +22,13 @@ load path.mat
 cd(path.code)
 
 %%%%%%% CHANGE THESE SETTINGS %%%%%%%
-email_group = false;
+email_list = {'pattia@stanford.edu','normanj@stanford.edu',...
+    'adityag@cs.stanford.edu','bcheong@stanford.edu'};
+%email_list = {'chueh-ermon-bms@lists.stanford.edu'};
 batch_name = 'oed2';
 % IF ADDING A NEW BATCH...
 %   - ADD batch_date TO get_batch_date_from_batch_name
-%   - CREATE batchx_summary_plots.m AND MODIFY make_summary_images AS NEEDED 
+%   - CREATE batchx_summary_plots.m AND MODIFY make_summary_images AS NEEDED
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Get batch date from batch name
