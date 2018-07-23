@@ -33,19 +33,19 @@ for k = 1:numBat
         idx_running_cells(k) = 1;
     end
 end
-batch2 = batch(~idx_running_cells); % batch2 only contains running cells
+batch_running = batch(~idx_running_cells); % batch2 only contains running cells
 
 %% Initialize
 ypred = NaN(numBat,1);
 ypred_l = NaN(numBat,1);
 ypred_h = NaN(numBat,1);
 
-if ~isempty(batch2)
+if ~isempty(batch_running)
     %% Build features
     if strcmp(batch_name,'oed1')
-        feat = build_battery_features98(batch2);
+        feat = build_battery_features98(batch_running);
     else
-        feat = build_battery_features(batch2);
+        feat = build_battery_features(batch_running);
     end
     
     %% Make predictions
