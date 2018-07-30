@@ -25,7 +25,7 @@ cd(path.code)
 email_list = {'pattia@stanford.edu','normanj@stanford.edu',...
     'adityag@cs.stanford.edu','bcheong@stanford.edu'};
 %email_list = {'chueh-ermon-bms@lists.stanford.edu'};
-batch_name = 'oed2';
+batch_name = 'oed4';
 % IF ADDING A NEW BATCH...
 %   - ADD batch_date TO get_batch_date_from_batch_name
 %   - CREATE batchx_summary_plots.m AND MODIFY make_summary_images AS NEEDED

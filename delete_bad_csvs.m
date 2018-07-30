@@ -33,4 +33,9 @@ elseif strcmp(batch_name, 'batch7')
 elseif strcmp(batch_name, 'batch8')
     delete([path.csv_data '\' '2018-04-12_batch8_CH26.csv']);
     delete([path.csv_data '\' '2018-04-12_batch8_CH26_Metadata.csv']);
+elseif strcmp(batch_name, 'oed4')
+    delete([path.csv_data '\' '2018-07-29_OED4_CH17.csv']);
+    delete([path.csv_data '\' '2018-07-29_OED4_CH17_Metadata.csv']);
+    delete([path.csv_data '\' '2018-07-29_OED4_CH27.csv']);
+    delete([path.csv_data '\' '2018-07-29_OED4_CH27_Metadata.csv']);
 end
