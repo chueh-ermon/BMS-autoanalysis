@@ -25,7 +25,7 @@ cd(path.code)
 email_list = {'pattia@stanford.edu','normanj@stanford.edu',...
     'adityag@cs.stanford.edu','bcheong@stanford.edu'};
 %email_list = {'chueh-ermon-bms@lists.stanford.edu'};
-batch_name = 'oed4';
+batch_name = 'oed_0';
 % IF ADDING A NEW BATCH...
 %   - ADD batch_date TO get_batch_date_from_batch_name
 %   - CREATE batchx_summary_plots.m AND MODIFY make_summary_images AS NEEDED
@@ -47,7 +47,7 @@ delete_bad_csvs
 batch = batch_analysis2(batch_date);
 
 %% Run predictions
-apply_model2(batch, batch_name, path)
+apply_model3(batch, batch_name, path)
 
 %% Generate images & results for all cells
 make_images(batch, batch_name, batch_date, path.images);

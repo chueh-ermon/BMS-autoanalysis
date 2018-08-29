@@ -1,8 +1,8 @@
-function apply_model2(batch, batch_name, path)
+function apply_model3(batch, batch_name, path)
 % This function applies the predictions based on the model stored in
 %   MyModel.mat
 % Peter Attia, Kristen Severson
-% Last updated June 28, 2018
+% Last updated August 28, 2018
 
 %% TO DO:
 %   Update model/build_battery_features
@@ -14,20 +14,13 @@ disp('Starting apply_model'),tic
 % Load the data you would like to apply the model to
 numBat = size(batch,2);
 
-% Load the model you would like to use
-if strcmp(batch_name,'oed1')
-    load('oed_model_batch1.mat')
-else
-    load('oed_model.mat')
-end
+% Load the model
+load('oed_model.mat')
 
 %% Remove cells that did not reach 100 cycles
 idx_running_cells = zeros(numBat,1);
-if strcmp(batch_name,'oed1')
-    cycle_cutoff = 98;
-else
-    cycle_cutoff = 100;
-end
+cycle_cutoff = 100;
+
 for k = 1:numBat
     if length(batch(k).cycles) < cycle_cutoff
         idx_running_cells(k) = 1;
@@ -42,13 +35,7 @@ ypred_h = NaN(numBat,1);
 
 if ~isempty(batch_running)
     %% Build features
-    if strcmp(batch_name,'oed1')
-        feat = build_battery_features98(batch_running);
-    elseif strcmp(batch_name,'oed4')
-        feat = build_battery_features95(batch_running);
-    else
-        feat = build_battery_features(batch_running);
-    end
+    feat = build_battery_features(batch_running);
     
     %% Make predictions
     feat_scaled = bsxfun(@minus,feat,mu);
@@ -79,14 +66,14 @@ if ~isempty(batch_running)
     ypred_l(idx_running_cells==0) = ypred_l2;
     ypred_h(idx_running_cells==0) = ypred_h2;
     
-    figure(), hold on
-    CM = colormap('jet'); % Set colormap
-    plot(ypred,'s')
-    for i = 1:numBat
-        plot(i*ones(100,1), linspace(ypred_l(i), ypred_h(i)),'k')
-    end
-    xlabel('Battery Index')
-    ylabel('Cycle Life')
+%     figure(), hold on
+%     CM = colormap('jet'); % Set colormap
+%     plot(ypred,'s')
+%     for i = 1:numBat
+%         plot(i*ones(100,1), linspace(ypred_l(i), ypred_h(i)),'k')
+%     end
+%     xlabel('Battery Index')
+%     ylabel('Cycle Life')
 end
 
 %% Export the result to a csv
