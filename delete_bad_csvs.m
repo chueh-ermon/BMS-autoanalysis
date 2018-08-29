@@ -38,4 +38,9 @@ elseif strcmp(batch_name, 'oed4')
     delete([path.csv_data '\' '2018-07-29_OED4_CH17_Metadata.csv']);
     delete([path.csv_data '\' '2018-07-29_OED4_CH27.csv']);
     delete([path.csv_data '\' '2018-07-29_OED4_CH27_Metadata.csv']);
+elseif strcmp(batch_name, 'oed_0')
+    delete([path.csv_data '\' '2018-08-28_OED4_CH17.csv']);
+    delete([path.csv_data '\' '2018-08-28_OED4_CH17_Metadata.csv']);
+    delete([path.csv_data '\' '2018-08-28_OED4_CH27.csv']);
+    delete([path.csv_data '\' '2018-08-28_OED4_CH27_Metadata.csv']);
 end
