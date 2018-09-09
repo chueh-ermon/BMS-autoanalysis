@@ -11,12 +11,22 @@ battery = struct('policy', ' ', 'policy_readable', ' ', 'barcode', ...
 
 cd(csvpath)
 
+%% Fix error in oed_2 where csvs have data from oed_1
+if strcmp(batch_date, '2018-09-06')
+    if result_data(1,5) ~= 0 % if the first entry of cycle index ~= 0
+        idx = find(result_data(:,5)==0,1);
+        result_data = result_data(idx:end,:); % trim data
+    end
+end
+
+%% Extract columns of interest
+
 % Total test time
 Total_time = result_data(:,1);
 % Unix date time (currently unused)
 %Date_time = result_data(:,2);
 
-% Cycle index, 0 is formation cycle
+% Cycle index, 0 is first discharge cycle
 Cycle_Index = result_data(:,5);
 % Extract all columns of interest
 Voltage = result_data(:,7);
@@ -25,9 +35,6 @@ Charge_Capacity = result_data(:,8);
 Discharge_Capacity = result_data(:,9);
 Internal_Resistance = result_data(:,13);
 Temperature = result_data(:,14);
-% batch0 attempts
-%Internal_Resistance = ones(length(result_data(:,1)),1);
-%TemperatureT1 = ones(length(result_data(:,1)),1);
 % Cell temp is 14, Shelf is 15 and 16
 
 % if batch1 or batch4, skip cycle 1 data

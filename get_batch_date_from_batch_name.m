@@ -32,6 +32,10 @@ switch batch_name % Format as 'yyyy-mm-dd'
         batch_date = '2018-08-28';
     case 'oed_1'
         batch_date = '2018-09-02';
+    case 'oed_2'
+        batch_date = '2018-09-06';
+    case 'oed_3'
+        batch_date = '2018-09-10';
     otherwise
         warning('batch_date not recognized')
 end
