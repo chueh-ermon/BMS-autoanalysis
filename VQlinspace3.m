@@ -18,8 +18,10 @@ V2 = 3.5;
 Vlin=linspace(V2,V1,n_points);
 
 %% 2. Get the indices of all currents ~ -4 C, i.e. discharge indices.
-% For all policies, we discharge at 4C (= -4.4A)
-indices = find(abs(cycle.I+4) < 0.05);
+% OLD: For all policies, we discharge at 4C (= -4.4A)
+Irounded = round(cycle.I);
+Idischarge = mode(Irounded(cycle.I<0));
+indices = find(abs(cycle.I+(-Idischarge)) < 0.05);
 % Remove trailing data points
 [~, index2] = min(cycle.V(indices(1:end-2)));
 indices = indices(1:index2);

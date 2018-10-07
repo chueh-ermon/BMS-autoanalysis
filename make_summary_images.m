@@ -120,9 +120,8 @@ elseif contains(batch_name,'oed')
     table_path = [path.result_tables '\' date '_' batch_name '_predictions.csv'];
     python('oed_plots.py',table_path,path.images,batch_name);
 else
-    warning('Batch name not recognized. No summary figures generated')
+    warning('Batch name not recognized. Additional summary figures not generated')
 end
-
 
 close all
 cd(path.code)

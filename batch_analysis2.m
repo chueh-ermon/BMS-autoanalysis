@@ -68,6 +68,10 @@ for i = 1:numel(filenames)
         % We want the '-' between 0630 and 3_6, or the last hyphen
         underscore_i = strfind(schedule_file, '-');
         underscore_i = underscore_i(end);
+        if strcmp(batch_date, '2018-10-02')
+            underscore_i = strfind(schedule_file, '\');
+            underscore_i = underscore_i(end);
+        end
         % We also want the '.' in '.sdu'
         dot_i = strfind(schedule_file, '.');
         charging_algorithm = schedule_file(underscore_i + 1:dot_i - 1);

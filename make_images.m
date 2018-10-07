@@ -73,6 +73,9 @@ for i = 1:num_cells
     ylabel('Time to 80% SOC (minutes)')
     title(batch(i).policy_readable)
     ylim([8.5 14])
+    if strcmp(batch_name, 'disassembly_batch')
+        ylim([5 40])
+    end
     
     % Plot 3: Temperature as a function of cycle index
     figure(cell_id)
