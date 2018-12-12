@@ -68,7 +68,7 @@ for i = 1:numel(filenames)
         % We want the '-' between 0630 and 3_6, or the last hyphen
         underscore_i = strfind(schedule_file, '-');
         underscore_i = underscore_i(end);
-        if strcmp(batch_date, '2018-10-02')
+        if strcmp(batch_date, '2018-10-02') || strcmp(batch_date, '2018-11-02')
             underscore_i = strfind(schedule_file, '\');
             underscore_i = underscore_i(end);
         end

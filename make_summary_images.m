@@ -16,7 +16,6 @@ readable_policies = cell(height(T_cells),1);
 for i = 1:numel(batch)
     policies{i} = batch(i).policy;
     readable_policies{i}=batch(i).policy_readable;
-
 end
 disp(policies)
 unique_policies = unique(policies);
@@ -36,21 +35,22 @@ for i = 1:length(unique_policies)
     %All the markers we want to use
     markers = {'+','o','*','.','x','s','d','^','v','>','<','p','h'};
     % Find all cells with policy i, generate combined x,y
-    x=double.empty;
-    y=double.empty;
+    x=cell(0);
+    y=cell(0);
+    
+    k = 1;
     for j = 1:numel(batch)
         if strcmp(unique_policies{i}, batch(j).policy)
-            disp(size(x)),disp(size(y))
-            x = cat(2,x,batch(j).summary.cycle');
-            y = cat(2,y,batch(j).summary.QDischarge');
+            x{k} = batch(j).summary.cycle;
+            y{k} = batch(j).summary.QDischarge;
+            
+            figure(figAbsolute);
+            plot(x{k},y{k},markers{mod(i,numel(markers))+1},'color',col);
+            figure(figNormalized);
+            plot(x{k},y{k}./y{k}(1),markers{mod(i,numel(markers))+1},'color',col);
+            k = k + 1;
         end
     end
-    sortedy = sort(y,'descend');
-    normalizationValue = sortedy(3);
-    figure(figAbsolute);
-    plot(x,y,markers{mod(i,numel(markers))+1},'color',col);
-    figure(figNormalized);
-    plot(x,y./normalizationValue,markers{mod(i,numel(markers))+1},'color',col);
 end
 
 %Formatting of figures
@@ -71,11 +71,11 @@ savefig(gcf,'summary1_Q_vs_n')
 
 figure(figNormalized);
 xlabel('Cycle number')
-ylabel('Remaining discharge capacity (normalized)')
+ylabel('Remaining discharge capacity (normalized by initial capacity)')
 if strcmp(batch_name, 'batch1') || strcmp(batch_name, 'batch2') || strcmp(batch_name, 'batch4')
-    ylim([0.8 1])
+    ylim([0.8 .011])
 elseif contains(batch_name,'oed')
-    ylim([0.99 1])
+    ylim([0.99 1.01])
 end
 %2-column legend via custom function. Not perfect but workable
 columnlegend(2,unique_readable_policies,'Location','NortheastOutside','boxoff');
@@ -90,8 +90,11 @@ for k = 1:length(batch)
 end
 for k = 1:length(batch)
     if min_cycles_completed < 10
+        try
         plot(batch(k).cycles(min_cycles_completed).Qdlin - batch(k).cycles(2).Qdlin, batch(k).Vdlin);
         xlabel(['Q_{',num2str(min_cycles_completed),'} - Q_{2} (Ah)'])
+        catch
+        end
     else
         plot(batch(k).cycles(min_cycles_completed).Qdlin - batch(k).cycles(10).Qdlin, batch(k).Vdlin);
         xlabel(['Q_{',num2str(min_cycles_completed),'} - Q_{10} (Ah)'])

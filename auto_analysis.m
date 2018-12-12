@@ -25,7 +25,7 @@ cd(path.code)
 email_list = {'pattia@stanford.edu','normanj@stanford.edu',...
     'liao1226@stanford.edu'};
 %email_list = {'chueh-ermon-bms@lists.stanford.edu'};
-batch_name = 'disassembly_batch';
+batch_name = 'disassembly_batch2';
 % IF ADDING A NEW BATCH...
 %   - ADD batch_date TO get_batch_date_from_batch_name
 %   - CREATE batchx_summary_plots.m AND MODIFY make_summary_images AS NEEDED
@@ -36,7 +36,8 @@ get_batch_date_from_batch_name
 
 %% Pull CSVs if program is running on Amazon Workspace
 if path.whichcomp == 'amazonws'
-    aws_pulldata = ['aws s3 sync s3://matr.io/experiment/d3batt D:\Data --exclude "*" --include "' batch_date '*"'];
+    %aws_pulldata = ['aws s3 sync s3://matr.io/experiment/d3batt D:\Data --exclude "*" --include "' batch_date '*"'];
+    aws_pulldata = ['aws s3 sync s3://matr.io/experiment/d3batt D:\Data --exclude "*" --include "' batch_date '-M1B_rate_lifetime' '*"'];
     system(aws_pulldata)
 end
 
@@ -51,9 +52,15 @@ batch = batch_analysis2(batch_date);
 
 %% Generate images & results for all cells
 make_images(batch, batch_name, batch_date, path.images);
-[T_cells, T_policies] = make_result_tables(batch, batch_name, ...
-    path.result_tables, path.code);
-make_summary_images(batch, batch_name, T_cells, T_policies);
+try
+    [T_cells, T_policies] = make_result_tables(batch, batch_name, ...
+        path.result_tables, path.code);
+catch
+end
+try
+    make_summary_images(batch, batch_name, T_cells, T_policies);
+catch
+end
 
 %% Run the report generator (in Python)
 % This will create the PPT and convert to PDF. It saves in the Box Sync

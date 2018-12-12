@@ -15,9 +15,13 @@ for k = 1:batch_size
 end
 
 %attachments = [path.reports '\' date '_report.pdf'];
-attachments = cell(2,1);
-attachments{1} = [path.reports '\' date '_report.pdf'];
-attachments{2} = [path.result_tables '\' date '_' batch_name '_predictions.csv'];
+if contains(batch_name,'disassembly_batch')
+    attachments = [path.reports '\' date '_report.pdf'];
+else
+    attachments = cell(2,1);
+    attachments{1} = [path.reports '\' date '_report.pdf'];
+    attachments{2} = [path.result_tables '\' date '_' batch_name '_predictions.csv'];
+end
 message_body = {['Hot off the press: Check out the latest ' batch_name ...
     ' results, now including predictions!']; path.message;
     [num2str(num_complete) ' out of ' num2str(batch_size) ' cells complete'];

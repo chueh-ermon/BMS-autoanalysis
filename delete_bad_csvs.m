@@ -56,8 +56,19 @@ elseif strcmp(batch_name, 'disassembly_batch')
     delete([path.csv_data '\' '2018-10-02_disassembly_batch_CH47_Metadata.csv']);
     delete([path.csv_data '\' '2018-10-02_disassembly_batch_CH48.csv']);
     delete([path.csv_data '\' '2018-10-02_disassembly_batch_CH48_Metadata.csv']);
+    
+    delete([path.csv_data '\' '2018-10-02_disassembly_batchv2_CH42.csv']);
+    delete([path.csv_data '\' '2018-10-02_disassembly_batchv2_CH42_Metadata.csv']);
+    
     delete([path.csv_data '\' '2018-10-02_disassembly_batchv2_CH43.csv']);
     delete([path.csv_data '\' '2018-10-02_disassembly_batchv2_CH43_Metadata.csv']);
     delete([path.csv_data '\' '2018-10-02_disassembly_batchv2_CH44.csv']);
     delete([path.csv_data '\' '2018-10-02_disassembly_batchv2_CH44_Metadata.csv']);
+    
+    delete([path.csv_data '\' '2018-10-02_disassembly_batch_CH38.csv']);
+    delete([path.csv_data '\' '2018-10-02_disassembly_batch_CH38_Metadata.csv']);
+    delete([path.csv_data '\' '2018-10-02_disassembly_batchv3_CH43.csv']);
+    delete([path.csv_data '\' '2018-10-02_disassembly_batchv3_CH43_Metadata.csv']);
+    delete([path.csv_data '\' '2018-10-02_disassembly_batchv3_CH44.csv']);
+    delete([path.csv_data '\' '2018-10-02_disassembly_batchv3_CH44_Metadata.csv']);    
 end
