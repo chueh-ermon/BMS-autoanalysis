@@ -70,5 +70,16 @@ elseif strcmp(batch_name, 'disassembly_batch')
     delete([path.csv_data '\' '2018-10-02_disassembly_batchv3_CH43.csv']);
     delete([path.csv_data '\' '2018-10-02_disassembly_batchv3_CH43_Metadata.csv']);
     delete([path.csv_data '\' '2018-10-02_disassembly_batchv3_CH44.csv']);
-    delete([path.csv_data '\' '2018-10-02_disassembly_batchv3_CH44_Metadata.csv']);    
+    delete([path.csv_data '\' '2018-10-02_disassembly_batchv3_CH44_Metadata.csv']);
+elseif strcmp(batch_name, 'disassembly_batch2')
+    delete([path.csv_data '\' '2018-12-05_M1B_rate_lifetime_CH27.csv']);
+    delete([path.csv_data '\' '2018-12-05_M1B_rate_lifetime_CH27_Metadata.csv']);
+    delete([path.csv_data '\' '2018-12-05_M1B_rate_lifetime_CH28.csv']);
+    delete([path.csv_data '\' '2018-12-05_M1B_rate_lifetime_CH28_Metadata.csv']);
+    delete([path.csv_data '\' '2018-12-05_M1B_rate_lifetime_CH29.csv']);
+    delete([path.csv_data '\' '2018-12-05_M1B_rate_lifetime_CH29_Metadata.csv']);
+    delete([path.csv_data '\' '2018-12-05_M1B_rate_lifetime_CH30.csv']);
+    delete([path.csv_data '\' '2018-12-05_M1B_rate_lifetime_CH30_Metadata.csv']);
+    delete([path.csv_data '\' '2018-12-05_M1B_rate_lifetime_CH31.csv']);
+    delete([path.csv_data '\' '2018-12-05_M1B_rate_lifetime_CH31_Metadata.csv']);
 end

@@ -44,6 +44,8 @@ switch batch_name % Format as 'yyyy-mm-dd'
         batch_date = '2018-11-02';
     case 'disassembly_batch2'
         batch_date = '2018-12-05';
+    case 'disassembly_batch3'
+        batch_date = '2018-12-21';
     otherwise
         warning('batch_date not recognized')
 end
