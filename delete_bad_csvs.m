@@ -1,4 +1,6 @@
 %% Delete bad csvs %%
+% Removes tests with major experimental issues (i.e. didn't start).
+% Manually added
 if strcmp(batch_name, 'batch1')
     delete([path.csv_data '\' '2017-05-12_3_6C-80per_3_6C_CH4.csv'])
     delete([path.csv_data '\' '2017-05-12_3_6C-80per_3_6C_CH4_Metadata.csv']')

@@ -119,7 +119,7 @@ elseif sum(strcmp(batch_name, batches_likebatch2))
 elseif strcmp(batch_name,'batch3')
     batch3_summary_plots(T_policies)
 % OED batches
-elseif contains(batch_name,'oed')
+elseif contains(batch_name,'oed') || strcmp(batch_name,'batch9')
     table_path = [path.result_tables '\' date '_' batch_name '_predictions.csv'];
     python('oed_plots.py',table_path,path.images,batch_name);
 else
