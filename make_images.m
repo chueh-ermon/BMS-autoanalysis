@@ -51,10 +51,10 @@ for i = 1:num_cells
     % Plot 1: Remaining capacity
     figure(cell_id)
     subplot(2,4,1)
-    plot(batch(i).summary.cycle, batch(i).summary.QDischarge, ...
+    plot(1:length(batch(i).summary.QDischarge), batch(i).summary.QDischarge, ...
         'Color','r','LineWidth',1.5) % change to raw data
     hold on
-    plot(batch(i).summary.cycle, batch(i).summary.QCharge, 'Color', ...
+    plot(1:length(batch(i).summary.QCharge), batch(i).summary.QCharge, 'Color', ...
         'b','LineWidth',1.5)
     ylim([0.88 1.12])
     hold on
@@ -66,7 +66,7 @@ for i = 1:num_cells
     % Plot 2: Charge time
     figure(cell_id)
     subplot(2,4,2)
-    plot(batch(i).summary.cycle,batch(i).summary.chargetime, ...
+    plot(1:length(batch(i).summary.chargetime),batch(i).summary.chargetime, ...
         'LineWidth',1.5)
     hold on
     xlabel('Cycle Index')
@@ -80,13 +80,13 @@ for i = 1:num_cells
     % Plot 3: Temperature as a function of cycle index
     figure(cell_id)
     subplot(2,4,3)
-    plot(batch(i).summary.cycle, batch(i).summary.Tmax, 'Color', ...
+    plot(1:length(batch(i).summary.Tmax), batch(i).summary.Tmax, 'Color', ...
         [0.800000 0.250000 0.330000],'LineWidth',1.5)
     hold on
-    plot(batch(i).summary.cycle, batch(i).summary.Tmin, 'Color', ...
+    plot(1:length(batch(i).summary.Tmin), batch(i).summary.Tmin, 'Color', ...
         [0.600000 0.730000 0.890000],'LineWidth',1.5)
     hold on
-    plot(batch(i).summary.cycle, batch(i).summary.Tavg, 'Color', ...
+    plot(1:length(batch(i).summary.Tavg), batch(i).summary.Tavg, 'Color', ...
         [1.000000 0.620000 0.000000],'LineWidth',1.5)
     xlabel('Cycle Index')
     ylabel('Temperature (°C)')
@@ -124,7 +124,7 @@ for i = 1:num_cells
         vline(vline_loc,'b-')
         xlim([-0.07 0.03])
     else
-        plot(batch(i).summary.cycle,batch(i).summary.IR,'LineWidth',1.5)
+        plot(1:length(batch(i).summary.IR),batch(i).summary.IR,'LineWidth',1.5)
         hold on
         xlabel('Cycle Index')
         ylabel('Internal Resistance (Ohms)')
@@ -264,7 +264,7 @@ for i = 1:num_cells
     catch
         file_name = char(strcat(charging_alg,'_missing_barcode'));
     end
-    savefig(gcf,file_name)
+    % savefig(gcf,file_name)
     print(gcf,file_name,'-dpng')
     
     % cd out into batch images

@@ -38,7 +38,7 @@ Temperature = result_data(:,14);
 % Cell temp is 14, Shelf is 15 and 16
 
 % if batch1 or batch4, skip cycle 1 data
-if strcmp(batch_date, '2017-05-12') || strcmp(batch_date, '2017-12-04')
+if strcmp(batch_date, '2017-05-12') || strcmp(batch_date, '2017-12-04') || strcmp(batch_date, '2019-01-24')
     start = 2;
 else
     start = 1;
@@ -82,30 +82,33 @@ battery.policy_readable = t;
 
 thisdir = cd;
 
-%% Go through every cycle except current running one
-for j = start:max(Cycle_Index) - 1
+%% Go through every cycle except current running one 
+cycle_indices2 = unique(Cycle_Index);
+cycle_indices2 = cycle_indices2(2:end-1);
+for k = 1:length(cycle_indices2)
+    j = cycle_indices2(k);
     cycle_indices = find(Cycle_Index == j);
     cycle_start = cycle_indices(1);
     cycle_end = cycle_indices(end);
     
     %% Add full per-cycle information
-    battery.cycles(j).Qd = Discharge_Capacity(cycle_indices);
-    battery.cycles(j).Qc = Charge_Capacity(cycle_indices);
-    battery.cycles(j).V = Voltage(cycle_indices);
-    battery.cycles(j).T = Temperature(cycle_indices);
-    battery.cycles(j).t = (Total_time(cycle_indices) - Total_time(cycle_start))./60;
-    battery.cycles(j).I = Current(cycle_indices)/1.1;
+    battery.cycles(k).Qd = Discharge_Capacity(cycle_indices);
+    battery.cycles(k).Qc = Charge_Capacity(cycle_indices);
+    battery.cycles(k).V = Voltage(cycle_indices);
+    battery.cycles(k).T = Temperature(cycle_indices);
+    battery.cycles(k).t = (Total_time(cycle_indices) - Total_time(cycle_start))./60;
+    battery.cycles(k).I = Current(cycle_indices)/1.1;
     
     %% Correct for negative times from Patrick's script
-    if battery.cycles(j).t(end) < 0
-        negidx = find(battery.cycles(j).t < 0, 1);
-        constant = battery.cycles(j).t(negidx - 1) - battery.cycles(j).t(negidx);
-        battery.cycles(j).t(negidx:end) = battery.cycles(j).t(negidx:end) + constant;
+    if battery.cycles(k).t(end) < 0
+        negidx = find(battery.cycles(k).t < 0, 1);
+        constant = battery.cycles(k).t(negidx - 1) - battery.cycles(k).t(negidx);
+        battery.cycles(k).t(negidx:end) = battery.cycles(k).t(negidx:end) + constant;
     end
     
     %% dQdV vs V for discharge
     % Indices of discharging portion of the cycle
-    discharge_indices = find(battery.cycles(j).I < 0);
+    discharge_indices = find(battery.cycles(k).I < 0);
     % In case i3 is empty
     if isempty(discharge_indices)
         discharge_start = 1; discharge_end = 2;
@@ -114,35 +117,35 @@ for j = start:max(Cycle_Index) - 1
         discharge_end = discharge_indices(end);
     end
     
-    [IDC,~] = IDCA( battery.cycles(j).Qd(discharge_start:discharge_end), ...
-        battery.cycles(j).V(discharge_start:discharge_end) );
-    battery.cycles(j).discharge_dQdV = IDC';
+    [IDC,~] = IDCA( battery.cycles(k).Qd(discharge_start:discharge_end), ...
+        battery.cycles(k).V(discharge_start:discharge_end) );
+    battery.cycles(k).discharge_dQdV = IDC';
     
     %% Apply VQlinspace3 function to obtain Qdlin, Vdlin, and Tdlin
-    [Qdlin,Vdlin,Tdlin] = VQlinspace3(battery.cycles(j));
-    battery.cycles(j).Qdlin = Qdlin;
-    battery.cycles(j).Tdlin = Tdlin;
+    [Qdlin,Vdlin,Tdlin] = VQlinspace3(battery.cycles(k));
+    battery.cycles(k).Qdlin = Qdlin;
+    battery.cycles(k).Tdlin = Tdlin;
     
     %% Update summary information
-    C_in(j) = max(battery.cycles(j).Qc);
-    C_out(j) = max(battery.cycles(j).Qd);
-    T_max(j) = max(battery.cycles(j).T);
-    T_min(j) = min(battery.cycles(j).T);
-    T_avg(j) = mean(battery.cycles(j).T);
-    IR_CC1(j) = Internal_Resistance(cycle_end);
+    C_in(k) = max(battery.cycles(k).Qc);
+    C_out(k) = max(battery.cycles(k).Qd);
+    T_max(k) = max(battery.cycles(k).T);
+    T_min(k) = min(battery.cycles(k).T);
+    T_avg(k) = mean(battery.cycles(k).T);
+    IR_CC1(k) = Internal_Resistance(cycle_end);
     
     %% Find time to 80%
     chargetime_indices = find(Charge_Capacity(cycle_start:cycle_end) >= 0.88,2);
     if isempty(chargetime_indices) || length(chargetime_indices) == 1
-        tt_80(j) = 1200;
+        tt_80(k) = 1200;
     else
-        tt_80(j) = Total_time(chargetime_indices(2)+cycle_start)-Total_time(cycle_start);
+        tt_80(k) = Total_time(chargetime_indices(2)+cycle_start)-Total_time(cycle_start);
         Total_time(chargetime_indices + cycle_start);
         Total_time(cycle_start);
     end
     % In case of an incomplete charge
-    if tt_80(j)<300
-        tt_80(j) = tt_80(j-1);
+    if tt_80(k)<300
+        tt_80(k) = tt_80(k-1);
     end
 end
 
@@ -159,7 +162,7 @@ battery.Vdlin = Vdlin';
 %end
 
 % Add vectors to battery.summary
-battery.summary.cycle = (1:j)';
+battery.summary.cycle = (1:k)';
 battery.summary.QDischarge = DQ;
 battery.summary.QCharge = CQ;
 battery.summary.IR = IR_CC1;
@@ -169,7 +172,7 @@ battery.summary.Tmin = T_min;
 battery.summary.chargetime = tt_80./60; % Convert to minutes
 
 % Update cycle life, if applicable
-batches_cycleto80 = {'2017-05-12', '2017-06-30', '2018-04-12'};
+batches_cycleto80 = {'2017-05-12', '2017-06-30', '2018-04-12', '2019-01-24'};
 if battery.summary.QDischarge(end) < 0.88
     battery.cycle_life = find(battery.summary.QDischarge<0.88, 1);
 elseif sum(strcmp(batch_date,batches_cycleto80)) && ...
