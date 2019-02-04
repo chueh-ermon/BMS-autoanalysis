@@ -48,6 +48,8 @@ switch batch_name % Format as 'yyyy-mm-dd'
         batch_date = '2018-12-21';
     case 'batch9'
         batch_date = '2019-01-24';
+    case 'batch9pt5'
+        batch_date = '2019-01-29';
     otherwise
         warning('batch_date not recognized')
 end

@@ -53,7 +53,7 @@ if ~isempty(batch_running)
     ypred2 = 10.^ypred2;
     
     % Detect outliers
-    for k = 1:length(feat_scaled)
+    for k = 1:length(ypred2)
         %if sum(abs(feat_scaled(k,:)) > 4)
         if (ypred_h2(k) - ypred_l2(k)) > 2000
             ypred2(k) = -1;

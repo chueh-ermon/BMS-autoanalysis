@@ -41,7 +41,7 @@ for i = 1:length(unique_policies)
     k = 1;
     for j = 1:numel(batch)
         if strcmp(unique_policies{i}, batch(j).policy)
-            x{k} = batch(j).summary.cycle;
+            x{k} = 1:length(batch(j).summary.QDischarge);
             y{k} = batch(j).summary.QDischarge;
             
             figure(figAbsolute);
@@ -57,7 +57,7 @@ end
 figure(figAbsolute);
 xlabel('Cycle number')
 ylabel('Remaining discharge capacity (Ah)')
-if strcmp(batch_name, 'batch1') || strcmp(batch_name, 'batch2') || strcmp(batch_name, 'batch4')
+if strcmp(batch_name, 'batch1') || strcmp(batch_name, 'batch2') || strcmp(batch_name, 'batch4') || strcmp(batch_name, 'batch9')
     ylim([0.85 1.1])
 elseif contains(batch_name,'oed')
     ylim([1.0 1.1])
@@ -67,7 +67,7 @@ end
 %2-column legend via custom function. Not perfect but workable
 columnlegend(2,unique_readable_policies,'Location','NortheastOutside','boxoff');
 print('summary1_Q_vs_n','-dpng')
-savefig(gcf,'summary1_Q_vs_n')
+%savefig(gcf,'summary1_Q_vs_n')
 
 figure(figNormalized);
 xlabel('Cycle number')
@@ -80,7 +80,7 @@ end
 %2-column legend via custom function. Not perfect but workable
 columnlegend(2,unique_readable_policies,'Location','NortheastOutside','boxoff');
 print('summary2_Q_vs_n_norm','-dpng')
-savefig(gcf,'summary2_Q_vs_n_norm')
+%savefig(gcf,'summary2_Q_vs_n_norm')
 
 % Delta Q plot
 fig_deltaQ = figure('units','normalized','outerposition',[0 0 1 1]); hold on, box on

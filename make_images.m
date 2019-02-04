@@ -97,7 +97,7 @@ for i = 1:num_cells
     figure(cell_id)
     subplot(2,4,4)
     completed_cycles = length(batch(i).cycles);
-    if contains(batch_name,'oed')
+    if contains(batch_name,'oed') || contains(batch_name,'batch9')
         if strcmp(batch_name,'oed1')
             plot(batch(i).cycles(98).Qdlin-batch(i).cycles(10).Qdlin, ...
                 batch(i).Vdlin,'LineWidth',1.5)
