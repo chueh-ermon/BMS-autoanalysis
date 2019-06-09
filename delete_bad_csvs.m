@@ -84,4 +84,22 @@ elseif strcmp(batch_name, 'disassembly_batch2')
     delete([path.csv_data '\' '2018-12-05_M1B_rate_lifetime_CH30_Metadata.csv']);
     delete([path.csv_data '\' '2018-12-05_M1B_rate_lifetime_CH31.csv']);
     delete([path.csv_data '\' '2018-12-05_M1B_rate_lifetime_CH31_Metadata.csv']);
+elseif strcmp(batch_name, 'batch9')
+    delete([path.csv_data '\' '2019-01-24_batch9_CH46.csv']);
+    delete([path.csv_data '\' '2019-01-24_batch9_CH46_Metadata.csv']);
+    
+    % Pull in batch9pt2 and rename ch48
+    batch_date = '2019-01-29';
+    aws_pulldata = ['aws s3 sync s3://matr.io/experiment/d3batt D:\Data --exclude "*" --include "' batch_date '*"'];
+    system(aws_pulldata)
+    delete([path.csv_data '\' '2019-01-29_batch9pt2_CH5.csv']);
+    delete([path.csv_data '\' '2019-01-29_batch9pt2_CH5_Metadata.csv']);
+    cd(path.csv_data)
+    movefile '2019-01-29_batch9pt2_CH48.csv' '2019-01-24_batch9_CH48.csv'
+    movefile '2019-01-29_batch9pt2_CH48_Metadata.csv' '2019-01-24_batch9_CH48_Metadata.csv'
+    batch_date = '2019-01-24';
+    cd(path.code)
+elseif strcmp(batch_name, 'batch9pt2')
+    delete([path.csv_data '\' '2019-01-29_batch9pt2_CH5.csv']);
+    delete([path.csv_data '\' '2019-01-29_batch9pt2_CH5_Metadata.csv']);
 end

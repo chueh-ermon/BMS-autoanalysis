@@ -174,7 +174,16 @@ battery.summary.chargetime = tt_80./60; % Convert to minutes
 % Update cycle life, if applicable
 batches_cycleto80 = {'2017-05-12', '2017-06-30', '2018-04-12', '2019-01-24'};
 if battery.summary.QDischarge(end) < 0.88
-    battery.cycle_life = find(battery.summary.QDischarge<0.88, 1);
+    % Confirm point is not a fluke
+    lower_than_threshold = find(battery.summary.QDischarge<0.88);
+    for idx = 1:length(lower_than_threshold)
+        % test to see if next discharge point is lower than this point
+        if battery.summary.QDischarge(lower_than_threshold(idx)+1) < ...
+            battery.summary.QDischarge(lower_than_threshold(idx))
+            battery.cycle_life = lower_than_threshold(idx);
+            break;
+        end
+    end
 elseif sum(strcmp(batch_date,batches_cycleto80)) && ...
         battery.summary.QDischarge(end) - 0.88 < 0.01
     % Special case for batches 1 and 8, where we don't cycle past failure

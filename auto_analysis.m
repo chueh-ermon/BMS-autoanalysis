@@ -22,8 +22,7 @@ load path.mat
 cd(path.code)
 
 %%%%%%% CHANGE THESE SETTINGS %%%%%%%
-email_list = {'pattia@stanford.edu','normanj@stanford.edu'};
-%email_list = {'chueh-ermon-bms@lists.stanford.edu'};
+email_list = {'pattia@stanford.edu'};
 batch_name = 'batch9';
 % IF ADDING A NEW BATCH...
 %   - ADD batch_date TO get_batch_date_from_batch_name
