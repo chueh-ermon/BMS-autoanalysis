@@ -7,7 +7,7 @@ function props = sendemail(email_list,subject,message,attachment)
 %Your gmail ID and password 
 %(from which email ID you would like to send the mail)
 mail = 'chuehbatteries@gmail.com';    %Your GMail email address
-password = 'batteries2016';          %Your GMail password
+password = 'fake_password';           %Your GMail password
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 if nargin == 1
